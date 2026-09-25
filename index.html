@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#10213a" />
+    <meta name="description" content="Academia interactiva del curso APTIS ESOL GENERAL — B2 PERFORMANCE COURSE: 8 semanas, simulacros y seguimiento local." />
+    <title>APTIS B2 · Academia</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegación del curso">
+        <a class="brand" href="#dashboard" aria-label="Ir al panel">
+          <span class="brand-mark">A<span>·</span></span>
+          <span><strong>APTIS B2</strong><small>PERFORMANCE COURSE</small></span>
+        </a>
+        <div class="sidebar-scroll">
+          <nav id="main-nav" class="main-nav"></nav>
+          <div class="sidebar-heading">PLAN DE ESTUDIO <span>8 SEMANAS</span></div>
+          <nav id="week-nav" class="week-nav"></nav>
+        </div>
+        <div class="sidebar-bottom"><span class="status-dot"></span> Progreso guardado en este dispositivo</div>
+      </aside>
+      <div class="main-area">
+        <header class="topbar">
+          <button id="menu-toggle" class="icon-button mobile-only" type="button" aria-label="Abrir menú">☰</button>
+          <div class="topbar-path">ACADEMIA <span>/</span> <span id="breadcrumb">PANEL</span></div>
+          <div class="topbar-right"><span class="topbar-pill">B2 TARGET</span><span id="top-progress">0 / 32 sesiones</span></div>
+        </header>
+        <main id="app" tabindex="-1"></main>
+      </div>
+    </div>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
