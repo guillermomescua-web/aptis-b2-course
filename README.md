@@ -43,3 +43,10 @@ Con Python y `pypdf` instalados, ejecuta `python tools/build_content.py` desde l
 ## Privacidad
 
 No hay cuenta, analítica, backend, envío de respuestas ni claves API. Los PDFs y el índice se sirven como archivos públicos del repositorio si GitHub Pages se habilita; publícalo en un repositorio adecuado para compartir ese material.
+
+## Mejoras v1.1
+
+- Speaking Part 2 y Part 3 muestran fotografías basadas en los briefs originales, con descripciones accesibles. Las preguntas y los IDs siguen en `data/course.json` sin cambios.
+- Speaking permite grabar y reproducir respuestas con `MediaRecorder`. Los clips quedan solo en memoria hasta cerrar la pestaña; el navegador pide permiso para usar el micrófono. Si no lo admite, siguen disponibles los temporizadores y las notas.
+- `audio/manifest.json` reserva la estructura para grabaciones de calidad. Se deja sin archivos de audio porque no se dispone de una generación fiable con naturalidad B2. Listening usa automáticamente `speechSynthesis`, alterna voces o entonación en diálogos y conserva el límite de dos escuchas.
+- El panel permite exportar e importar el progreso como JSON con versión de esquema. La importación valida los datos y solicita confirmación antes de reemplazar lo guardado. Las grabaciones de Speaking no se incluyen en el JSON.

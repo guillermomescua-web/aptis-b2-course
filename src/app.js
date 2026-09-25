@@ -1,3 +1,5 @@
+import { exportProgress, validateProgress } from './progress.js';
+
 const app = document.querySelector('#app');
 const mainNav = document.querySelector('#main-nav');
 const weekNav = document.querySelector('#week-nav');
@@ -13,6 +15,10 @@ let course;
 let activeTimer = null;
 let timerEnds = 0;
 let timerLabel = '';
+let currentAudio = null;
+const speakingRecordings = new Map();
+let activeRecorder = null;
+let audioManifest = {};
 
 function loadState() {
   try { return { ...defaultState(), ...JSON.parse(localStorage.getItem(STORE) || '{}') }; }
@@ -58,6 +64,10 @@ function pageHeader(eyebrow, title, subtitle, aside = '') {
   return `<div class="hero"><div><p class="eyebrow">${esc(eyebrow)}</p><h1 class="page-title">${esc(title)}</h1><p class="page-subtitle">${esc(subtitle)}</p></div>${aside ? `<div class="hero-side">${aside}</div>` : ''}</div>`;
 }
 
+function progressControls() {
+  return `<section class="card section-space" aria-labelledby="progress-backup-title"><h2 class="card-title" id="progress-backup-title">Copia de seguridad del progreso</h2><p class="card-subtitle">Guarda tus respuestas, sesiones, errores y reproducciones en un archivo JSON. Las grabaciones de voz de esta sesión no se incluyen.</p><div class="backup-actions"><button class="secondary-button" type="button" data-export-progress>Exportar progreso</button><button class="secondary-button" type="button" data-import-progress>Importar progreso</button><input id="progress-file" class="sr-only" type="file" accept=".json,application/json" aria-label="Elegir archivo JSON de progreso"><span id="progress-message" role="status" aria-live="polite"></span></div></section>`;
+}
+
 function dashboard() {
   breadcrumb.textContent = 'PANEL';
   const done = completedSessions();
@@ -74,6 +84,7 @@ function dashboard() {
       return `<div class="week-row"><span class="week-name">Semana ${String(n).padStart(2, '0')}</span><div class="week-bar" aria-label="${count} de 4 sesiones"><span style="width:${count * 25}%"></span></div><span class="week-count">${count} / 4 sesiones</span></div>`;
     }).join('')}</section><div><section class="continue-card"><p class="eyebrow">SIGUIENTE PASO</p><h2>${next.replace('W', 'Semana ').replace('D', ' · Día ')}</h2><p>Una sesión de aproximadamente 60 minutos. Trabaja con el tiempo indicado antes de consultar la corrección.</p><a class="primary-button" href="#session=${next}">Abrir sesión <span>→</span></a></section><section class="card section-space"><h2 class="card-title">Cómo usar el curso</h2><p class="card-subtitle" style="margin-bottom:12px">Haz los ejercicios en orden. Consulta la solución al terminar y registra los errores que se repiten.</p><a class="text-link" href="#book=start">Leer la guía inicial →</a></section></div></div>
     <section class="section-space"><h2 class="section-heading">Accesos rápidos</h2><div class="quick-grid"><a class="quick-link" href="#mocks">Simulacros <span>↗</span></a><a class="quick-link" href="#books">Masterbooks <span>↗</span></a><a class="quick-link" href="#tracker">Error Tracker <span>↗</span></a></div></section>`;
+  app.innerHTML += progressControls();
 }
 
 function exerciseHTML(ex, index) {
@@ -88,13 +99,34 @@ function bankLetters(ex) {
   return unique.length >= 2 ? unique : 'ABCDEFGHIJ'.split('');
 }
 
+function speakingVisualHTML(q, ex) {
+  if (q.part === 'Part 2') {
+    const match = q.prompt.match(/^Photo brief:\s*([\s\S]*?)(?=\n1\.)/i);
+    if (!match) return { visual: '', prompt: q.prompt };
+    return { visual: `<figure class="speaking-photo"><div class="photo-crop photo-one" role="img" aria-label="${esc(match[1].trim())}" style="background-image:url('./assets/speaking/${encodeURIComponent(ex.id)}.png')"></div></figure>`, prompt: q.prompt.slice(match[0].length).trim() };
+  }
+  if (q.part === 'Part 3') {
+    const match = q.prompt.match(/^Photo A:\s*([\s\S]*?)\nPhoto B:\s*([\s\S]*?)(?=\n1\.)/i);
+    if (!match) return { visual: '', prompt: q.prompt };
+    const photo = (kind, className, brief) => `<figure class="speaking-photo"><div class="photo-crop ${className}" role="img" aria-label="${esc(brief.trim())}" style="background-image:url('./assets/speaking/${encodeURIComponent(ex.id)}.png')"></div><figcaption>Foto ${kind}</figcaption></figure>`;
+    return { visual: `<div class="speaking-photo-pair">${photo('A', 'photo-two', match[1])}${photo('B', 'photo-three', match[2])}</div>`, prompt: q.prompt.slice(match[0].length).trim() };
+  }
+  return { visual: '', prompt: q.prompt };
+}
+
+function recorderHTML(q) {
+  const available = !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+  return `<div class="recorder-panel" data-recorder-panel="${esc(q.id)}"><h4>Graba tu respuesta</h4>${available ? `<div class="recorder-actions"><button class="small-button" type="button" data-record-start="${esc(q.id)}">Grabar</button><button class="small-button" type="button" data-record-stop="${esc(q.id)}" disabled>Detener</button><button class="small-button" type="button" data-record-play="${esc(q.id)}" disabled>Reproducir</button><button class="small-button" type="button" data-record-again="${esc(q.id)}" disabled>Volver a grabar</button><span class="record-clock" data-record-clock="${esc(q.id)}" role="timer">00:00</span></div><audio data-record-audio="${esc(q.id)}" controls hidden aria-label="Tu grabación de ${esc(q.id)}"></audio><p class="record-status" data-record-status="${esc(q.id)}" role="status" aria-live="polite">La grabación queda en este navegador solo durante esta sesión.</p>` : '<p class="record-status">La grabación no está disponible en este navegador. Puedes usar los temporizadores para practicar.</p>'}</div>`;
+}
+
 function questionHTML(q, speaking) {
   const value = state.responses[q.id] || '';
   const answer = answerLetter(q.id);
   const ex = course.exercises.find(e => e.questions.some(item => item.id === q.id));
   const labels = q.options.length ? q.options : bankLetters(ex).map(k => ({ key: k, text: '' }));
+  const stimulus = speaking ? speakingVisualHTML(q, ex) : { visual: '', prompt: q.prompt };
   const field = speaking
-    ? `<div class="timer-panel"><h4>Tiempo de respuesta</h4><div class="prompt-timers">${q.part === 'Part 4' ? `<button type="button" data-timer="60" data-timer-label="Preparación · ${esc(q.id)}">Preparación · 1 min</button><button type="button" data-timer="120" data-timer-label="Respuesta · ${esc(q.id)}">Respuesta · 2 min</button>` : (q.prompt.match(/^\d+\./gm) || [1, 2, 3]).map((_, i) => `<button type="button" data-timer="${q.part === 'Part 1' ? 30 : 45}" data-timer-label="${esc(q.part || 'Speaking')} · pregunta ${i + 1}">Pregunta ${i + 1} · ${q.part === 'Part 1' ? 30 : 45} s</button>`).join('')}</div></div><textarea class="word-input" data-response="${esc(q.id)}" aria-label="Notas para ${esc(q.id)}" placeholder="Notas de tu respuesta (opcional)">${esc(value)}</textarea>`
+    ? `<div class="timer-panel"><h4>Tiempo de respuesta</h4><div class="prompt-timers">${q.part === 'Part 4' ? `<button type="button" data-timer="60" data-timer-label="Preparación · ${esc(q.id)}">Preparación · 1 min</button><button type="button" data-timer="120" data-timer-label="Respuesta · ${esc(q.id)}">Respuesta · 2 min</button>` : (q.prompt.match(/^\d+\./gm) || [1, 2, 3]).map((_, i) => `<button type="button" data-timer="${q.part === 'Part 1' ? 30 : 45}" data-timer-label="${esc(q.part || 'Speaking')} · pregunta ${i + 1}">Pregunta ${i + 1} · ${q.part === 'Part 1' ? 30 : 45} s</button>`).join('')}</div></div>${recorderHTML(q)}<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Notas para ${esc(q.id)}" placeholder="Notas de tu respuesta (opcional)">${esc(value)}</textarea>`
     : q.wordRange || /WRIT|PARAPHRASE|REGISTER|EDIT|COHESION|FORMUL|REWRITE|REPAIR/i.test(ex.title)
       ? `<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Respuesta de ${esc(q.id)}" placeholder="Escribe tu respuesta aquí…">${esc(value)}</textarea><div class="word-meta"><span>Contador de palabras</span><span data-word-count="${esc(q.id)}" class="${rangeClass(q.wordRange, value)}">${wordCount(value)}${q.wordRange ? ` / ${esc(q.wordRange)} palabras` : ' palabras'}</span></div>`
       : q.options.length
@@ -102,7 +134,7 @@ function questionHTML(q, speaking) {
         : answer
           ? `<select class="answer-select" data-response="${esc(q.id)}" aria-label="Respuesta de ${esc(q.id)}"><option value="">Elige una opción</option>${labels.map(o => `<option value="${esc(o.key)}" ${value === o.key ? 'selected' : ''}>${esc(o.key)}${o.text ? ` · ${esc(o.text)}` : ''}</option>`).join('')}</select>`
           : `<input class="answer-input" data-response="${esc(q.id)}" value="${esc(value)}" aria-label="Respuesta de ${esc(q.id)}" placeholder="Tu respuesta" />`;
-  return `<div class="question" id="q-${esc(q.id)}">${q.intro ? `<div class="source-text">${esc(q.intro)}</div>` : ''}<div class="question-id">${esc(q.id)}${q.wordRange ? ` · ${esc(q.wordRange)} PALABRAS` : ''}</div><div class="question-prompt">${esc(q.prompt)}</div>${field}<div class="question-feedback" id="feedback-${esc(q.id)}"></div></div>`;
+  return `<div class="question" id="q-${esc(q.id)}">${q.intro ? `<div class="source-text">${esc(q.intro)}</div>` : ''}<div class="question-id">${esc(q.id)}${q.wordRange ? ` · ${esc(q.wordRange)} PALABRAS` : ''}</div>${stimulus.visual}<div class="question-prompt">${esc(stimulus.prompt)}</div>${field}<div class="question-feedback" id="feedback-${esc(q.id)}"></div></div>`;
 }
 
 function rangeClass(range, value) {
@@ -232,22 +264,154 @@ function startTimer(seconds, label) {
   };
   tick(); activeTimer = setInterval(tick, 250);
 }
-function playRecording(id) {
-  if (!('speechSynthesis' in window) || !course.recordings[id] || (state.plays[id] || 0) >= 2) return;
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(course.recordings[id]);
-  utterance.lang = 'en-GB'; utterance.rate = 0.92;
-  const voices = speechSynthesis.getVoices();
-  const voice = voices.find(v => v.lang.toLowerCase() === 'en-gb') || voices.find(v => v.lang.toLowerCase().startsWith('en'));
-  if (voice) utterance.voice = voice;
-  state.plays[id] = (state.plays[id] || 0) + 1; save();
-  speechSynthesis.speak(utterance);
+function stopListening() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+}
+
+function playSpeech(text) {
+  if (!('speechSynthesis' in window)) return false;
+  const voices = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('en'));
+  const british = voices.filter(v => v.lang.toLowerCase() === 'en-gb');
+  const available = british.length ? british : voices;
+  const dialogue = [...text.matchAll(/(?:^|\s)(Man|Woman):\s*([\s\S]*?)(?=\s+(?:Man|Woman):|$)/g)];
+  const chunks = dialogue.length ? dialogue.map(m => ({ speaker: m[1], text: m[2].trim() })) : [{ speaker: '', text }];
+  for (const chunk of chunks) {
+    const utterance = new SpeechSynthesisUtterance(chunk.text);
+    utterance.lang = 'en-GB'; utterance.rate = 0.94;
+    if (available.length) utterance.voice = available[chunk.speaker === 'Woman' && available.length > 1 ? 1 : 0];
+    if (chunk.speaker && available.length < 2) utterance.pitch = chunk.speaker === 'Woman' ? 1.13 : 0.9;
+    speechSynthesis.speak(utterance);
+  }
+  return true;
+}
+
+function markPlay(id) {
+  state.plays[id] = (state.plays[id] || 0) + 1;
+  save();
   const row = document.querySelector(`[data-play="${id}"]`)?.parentElement;
-  if (row) { row.querySelector('small').textContent = `${state.plays[id]} / 2 escuchas`; if (state.plays[id] >= 2) row.querySelector('button').disabled = true; }
+  if (row) {
+    row.querySelector('small').textContent = `${state.plays[id]} / 2 escuchas`;
+    if (state.plays[id] >= 2) row.querySelector('button').disabled = true;
+  }
+}
+
+async function playRecording(id) {
+  if (!course.recordings[id] || (state.plays[id] || 0) >= 2) return;
+  stopListening();
+  const file = audioManifest[id];
+  if (typeof file === 'string' && /^[\w.-]+\.(mp3|ogg|wav)$/i.test(file)) {
+    const candidate = new Audio(`./audio/${file}`);
+    try {
+      await candidate.play();
+      currentAudio = candidate;
+      markPlay(id);
+      return;
+    } catch { candidate.pause(); }
+  }
+  if (playSpeech(course.recordings[id])) markPlay(id);
+}
+
+function recorderPanel(id) { return [...document.querySelectorAll('[data-recorder-panel]')].find(el => el.dataset.recorderPanel === id); }
+function recorderStatus(id, message) {
+  const el = recorderPanel(id)?.querySelector('[data-record-status]');
+  if (el) el.textContent = message;
+}
+function syncRecorder(id) {
+  const panel = recorderPanel(id);
+  if (!panel) return;
+  const recording = activeRecorder?.id === id && activeRecorder.recorder.state === 'recording';
+  const saved = speakingRecordings.get(id);
+  panel.querySelector('[data-record-start]').disabled = recording;
+  panel.querySelector('[data-record-stop]').disabled = !recording;
+  panel.querySelector('[data-record-play]').disabled = recording || !saved;
+  panel.querySelector('[data-record-again]').disabled = recording || !saved;
+  const audio = panel.querySelector('[data-record-audio]');
+  if (saved) { audio.src = saved.url; audio.hidden = false; }
+  else { audio.pause(); audio.removeAttribute('src'); audio.hidden = true; }
+}
+function stopActiveRecording() {
+  if (activeRecorder?.recorder.state === 'recording') activeRecorder.recorder.stop();
+}
+async function startRecording(id, again = false) {
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return;
+  stopActiveRecording();
+  if (again && speakingRecordings.has(id)) {
+    recorderPanel(id)?.querySelector('[data-record-audio]')?.pause();
+    URL.revokeObjectURL(speakingRecordings.get(id).url);
+    speakingRecordings.delete(id);
+    syncRecorder(id);
+  }
+  recorderStatus(id, 'Solicitando acceso al micrófono…');
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (!recorderPanel(id)) { stream.getTracks().forEach(track => track.stop()); return; }
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+    let ownTick = null;
+    recorder.ondataavailable = event => { if (event.data.size) chunks.push(event.data); };
+    recorder.onstop = () => {
+      stream.getTracks().forEach(track => track.stop());
+      if (ownTick) clearInterval(ownTick);
+      if (chunks.length) {
+        const previous = speakingRecordings.get(id);
+        if (previous) URL.revokeObjectURL(previous.url);
+        const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+        speakingRecordings.set(id, { url: URL.createObjectURL(blob), blob });
+        recorderStatus(id, 'Grabación lista. Puedes reproducirla o volver a grabar.');
+      } else recorderStatus(id, 'No se recibió audio. Inténtalo de nuevo.');
+      if (activeRecorder?.recorder === recorder) activeRecorder = null;
+      syncRecorder(id);
+    };
+    recorder.start();
+    const started = Date.now();
+    activeRecorder = { id, recorder };
+    const tick = () => {
+      const elapsed = Math.floor((Date.now() - started) / 1000);
+      const clock = recorderPanel(id)?.querySelector('[data-record-clock]');
+      if (clock) clock.textContent = `${String(Math.floor(elapsed / 60)).padStart(2, '0')}:${String(elapsed % 60).padStart(2, '0')}`;
+    };
+    tick(); ownTick = setInterval(tick, 250);
+    recorderStatus(id, 'Grabando… La voz no se envía a ningún servidor.');
+    syncRecorder(id);
+  } catch {
+    recorderStatus(id, 'No se pudo acceder al micrófono. Revisa el permiso del navegador o usa los temporizadores.');
+    syncRecorder(id);
+  }
+}
+
+function downloadProgress() {
+  const blob = new Blob([JSON.stringify(exportProgress(state), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url; link.download = `aptis-b2-progreso-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const message = document.getElementById('progress-message');
+  if (message) message.textContent = 'Copia descargada.';
+}
+
+async function importProgress(file) {
+  const message = document.getElementById('progress-message');
+  if (!file) return;
+  try {
+    if (file.size > 10 * 1024 * 1024) throw new Error('El archivo supera el tamaño admitido.');
+    const incoming = validateProgress(JSON.parse((await file.text()).replace(/^\uFEFF/, '')), course);
+    if (!window.confirm('¿Reemplazar todo el progreso guardado en este navegador por el del archivo? Esta acción no se puede deshacer.')) {
+      if (message) message.textContent = 'Importación cancelada. El progreso actual sigue intacto.';
+      return;
+    }
+    state = incoming; save(); render();
+    const result = document.getElementById('progress-message');
+    if (result) result.textContent = 'Progreso importado correctamente.';
+  } catch (error) {
+    if (message) message.textContent = error.message || 'No se pudo leer el archivo JSON.';
+  }
 }
 
 function render() {
   if (!course) return;
+  stopActiveRecording();
   renderNav();
   const hash = location.hash.slice(1) || 'dashboard';
   if (hash.startsWith('session=')) sessionView(hash.slice(8));
@@ -260,6 +424,7 @@ function render() {
   else if (hash === 'pdfs') pdfsView();
   else dashboard();
   menu.classList.remove('open'); document.getElementById('mobile-backdrop').classList.remove('show');
+  document.querySelectorAll('[data-recorder-panel]').forEach(panel => { if (panel.querySelector('[data-record-start]')) syncRecorder(panel.dataset.recorderPanel); });
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -284,9 +449,20 @@ document.addEventListener('click', e => {
   if (button.dataset.timer) startTimer(Number(button.dataset.timer), button.dataset.timerLabel || 'Tiempo');
   if (button.hasAttribute('data-stop-timer')) { if (activeTimer) clearInterval(activeTimer); activeTimer = null; document.getElementById('floating-timer')?.remove(); }
   if (button.dataset.play) playRecording(button.dataset.play);
-  if (button.hasAttribute('data-stop-audio') && 'speechSynthesis' in window) speechSynthesis.cancel();
+  if (button.hasAttribute('data-stop-audio')) stopListening();
+  if (button.dataset.recordStart) startRecording(button.dataset.recordStart);
+  if (button.dataset.recordStop) stopActiveRecording();
+  if (button.dataset.recordAgain) startRecording(button.dataset.recordAgain, true);
+  if (button.dataset.recordPlay) recorderPanel(button.dataset.recordPlay)?.querySelector('[data-record-audio]')?.play();
+  if (button.hasAttribute('data-export-progress')) downloadProgress();
+  if (button.hasAttribute('data-import-progress')) document.getElementById('progress-file')?.click();
   if (button.dataset.resolve) { const item = state.errors.find(x => x.key === button.dataset.resolve); if (item) item.resolved = !item.resolved; save(); trackerView(); }
   if (button.dataset.weekToggle) { const days = document.getElementById(`days-${button.dataset.weekToggle}`); const hidden = days.hidden = !days.hidden; button.setAttribute('aria-expanded', String(!hidden)); }
+});
+document.addEventListener('change', e => {
+  if (e.target.id !== 'progress-file') return;
+  importProgress(e.target.files?.[0]);
+  e.target.value = '';
 });
 document.addEventListener('submit', e => {
   if (e.target.id !== 'tracker-form') return;
@@ -299,4 +475,7 @@ document.getElementById('mobile-backdrop').addEventListener('click', () => { men
 window.addEventListener('hashchange', render);
 
 app.innerHTML = '<div class="card">Cargando el curso…</div>';
-fetch('./data/course.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then(data => { course = data; render(); }).catch(() => { app.innerHTML = '<div class="card"><h1>No se pudo cargar el curso</h1><p>Abre esta web desde un servidor estático o desde GitHub Pages para permitir la lectura del archivo de datos.</p></div>'; });
+Promise.all([
+  fetch('./data/course.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  fetch('./audio/manifest.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
+]).then(([data, manifest]) => { course = data; audioManifest = manifest.files || {}; render(); }).catch(() => { app.innerHTML = '<div class="card"><h1>No se pudo cargar el curso</h1><p>Abre esta web desde un servidor estático o desde GitHub Pages para permitir la lectura del archivo de datos.</p></div>'; });
