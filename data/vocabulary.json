@@ -251,14 +251,14 @@
       "definition": "Make progress.",
       "example": "The team ___ steady progress.",
       "prompt": "The team ___ steady progress.",
-      "correct": "did",
+      "correct": "made",
       "choices": [
-        "did",
         "made",
+        "did",
         "took"
       ],
       "distractors": [
-        "made",
+        "did",
         "took"
       ],
       "source": "masterbook",

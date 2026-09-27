@@ -79,7 +79,7 @@ const masterbook = [
   ['Collocations', 'address', 'Address a problem.', 'Choose the verb: ___ a problem.', ['address', 'raise', 'meet', 'make'], '11_VOCABULARY_MASTERBOOK.pdf p.1 · “address a problem”'],
   ['Collocations', 'provide', 'Provide evidence.', 'Choose the verb: ___ evidence.', ['provide', 'fulfil', 'draw', 'reach'], '11_VOCABULARY_MASTERBOOK.pdf p.1 · “provide evidence”'],
   ['Collocations', 'fulfil', 'Fulfil a commitment.', 'Choose the verb: ___ a commitment.', ['fulfil', 'meet', 'raise', 'address'], '11_VOCABULARY_MASTERBOOK.pdf p.1 · “fulfil a commitment”'],
-  ['Collocations', 'make', 'Make progress.', 'The team ___ steady progress.', ['did', 'made', 'took'], 'MBV-E02-Q01'],
+  ['Collocations', 'make', 'Make progress.', 'The team ___ steady progress.', ['made', 'did', 'took'], 'MBV-E02-Q01'],
   ['Collocations', 'heavy', 'Heavy rain.', 'Choose the natural combination: ___ rain.', ['heavy', 'sharp', 'strong'], '11_VOCABULARY_MASTERBOOK.pdf p.1 · “strong rain” repair'],
   ['Collocations', 'a piece of', 'A piece of evidence.', 'Complete: The report includes ___ evidence.', ['a piece of', 'an item of', 'a number of'], '11_VOCABULARY_MASTERBOOK.pdf p.1 · “a piece of evidence”'],
   ['Synonym nuance', 'available / suitable', 'A room can be available but unsuitable: available means accessible or free; suitable means appropriate for a purpose.', 'The room is free on Tuesday but too small for the group. Which pair fits?', ['available, but unsuitable', 'available and suitable', 'unavailable, but suitable'], 'MBV-E01-Q01'],
