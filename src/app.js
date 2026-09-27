@@ -1,4 +1,5 @@
 import { exportProgress, validateProgress } from './progress.js';
+import { renderVocabularyLab } from './vocabulary-lab.js';
 
 const app = document.querySelector('#app');
 const mainNav = document.querySelector('#main-nav');
@@ -64,6 +65,7 @@ function renderNav() {
     navLink('#diagnostic', '◉', 'Diagnóstico'),
     navLink('#mocks', '▣', 'Simulacros'),
     navLink('#books', '▤', 'Masterbooks'),
+    navLink('#vocabulary-lab', '✎', 'Vocabulary Lab'),
     navLink('#tracker', '◇', 'Error Tracker'),
     navLink('#pdfs', '↓', 'Descargar PDFs'),
   ].join('');
@@ -98,7 +100,7 @@ function dashboard() {
       const n = wi + 1, count = [1, 2, 3, 4].filter(d => state.completed[sessionId(n, d)]).length;
       return `<div class="week-row"><span class="week-name">Semana ${String(n).padStart(2, '0')}</span><div class="week-bar" aria-label="${count} de 4 sesiones"><span style="width:${count * 25}%"></span></div><span class="week-count">${count} / 4 sesiones</span></div>`;
     }).join('')}</section><div><section class="continue-card"><p class="eyebrow">SIGUIENTE PASO</p><h2>${next.replace('W', 'Semana ').replace('D', ' · Día ')}</h2><p>Una sesión de aproximadamente 60 minutos. Trabaja con el tiempo indicado antes de consultar la corrección.</p><a class="primary-button" href="#session=${next}">Abrir sesión <span>→</span></a></section><section class="card section-space"><h2 class="card-title">Cómo usar el curso</h2><p class="card-subtitle" style="margin-bottom:12px">Haz los ejercicios en orden. Consulta la solución al terminar y registra los errores que se repiten.</p><a class="text-link" href="#book=start">Leer la guía inicial →</a></section></div></div>
-    <section class="section-space"><h2 class="section-heading">Accesos rápidos</h2><div class="quick-grid"><a class="quick-link" href="#mocks">Simulacros <span>↗</span></a><a class="quick-link" href="#books">Masterbooks <span>↗</span></a><a class="quick-link" href="#tracker">Error Tracker <span>↗</span></a></div></section>`;
+    <section class="section-space"><h2 class="section-heading">Accesos rápidos</h2><div class="quick-grid"><a class="quick-link" href="#vocabulary-lab">Vocabulary Lab <span>↗</span></a><a class="quick-link" href="#mocks">Simulacros <span>↗</span></a><a class="quick-link" href="#books">Masterbooks <span>↗</span></a><a class="quick-link" href="#tracker">Error Tracker <span>↗</span></a></div></section>`;
   app.innerHTML += progressControls();
 }
 
@@ -354,6 +356,10 @@ function stopListening() {
   if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
+function vocabularyLabView() {
+  breadcrumb.textContent = 'VOCABULARY LAB';
+  renderVocabularyLab(app, state.errors);
+}
 
 function playSpeech(text) {
   if (!('speechSynthesis' in window)) return false;
@@ -505,6 +511,7 @@ function render() {
   else if (hash === 'mocks') mocksView();
   else if (hash.startsWith('mock=')) { const p = new URLSearchParams(hash); const n = Number(p.get('mock')); const b = p.get('block'); b ? mockBlock(n, b) : mockHome(n); }
   else if (hash === 'books') booksView();
+  else if (hash === 'vocabulary-lab') vocabularyLabView();
   else if (hash.startsWith('book=')) bookView(hash.slice(5));
   else if (hash === 'tracker') trackerView();
   else if (hash === 'pdfs') pdfsView();
