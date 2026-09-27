@@ -32,6 +32,21 @@ const isObjective = q => !!answerLetter(q.id);
 const pdfUrl = name => `./pdfs/${encodeURIComponent(name)}`;
 const sessionId = (w, d) => `W${w}D${d}`;
 const sessionExercises = id => course.exercises.filter(e => e.id.startsWith(id + '-E'));
+const skillOrder = ['Vocabulary', 'Grammar', 'Reading', 'Writing', 'Listening', 'Speaking'];
+function exerciseSkill(ex) {
+  const title = ex.title.toUpperCase();
+  if (/VOCABULARY/.test(title)) return 'Vocabulary';
+  if (/GRAMMAR|RECURRENT B2 ERRORS/.test(title)) return 'Grammar';
+  if (/LISTENING/.test(title) || /-LIST-/.test(ex.id)) return 'Listening';
+  if (/SPEAKING/.test(title) || /-SPEAK/.test(ex.id)) return 'Speaking';
+  if (/WRITING PART [1-4]|PARAPHRASE|REGISTER|COHESION|FORMULATION|EDIT FOR FULFILMENT|EDIT A WORD-COUNT/i.test(title)) return 'Writing';
+  return 'Reading';
+}
+const sessionSkills = id => [...new Set(sessionExercises(id).map(exerciseSkill))].sort((a, b) => skillOrder.indexOf(a) - skillOrder.indexOf(b));
+function isOpenWriting(q, ex) {
+  const writingTitle = /WRITING PART [1-4]|PARAPHRASE|REGISTER|COHESION|FORMULATION|EDIT FOR FULFILMENT|EDIT A WORD-COUNT/i.test(ex.title) || ex.source === '10_WRITING_MASTERBOOK.pdf';
+  return writingTitle && !answerLetter(q.id) && !!(q.wordRange || ex.source === '10_WRITING_MASTERBOOK.pdf' || /WRITING PART|PARAPHRASE|REGISTER|COHESION|FORMUL|EDIT|REWRITE/i.test(ex.title));
+}
 const mockExercises = (n, block) => {
   const prefix = `MOCK${String(n).padStart(2, '0')}-`;
   const types = block === 'A' ? ['CORE', 'READ'] : block === 'B' ? ['WRITE'] : ['LIST', 'SPEAK'];
@@ -55,7 +70,7 @@ function renderNav() {
   weekNav.innerHTML = Array.from({ length: 8 }, (_, wi) => {
     const w = wi + 1;
     const done = [1, 2, 3, 4].filter(d => state.completed[sessionId(w, d)]).length;
-    return `<div class="week-group"><button class="week-title" type="button" data-week-toggle="${w}" aria-expanded="true"><span>Semana ${String(w).padStart(2, '0')}</span><small>${done}/4</small></button><div class="days" id="days-${w}">${[1, 2, 3, 4].map(d => `<a class="day-link ${state.completed[sessionId(w, d)] ? 'done' : ''} ${location.hash === `#session=${sessionId(w, d)}` ? 'active' : ''}" href="#session=${sessionId(w, d)}" title="Semana ${w}, día ${d}">D${d}${state.completed[sessionId(w, d)] ? ' ✓' : ''}</a>`).join('')}</div></div>`;
+    return `<div class="week-group"><button class="week-title" type="button" data-week-toggle="${w}" aria-expanded="true"><span>Semana ${String(w).padStart(2, '0')}</span><small>${done}/4</small></button><div class="days" id="days-${w}">${[1, 2, 3, 4].map(d => { const id = sessionId(w, d), skills = sessionSkills(id); return `<a class="day-link ${state.completed[id] ? 'done' : ''} ${location.hash === `#session=${id}` ? 'active' : ''}" href="#session=${id}" title="Semana ${w}, día ${d}: ${skills.join(', ')}"><span class="day-label">D${d}${state.completed[id] ? ' ✓' : ''}</span><span class="day-skills" aria-label="Skills: ${esc(skills.join(', '))}">${skills.map(skill => `<span class="skill-chip">${esc(skill)}</span>`).join('')}</span></a>`; }).join('')}</div></div>`;
   }).join('');
   topProgress.textContent = `${completedSessions()} / 32 sesiones`;
 }
@@ -90,7 +105,77 @@ function dashboard() {
 function exerciseHTML(ex, index) {
   const audio = ex.title.toLowerCase().includes('listening') ? audioHTML(ex) : '';
   const speaking = ex.title.toLowerCase().includes('speaking');
-  return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${ex.context ? `<div class="source-text">${esc(ex.context)}</div>` : ''}${audio}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] ? keyHTML(ex) : ''}</article>`;
+  const privacyNote = ex.questions.some(q => isOpenWriting(q, ex)) ? '<p class="chatgpt-privacy" role="note">Tu respuesta se copiará al portapapeles para que puedas enviarla a ChatGPT. La web no envía ningún contenido automáticamente.</p>' : '';
+  return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${ex.context ? `<div class="source-text">${esc(ex.context)}</div>` : ''}${audio}${privacyNote}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] ? keyHTML(ex) : ''}</article>`;
+}
+
+function writingAssistHTML(q) {
+  return `<div class="chatgpt-assist"><div class="chatgpt-actions"><button class="primary-button" type="button" data-writing-chatgpt="${esc(q.id)}">Corregir con ChatGPT</button><button class="secondary-button" type="button" data-writing-copy="${esc(q.id)}">Copiar para ChatGPT</button></div><span class="chatgpt-status" data-writing-status="${esc(q.id)}" role="status" aria-live="polite"></span></div>`;
+}
+
+function buildWritingPrompt(q, ex, response) {
+  const context = ex.context || q.intro || '';
+  const guidance = course.answers[q.id] || '';
+  return `Actúa como profesor especializado en Aptis ESOL General B2/B2+.
+Corrige mi respuesta a este ejercicio del curso.
+ID: ${q.id}
+Tipo: ${ex.title}
+Enunciado: ${q.prompt}${q.intro ? `\nInstrucción adicional: ${q.intro}` : ''}${context ? `\nContexto: ${context}` : ''}
+Límite: ${q.wordRange || 'No especificado'}
+Mi respuesta:
+${response}
+Orientación pedagógica del solucionario:
+${guidance}
+No inventes requisitos que no aparezcan en la tarea.
+Evalúa:
+- Task fulfilment
+- Grammar
+- Vocabulary / lexical range and accuracy
+- Cohesion and organisation
+- Register
+- Word count
+Devuélveme:
+1. una valoración breve de nivel de la respuesta, sin convertir porcentajes en una nota oficial Aptis/CEFR;
+2. qué he hecho bien;
+3. errores concretos citando pequeños fragmentos de mi respuesta;
+4. corrección y explicación de cada error;
+5. tres prioridades para mejorar;
+6. una versión mejorada que conserve mis ideas y mi nivel, sin convertirla artificialmente en C1/C2;
+7. una lista final muy corta de errores que debería añadir a mi Error Tracker, usando cuando corresponda estas categorías: G Grammar, V Vocabulary, C Collocation, R Register, COH Cohesion, TF Task Fulfilment.
+Sé exigente pero práctico. No me felicites por sistema. Si una frase ya es correcta, no la cambies únicamente por estilo.`;
+}
+
+async function copyPromptToClipboard(prompt) {
+  try {
+    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(prompt); return true; }
+  } catch { /* Try the keyboard-accessible legacy copy path below. */ }
+  const field = document.createElement('textarea');
+  field.value = prompt; field.setAttribute('readonly', '');
+  field.style.position = 'fixed'; field.style.opacity = '0';
+  document.body.append(field); field.select();
+  let copied = false;
+  try { copied = document.execCommand('copy'); } catch { copied = false; }
+  field.remove();
+  return copied;
+}
+
+async function helpWithWriting(qid, openChat) {
+  const q = course.exercises.flatMap(ex => ex.questions.map(question => ({ question, ex }))).find(item => item.question.id === qid);
+  if (!q || !isOpenWriting(q.question, q.ex)) return;
+  const response = document.getElementById(`q-${qid}`)?.querySelector('[data-response]')?.value || state.responses[qid] || '';
+  const status = document.querySelector(`[data-writing-status="${qid}"]`);
+  if (!response.trim()) { if (status) status.textContent = 'Escribe tu respuesta antes de solicitar una corrección.'; return; }
+  let chatTab = null;
+  if (openChat) {
+    chatTab = window.open('about:blank', '_blank');
+    if (chatTab) chatTab.opener = null;
+  }
+  const copied = await copyPromptToClipboard(buildWritingPrompt(q.question, q.ex, response));
+  if (chatTab) chatTab.location.replace('https://chatgpt.com/');
+  if (!status) return;
+  if (!copied) status.textContent = 'No se pudo copiar automáticamente. Prueba «Copiar para ChatGPT» o revisa el permiso del portapapeles.';
+  else if (openChat && !chatTab) status.textContent = 'La solicitud de corrección se ha copiado. Pégala en ChatGPT. El navegador bloqueó la nueva pestaña; abre ChatGPT manualmente.';
+  else status.textContent = 'La solicitud de corrección se ha copiado. Pégala en ChatGPT.';
 }
 
 function bankLetters(ex) {
@@ -128,7 +213,7 @@ function questionHTML(q, speaking) {
   const field = speaking
     ? `<div class="timer-panel"><h4>Tiempo de respuesta</h4><div class="prompt-timers">${q.part === 'Part 4' ? `<button type="button" data-timer="60" data-timer-label="Preparación · ${esc(q.id)}">Preparación · 1 min</button><button type="button" data-timer="120" data-timer-label="Respuesta · ${esc(q.id)}">Respuesta · 2 min</button>` : (q.prompt.match(/^\d+\./gm) || [1, 2, 3]).map((_, i) => `<button type="button" data-timer="${q.part === 'Part 1' ? 30 : 45}" data-timer-label="${esc(q.part || 'Speaking')} · pregunta ${i + 1}">Pregunta ${i + 1} · ${q.part === 'Part 1' ? 30 : 45} s</button>`).join('')}</div></div>${recorderHTML(q)}<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Notas para ${esc(q.id)}" placeholder="Notas de tu respuesta (opcional)">${esc(value)}</textarea>`
     : q.wordRange || /WRIT|PARAPHRASE|REGISTER|EDIT|COHESION|FORMUL|REWRITE|REPAIR/i.test(ex.title)
-      ? `<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Respuesta de ${esc(q.id)}" placeholder="Escribe tu respuesta aquí…">${esc(value)}</textarea><div class="word-meta"><span>Contador de palabras</span><span data-word-count="${esc(q.id)}" class="${rangeClass(q.wordRange, value)}">${wordCount(value)}${q.wordRange ? ` / ${esc(q.wordRange)} palabras` : ' palabras'}</span></div>`
+      ? `<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Respuesta de ${esc(q.id)}" placeholder="Escribe tu respuesta aquí…">${esc(value)}</textarea><div class="word-meta"><span>Contador de palabras</span><span data-word-count="${esc(q.id)}" class="${rangeClass(q.wordRange, value)}">${wordCount(value)}${q.wordRange ? ` / ${esc(q.wordRange)} palabras` : ' palabras'}</span></div>${isOpenWriting(q, ex) ? writingAssistHTML(q) : ''}`
       : q.options.length
         ? `<div class="option-list">${q.options.map(o => `<label class="option"><input type="radio" name="${esc(q.id)}" value="${esc(o.key)}" data-response="${esc(q.id)}" ${value === o.key ? 'checked' : ''}><span class="option-key">${esc(o.key)}</span><span>${esc(o.text)}</span></label>`).join('')}</div>`
         : answer
@@ -162,9 +247,10 @@ function audioHTML(ex) {
 function renderExercisePage(kind, id, exercises, meta) {
   breadcrumb.textContent = meta.crumb;
   const done = !!state.completed[id];
+  const skills = kind === 'session' ? sessionSkills(id) : [];
   const timed = kind === 'mock' ? (id.endsWith('-A') ? [['Core', 25], ['Reading', 35]] : id.endsWith('-B') ? [['Writing', 50], ['Revisión', 10]] : [['Listening', 40], ['Speaking', 12], ['Revisión', 8]]) : [['Sesión completa', 60]];
   app.innerHTML = pageHeader(meta.eyebrow, meta.title, meta.subtitle, meta.aside || '') +
-    `<div class="session-meta"><span class="tag green">${exercises.length} ejercicios</span><span class="tag">${exercises.reduce((n, e) => n + e.questions.length, 0)} preguntas</span>${done ? '<span class="tag gold">Completado ✓</span>' : ''}</div>
+    `<div class="session-meta"><span class="tag green">${exercises.length} ejercicios</span><span class="tag">${exercises.reduce((n, e) => n + e.questions.length, 0)} preguntas</span>${skills.map(skill => `<span class="tag skill-summary">${esc(skill)}</span>`).join('')}${done ? '<span class="tag gold">Completado ✓</span>' : ''}</div>
     <div class="session-actions"><button class="primary-button" type="button" data-complete="${esc(id)}">${done ? 'Marcar como pendiente' : 'Marcar como completado'}</button>${meta.pdf ? `<a class="secondary-button" href="${pdfUrl(meta.pdf)}" target="_blank" rel="noopener">Abrir PDF original ↗</a>` : ''}<a class="secondary-button" href="#tracker">Registrar un error</a></div>
     <div class="timer-panel"><h4>Temporizadores</h4><div class="timer-row">${timed.map(([label, min]) => `<button type="button" class="small-button" data-timer="${min * 60}" data-timer-label="${esc(label)} · ${min} min">${esc(label)} · ${min} min</button>`).join('')}</div></div>
     ${kind === 'mock' ? '<div class="notice" style="margin-bottom:20px">Los bloques distribuyen cada simulacro en tres sesiones de 60 minutos: A (Core + Reading), B (Writing + revisión), C (Listening + Speaking + revisión). Conserva el mismo número de simulacro en los tres bloques.</div>' : ''}
@@ -454,6 +540,8 @@ document.addEventListener('click', e => {
   if (button.dataset.recordStop) stopActiveRecording();
   if (button.dataset.recordAgain) startRecording(button.dataset.recordAgain, true);
   if (button.dataset.recordPlay) recorderPanel(button.dataset.recordPlay)?.querySelector('[data-record-audio]')?.play();
+  if (button.dataset.writingChatgpt) helpWithWriting(button.dataset.writingChatgpt, true);
+  if (button.dataset.writingCopy) helpWithWriting(button.dataset.writingCopy, false);
   if (button.hasAttribute('data-export-progress')) downloadProgress();
   if (button.hasAttribute('data-import-progress')) document.getElementById('progress-file')?.click();
   if (button.dataset.resolve) { const item = state.errors.find(x => x.key === button.dataset.resolve); if (item) item.resolved = !item.resolved; save(); trackerView(); }
