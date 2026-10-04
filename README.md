@@ -49,7 +49,7 @@ No hay login de la alumna ni analítica propia. Las respuestas escritas y el pro
 - Tres bloques principales de Writing por semana, seleccionados mediante `data/writing-plan.json`; el resto queda en práctica extra opcional. No se ha modificado `data/course.json` ni ningún PDF.
 - Writing y Speaking muestran feedback dentro de la página, con persistencia independiente y guardado selectivo en Error Tracker. Speaking envía el audio real obtenido de la grabación existente.
 - Frontend GitHub Pages + backend `worker/`, con los modelos solicitados, Turnstile y límites atómicos de llamadas.
-- La activación requiere autorización de Cloudflare y secretos server-side del usuario. Mientras falte la configuración pública, la web informa de que la IA está pendiente de activar.
+- El Worker, Turnstile y los secretos están configurados. La prueba real devuelve 429 de OpenAI por cuota/límite de uso: falta habilitar saldo o revisar límites del proyecto y completar las correcciones reales. Mientras falte configuración pública, la web informa de que la IA está pendiente de activar.
 - [Entrega, selección semanal y validaciones](docs/v1.4.md), [activación y seguridad del Worker](worker/README.md).
 
 ## Mejoras v1.1
