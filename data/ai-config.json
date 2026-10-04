@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "workerUrl": "",
-  "turnstileSiteKey": "",
+  "workerUrl": "https://aptis-b2-ai.aptis-b2-ai.workers.dev",
+  "turnstileSiteKey": "0x4AAAAAAFNxWBNiimda1OlG",
   "requestTimeoutMs": 150000
 }
