@@ -8,7 +8,7 @@ Desde `worker/`, con Node y pnpm instalados:
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm exec wrangler login --scopes account:read user:read workers:write workers_scripts:write offline_access
+pnpm exec wrangler login --scopes account:read user:read workers:write workers_scripts:write
 pnpm exec wrangler deploy
 ```
 
