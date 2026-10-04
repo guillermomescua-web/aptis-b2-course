@@ -1,6 +1,6 @@
 import { exportProgress, validateProgress } from './progress.js';
 import { renderVocabularyLab } from './vocabulary-lab.js';
-import { aiControlsHTML, installAIFeedback, syncAIFeedback } from './ai-feedback.js';
+import { aiControlsHTML, installAIFeedback, syncAIFeedback } from './ai-feedback.js?v=1.4.2';
 import { splitWriting } from './writing-plan.js';
 
 const app = document.querySelector('#app');
