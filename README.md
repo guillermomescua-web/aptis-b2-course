@@ -5,7 +5,7 @@ Web estática del curso de ocho semanas. Incluye 32 sesiones (`W1D1`–`W8D4`), 
 ## Arquitectura
 
 - `index.html` y `styles.css`: estructura y diseño adaptativo.
-- `src/app.js`: navegación, ejercicios y estado local, sin servidor ni claves API.
+- `src/app.js`: navegación, ejercicios y estado local. La corrección IA se conecta a un Worker independiente; el frontend no contiene claves API.
 - `data/course.json`: índice generado desde los 16 PDFs finales.
 - `pdfs/`: documentos originales descargables. **Son la fuente de verdad académica.**
 - `tools/build_content.py`: vuelve a extraer IDs, enunciados, respuestas y guiones si se actualizan los PDFs.
@@ -42,7 +42,15 @@ Con Python y `pypdf` instalados, ejecuta `python tools/build_content.py` desde l
 
 ## Privacidad
 
-No hay cuenta, analítica, backend, envío de respuestas ni claves API. Los PDFs y el índice se sirven como archivos públicos del repositorio si GitHub Pages se habilita; publícalo en un repositorio adecuado para compartir ese material.
+No hay login de la alumna ni analítica propia. Las respuestas escritas y el progreso siguen en el navegador. Solo al pulsar «Corregir con IA» se envía el texto o la grabación a un Worker de Cloudflare y después a OpenAI, con una nota de privacidad previa. Los secretos están exclusivamente en el Worker. Los PDFs y el índice siguen siendo archivos públicos del repositorio.
+
+## Actualización v1.4
+
+- Tres bloques principales de Writing por semana, seleccionados mediante `data/writing-plan.json`; el resto queda en práctica extra opcional. No se ha modificado `data/course.json` ni ningún PDF.
+- Writing y Speaking muestran feedback dentro de la página, con persistencia independiente y guardado selectivo en Error Tracker. Speaking envía el audio real obtenido de la grabación existente.
+- Frontend GitHub Pages + backend `worker/`, con los modelos solicitados, Turnstile y límites atómicos de llamadas.
+- La activación requiere autorización de Cloudflare y secretos server-side del usuario. Mientras falte la configuración pública, la web informa de que la IA está pendiente de activar.
+- [Entrega, selección semanal y validaciones](docs/v1.4.md), [activación y seguridad del Worker](worker/README.md).
 
 ## Mejoras v1.1
 

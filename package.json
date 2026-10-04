@@ -1,0 +1,12 @@
+{
+  "name": "aptis-b2-course",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "verify": "node tools/verify_v1_4.mjs",
+    "catalog": "node tools/build_ai_catalog.mjs"
+  },
+  "devDependencies": { "playwright": "^1.55.0" }
+}

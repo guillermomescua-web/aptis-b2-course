@@ -1,5 +1,7 @@
 import { exportProgress, validateProgress } from './progress.js';
 import { renderVocabularyLab } from './vocabulary-lab.js';
+import { aiControlsHTML, installAIFeedback, syncAIFeedback } from './ai-feedback.js';
+import { splitWriting } from './writing-plan.js';
 
 const app = document.querySelector('#app');
 const mainNav = document.querySelector('#main-nav');
@@ -13,6 +15,7 @@ const STORE = 'aptis-b2-performance-v1';
 const defaultState = () => ({ responses: {}, completed: {}, errors: [], plays: {}, checked: {} });
 let state = loadState();
 let course;
+let writingPlan;
 let activeTimer = null;
 let timerEnds = 0;
 let timerLabel = '';
@@ -107,78 +110,11 @@ function dashboard() {
 function exerciseHTML(ex, index) {
   const audio = ex.title.toLowerCase().includes('listening') ? audioHTML(ex) : '';
   const speaking = ex.title.toLowerCase().includes('speaking');
-  const privacyNote = ex.questions.some(q => isOpenWriting(q, ex)) ? '<p class="chatgpt-privacy" role="note">Tu respuesta se copiará al portapapeles para que puedas enviarla a ChatGPT. La web no envía ningún contenido automáticamente.</p>' : '';
+  const privacyNote = '';
   return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${ex.context ? `<div class="source-text">${esc(ex.context)}</div>` : ''}${audio}${privacyNote}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] ? keyHTML(ex) : ''}</article>`;
 }
 
-function writingAssistHTML(q) {
-  return `<div class="chatgpt-assist"><div class="chatgpt-actions"><button class="primary-button" type="button" data-writing-chatgpt="${esc(q.id)}">Corregir con ChatGPT</button><button class="secondary-button" type="button" data-writing-copy="${esc(q.id)}">Copiar para ChatGPT</button></div><span class="chatgpt-status" data-writing-status="${esc(q.id)}" role="status" aria-live="polite"></span></div>`;
-}
-
-function buildWritingPrompt(q, ex, response) {
-  const context = ex.context || q.intro || '';
-  const guidance = course.answers[q.id] || '';
-  return `Actúa como profesor especializado en Aptis ESOL General B2/B2+.
-Corrige mi respuesta a este ejercicio del curso.
-ID: ${q.id}
-Tipo: ${ex.title}
-Enunciado: ${q.prompt}${q.intro ? `\nInstrucción adicional: ${q.intro}` : ''}${context ? `\nContexto: ${context}` : ''}
-Límite: ${q.wordRange || 'No especificado'}
-Mi respuesta:
-${response}
-Orientación pedagógica del solucionario:
-${guidance}
-No inventes requisitos que no aparezcan en la tarea.
-Evalúa:
-- Task fulfilment
-- Grammar
-- Vocabulary / lexical range and accuracy
-- Cohesion and organisation
-- Register
-- Word count
-Devuélveme:
-1. una valoración breve de nivel de la respuesta, sin convertir porcentajes en una nota oficial Aptis/CEFR;
-2. qué he hecho bien;
-3. errores concretos citando pequeños fragmentos de mi respuesta;
-4. corrección y explicación de cada error;
-5. tres prioridades para mejorar;
-6. una versión mejorada que conserve mis ideas y mi nivel, sin convertirla artificialmente en C1/C2;
-7. una lista final muy corta de errores que debería añadir a mi Error Tracker, usando cuando corresponda estas categorías: G Grammar, V Vocabulary, C Collocation, R Register, COH Cohesion, TF Task Fulfilment.
-Sé exigente pero práctico. No me felicites por sistema. Si una frase ya es correcta, no la cambies únicamente por estilo.`;
-}
-
-async function copyPromptToClipboard(prompt) {
-  try {
-    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(prompt); return true; }
-  } catch { /* Try the keyboard-accessible legacy copy path below. */ }
-  const field = document.createElement('textarea');
-  field.value = prompt; field.setAttribute('readonly', '');
-  field.style.position = 'fixed'; field.style.opacity = '0';
-  document.body.append(field); field.select();
-  let copied = false;
-  try { copied = document.execCommand('copy'); } catch { copied = false; }
-  field.remove();
-  return copied;
-}
-
-async function helpWithWriting(qid, openChat) {
-  const q = course.exercises.flatMap(ex => ex.questions.map(question => ({ question, ex }))).find(item => item.question.id === qid);
-  if (!q || !isOpenWriting(q.question, q.ex)) return;
-  const response = document.getElementById(`q-${qid}`)?.querySelector('[data-response]')?.value || state.responses[qid] || '';
-  const status = document.querySelector(`[data-writing-status="${qid}"]`);
-  if (!response.trim()) { if (status) status.textContent = 'Escribe tu respuesta antes de solicitar una corrección.'; return; }
-  let chatTab = null;
-  if (openChat) {
-    chatTab = window.open('about:blank', '_blank');
-    if (chatTab) chatTab.opener = null;
-  }
-  const copied = await copyPromptToClipboard(buildWritingPrompt(q.question, q.ex, response));
-  if (chatTab) chatTab.location.replace('https://chatgpt.com/');
-  if (!status) return;
-  if (!copied) status.textContent = 'No se pudo copiar automáticamente. Prueba «Copiar para ChatGPT» o revisa el permiso del portapapeles.';
-  else if (openChat && !chatTab) status.textContent = 'La solicitud de corrección se ha copiado. Pégala en ChatGPT. El navegador bloqueó la nueva pestaña; abre ChatGPT manualmente.';
-  else status.textContent = 'La solicitud de corrección se ha copiado. Pégala en ChatGPT.';
-}
+function writingAssistHTML(q) { return aiControlsHTML('writing', q); }
 
 function bankLetters(ex) {
   const fromContext = [...ex.context.matchAll(/(?:^|\n)([A-Z])\.\s/g)].map(m => m[1]);
@@ -213,7 +149,7 @@ function questionHTML(q, speaking) {
   const labels = q.options.length ? q.options : bankLetters(ex).map(k => ({ key: k, text: '' }));
   const stimulus = speaking ? speakingVisualHTML(q, ex) : { visual: '', prompt: q.prompt };
   const field = speaking
-    ? `<div class="timer-panel"><h4>Tiempo de respuesta</h4><div class="prompt-timers">${q.part === 'Part 4' ? `<button type="button" data-timer="60" data-timer-label="Preparación · ${esc(q.id)}">Preparación · 1 min</button><button type="button" data-timer="120" data-timer-label="Respuesta · ${esc(q.id)}">Respuesta · 2 min</button>` : (q.prompt.match(/^\d+\./gm) || [1, 2, 3]).map((_, i) => `<button type="button" data-timer="${q.part === 'Part 1' ? 30 : 45}" data-timer-label="${esc(q.part || 'Speaking')} · pregunta ${i + 1}">Pregunta ${i + 1} · ${q.part === 'Part 1' ? 30 : 45} s</button>`).join('')}</div></div>${recorderHTML(q)}<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Notas para ${esc(q.id)}" placeholder="Notas de tu respuesta (opcional)">${esc(value)}</textarea>`
+    ? `<div class="timer-panel"><h4>Tiempo de respuesta</h4><div class="prompt-timers">${q.part === 'Part 4' ? `<button type="button" data-timer="60" data-timer-label="Preparación · ${esc(q.id)}">Preparación · 1 min</button><button type="button" data-timer="120" data-timer-label="Respuesta · ${esc(q.id)}">Respuesta · 2 min</button>` : (q.prompt.match(/^\d+\./gm) || [1, 2, 3]).map((_, i) => `<button type="button" data-timer="${q.part === 'Part 1' ? 30 : 45}" data-timer-label="${esc(q.part || 'Speaking')} · pregunta ${i + 1}">Pregunta ${i + 1} · ${q.part === 'Part 1' ? 30 : 45} s</button>`).join('')}</div></div>${recorderHTML(q)}${aiControlsHTML('speaking', q)}<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Notas para ${esc(q.id)}" placeholder="Notas de tu respuesta (opcional)">${esc(value)}</textarea>`
     : q.wordRange || /WRIT|PARAPHRASE|REGISTER|EDIT|COHESION|FORMUL|REWRITE|REPAIR/i.test(ex.title)
       ? `<textarea class="word-input" data-response="${esc(q.id)}" aria-label="Respuesta de ${esc(q.id)}" placeholder="Escribe tu respuesta aquí…">${esc(value)}</textarea><div class="word-meta"><span>Contador de palabras</span><span data-word-count="${esc(q.id)}" class="${rangeClass(q.wordRange, value)}">${wordCount(value)}${q.wordRange ? ` / ${esc(q.wordRange)} palabras` : ' palabras'}</span></div>${isOpenWriting(q, ex) ? writingAssistHTML(q) : ''}`
       : q.options.length
@@ -249,6 +185,8 @@ function audioHTML(ex) {
 function renderExercisePage(kind, id, exercises, meta) {
   breadcrumb.textContent = meta.crumb;
   const done = !!state.completed[id];
+  const blocks = kind === 'session' ? splitWriting(exercises, id, writingPlan) : { primary: exercises, extra: [] };
+  const weeklyWriting = kind === 'session' ? writingPlan?.weeks?.[id.slice(0, 2)] : null;
   const skills = kind === 'session' ? sessionSkills(id) : [];
   const timed = kind === 'mock' ? (id.endsWith('-A') ? [['Core', 25], ['Reading', 35]] : id.endsWith('-B') ? [['Writing', 50], ['Revisión', 10]] : [['Listening', 40], ['Speaking', 12], ['Revisión', 8]]) : [['Sesión completa', 60]];
   app.innerHTML = pageHeader(meta.eyebrow, meta.title, meta.subtitle, meta.aside || '') +
@@ -256,8 +194,9 @@ function renderExercisePage(kind, id, exercises, meta) {
     <div class="session-actions"><button class="primary-button" type="button" data-complete="${esc(id)}">${done ? 'Marcar como pendiente' : 'Marcar como completado'}</button>${meta.pdf ? `<a class="secondary-button" href="${pdfUrl(meta.pdf)}" target="_blank" rel="noopener">Abrir PDF original ↗</a>` : ''}<a class="secondary-button" href="#tracker">Registrar un error</a></div>
     <div class="timer-panel"><h4>Temporizadores</h4><div class="timer-row">${timed.map(([label, min]) => `<button type="button" class="small-button" data-timer="${min * 60}" data-timer-label="${esc(label)} · ${min} min">${esc(label)} · ${min} min</button>`).join('')}</div></div>
     ${kind === 'mock' ? '<div class="notice" style="margin-bottom:20px">Los bloques distribuyen cada simulacro en tres sesiones de 60 minutos: A (Core + Reading), B (Writing + revisión), C (Listening + Speaking + revisión). Conserva el mismo número de simulacro en los tres bloques.</div>' : ''}
-    ${kind === 'session' && course.sessions[id]?.plan ? `<section class="card" style="margin-bottom:20px"><h2 class="card-title">Plan de la sesión</h2><div class="source-text" style="margin:13px 0 0">${esc(course.sessions[id].plan)}</div></section>` : ''}
-    <div class="exercise-list">${exercises.map(exerciseHTML).join('')}</div>${kind === 'session' && course.sessions[id]?.correction ? `<section class="card section-space"><h2 class="card-title">Corrección y transferencia</h2><p class="book-text">${esc(course.sessions[id].correction)}</p></section>` : ''}<div class="session-actions"><button class="primary-button" type="button" data-complete="${esc(id)}">${done ? 'Marcar como pendiente' : 'Marcar como completado'}</button><a class="secondary-button" href="#tracker">Ir al Error Tracker</a></div>`;
+    ${weeklyWriting ? `<div class="notice writing-plan-note"><strong>Writing principal: 3 bloques esta semana.</strong> ${esc(weeklyWriting.reason)} El resto está en «Práctica extra de Writing». El plan del PDF se conserva como referencia.</div>` : ''}
+    ${kind === 'session' && course.sessions[id]?.plan ? `<section class="card" style="margin-bottom:20px"><h2 class="card-title">Plan original de la sesión · referencia del PDF</h2><div class="source-text" style="margin:13px 0 0">${esc(course.sessions[id].plan)}</div></section>` : ''}
+    <div class="exercise-list">${blocks.primary.map(exerciseHTML).join('')}</div>${blocks.extra.length ? `<details class="writing-extra section-space"><summary>Práctica extra de Writing · ${blocks.extra.length} bloques opcionales</summary><p>Esta práctica no bloquea la finalización de la sesión. Tus respuestas y correcciones anteriores se conservan.</p><div class="exercise-list">${blocks.extra.map((ex, i) => exerciseHTML(ex, blocks.primary.length + i)).join('')}</div></details>` : ''}${kind === 'session' && course.sessions[id]?.correction ? `<section class="card section-space"><h2 class="card-title">Corrección y transferencia</h2><p class="book-text">${esc(course.sessions[id].correction)}</p></section>` : ''}<div class="session-actions"><button class="primary-button" type="button" data-complete="${esc(id)}">${done ? 'Marcar como pendiente' : 'Marcar como completado'}</button><a class="secondary-button" href="#tracker">Ir al Error Tracker</a></div>`;
   for (const ex of exercises) if (state.checked[ex.id]) updateFeedback(ex);
 }
 
@@ -421,6 +360,7 @@ function syncRecorder(id) {
   const audio = panel.querySelector('[data-record-audio]');
   if (saved) { audio.src = saved.url; audio.hidden = false; }
   else { audio.pause(); audio.removeAttribute('src'); audio.hidden = true; }
+  syncAIFeedback(id);
 }
 function stopActiveRecording() {
   if (activeRecorder?.recorder.state === 'recording') activeRecorder.recorder.stop();
@@ -449,7 +389,7 @@ async function startRecording(id, again = false) {
         const previous = speakingRecordings.get(id);
         if (previous) URL.revokeObjectURL(previous.url);
         const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
-        speakingRecordings.set(id, { url: URL.createObjectURL(blob), blob });
+        speakingRecordings.set(id, { url: URL.createObjectURL(blob), blob, duration: (Date.now() - started) / 1000 });
         recorderStatus(id, 'Grabación lista. Puedes reproducirla o volver a grabar.');
       } else recorderStatus(id, 'No se recibió audio. Inténtalo de nuevo.');
       if (activeRecorder?.recorder === recorder) activeRecorder = null;
@@ -518,13 +458,28 @@ function render() {
   else dashboard();
   menu.classList.remove('open'); document.getElementById('mobile-backdrop').classList.remove('show');
   document.querySelectorAll('[data-recorder-panel]').forEach(panel => { if (panel.querySelector('[data-record-start]')) syncRecorder(panel.dataset.recorderPanel); });
+  document.querySelectorAll('[data-ai-panel]').forEach(panel => syncAIFeedback(panel.dataset.aiPanel));
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
+
+installAIFeedback({
+  getAnswer: id => state.responses[id] || '',
+  getRecording: id => activeRecorder?.id === id ? null : speakingRecordings.get(id),
+  addErrors: (id, errors) => {
+    let count = 0;
+    for (const error of errors) {
+      if (state.errors.some(old => old.id === id && old.category === error.category && old.error === error.error && old.correction === error.correction)) continue;
+      state.errors.unshift({ key: crypto.randomUUID?.() || String(Date.now()) + '-' + Math.random(), id, category: error.category, error: error.error, correction: error.correction, resolved: false, date: new Date().toLocaleDateString('es-ES') });
+      count++;
+    }
+    save(); return count;
+  },
+});
 
 document.addEventListener('input', e => {
   const id = e.target.dataset.response;
   if (!id) return;
-  state.responses[id] = e.target.value; save();
+  state.responses[id] = e.target.value; save(); syncAIFeedback(id);
   const count = document.querySelector(`[data-word-count="${id}"]`);
   if (count) { const q = course.exercises.flatMap(ex => ex.questions).find(q => q.id === id); count.textContent = `${wordCount(e.target.value)}${q.wordRange ? ` / ${q.wordRange} palabras` : ' palabras'}`; count.className = rangeClass(q.wordRange, e.target.value); }
 });
@@ -547,8 +502,8 @@ document.addEventListener('click', e => {
   if (button.dataset.recordStop) stopActiveRecording();
   if (button.dataset.recordAgain) startRecording(button.dataset.recordAgain, true);
   if (button.dataset.recordPlay) recorderPanel(button.dataset.recordPlay)?.querySelector('[data-record-audio]')?.play();
-  if (button.dataset.writingChatgpt) helpWithWriting(button.dataset.writingChatgpt, true);
-  if (button.dataset.writingCopy) helpWithWriting(button.dataset.writingCopy, false);
+
+
   if (button.hasAttribute('data-export-progress')) downloadProgress();
   if (button.hasAttribute('data-import-progress')) document.getElementById('progress-file')?.click();
   if (button.dataset.resolve) { const item = state.errors.find(x => x.key === button.dataset.resolve); if (item) item.resolved = !item.resolved; save(); trackerView(); }
@@ -573,4 +528,5 @@ app.innerHTML = '<div class="card">Cargando el curso…</div>';
 Promise.all([
   fetch('./data/course.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   fetch('./audio/manifest.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
-]).then(([data, manifest]) => { course = data; audioManifest = manifest.files || {}; render(); }).catch(() => { app.innerHTML = '<div class="card"><h1>No se pudo cargar el curso</h1><p>Abre esta web desde un servidor estático o desde GitHub Pages para permitir la lectura del archivo de datos.</p></div>'; });
+  fetch('./data/writing-plan.json').then(r => { if (!r.ok) throw new Error('Writing plan unavailable'); return r.json(); }),
+]).then(([data, manifest, plan]) => { course = data; audioManifest = manifest.files || {}; writingPlan = plan; render(); }).catch(() => { app.innerHTML = '<div class="card"><h1>No se pudo cargar el curso</h1><p>Abre esta web desde un servidor estático o desde GitHub Pages para permitir la lectura del archivo de datos.</p></div>'; });

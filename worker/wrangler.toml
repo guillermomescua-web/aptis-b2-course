@@ -1,0 +1,27 @@
+name = "aptis-b2-ai"
+main = "src/index.js"
+compatibility_date = "2026-10-04"
+workers_dev = true
+
+[observability]
+enabled = false
+
+[vars]
+ALLOWED_ORIGIN = "https://guillermomescua-web.github.io"
+TURNSTILE_HOSTNAME = "guillermomescua-web.github.io"
+WRITING_MODEL = "gpt-6-luna"
+WRITING_REASONING = "medium"
+SPEAKING_MODEL = "gpt-audio-1.5"
+DAILY_TOTAL_LIMIT = "100"
+DAILY_IP_LIMIT = "20"
+MINUTE_IP_LIMIT = "3"
+MINUTE_TOTAL_LIMIT = "10"
+PROVIDER_TIMEOUT_MS = "45000"
+
+[[durable_objects.bindings]]
+name = "QUOTAS"
+class_name = "Quotas"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Quotas"]

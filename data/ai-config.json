@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "workerUrl": "",
+  "turnstileSiteKey": "",
+  "requestTimeoutMs": 150000
+}

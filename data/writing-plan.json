@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "unit": "exercise-block",
+  "description": "Tres bloques principales por semana: dos el primer día con Writing y uno el segundo. Cada bloque conserva todas sus preguntas. El resto es práctica extra opcional; no cambia el progreso histórico.",
+  "weeks": {
+    "W1": { "primary": ["W1D1-E02", "W1D1-E03", "W1D2-E02"], "extra": ["W1D2-E03", "W1D4-E04"], "reason": "Part 2 introduce propósito y disponibilidad; Part 4 contrasta registro informal y formal con una petición práctica; Part 3 añade opinión, experiencia y participación inclusiva." },
+    "W2": { "primary": ["W2D1-E02", "W2D1-E03", "W2D2-E03"], "extra": ["W2D2-E02", "W2D4-E04"], "reason": "Respuesta breve sobre objetivos; contraste de beneficio y preocupación en Part 4; transferencia a una limitación real de horario sin proponer almacenamiento imposible." },
+    "W3": { "primary": ["W3D1-E02", "W3D1-E03", "W3D2-E02"], "extra": ["W3D2-E03", "W3D4-E04"], "reason": "Objetivo y uso de una habilidad; petición formal que considera principiantes y expertos; desarrollo de razones y ejemplos en tres respuestas de Part 3." },
+    "W4": { "primary": ["W4D1-E02", "W4D1-E03", "W4D2-E02"], "extra": ["W4D2-E03", "W4D3-E04", "W4D4-E04"], "reason": "Conservar significado y certeza al parafrasear; aplicar esa precisión a un email largo; reparar registro formal/informal y cohesión en textos breves." },
+    "W5": { "primary": ["W5D1-E02", "W5D1-E03", "W5D2-E03"], "extra": ["W5D2-E02", "W5D4-E04"], "reason": "Planificación breve; email cronometrado que justifica profundidad frente a cobertura; segunda tarea larga centrada en apoyo a principiantes y participación realmente opcional." },
+    "W6": { "primary": ["W6D1-E02", "W6D1-E03", "W6D2-E02"], "extra": ["W6D2-E04", "W6D2-E05", "W6D2-E03", "W6D4-E04"], "reason": "Precisar una pregunta científica; comunicar incertidumbre y credibilidad; evaluar feedback, plazos y borradores en Part 3. El Writing completo permanece disponible como práctica extra y en los mocks." },
+    "W7": { "primary": ["W7D1-E05", "W7D1-E03", "W7D2-E03"], "extra": ["W7D1-E04", "W7D1-E02", "W7D2-E04", "W7D2-E05", "W7D2-E02", "W7D4-E04"], "reason": "Part 3 exige decisiones razonadas; Part 4 evalúa acceso y depósitos; la segunda tarea formal trabaja consentimiento y conservación de material histórico sin asumir información ausente." },
+    "W8": { "primary": ["W8D1-E05", "W8D1-E03", "W8D2-E03"], "extra": ["W8D1-E04", "W8D1-E02", "W8D2-E04", "W8D2-E05", "W8D2-E02", "W8D4-E04"], "reason": "Razonamiento abstracto sobre resultados y consecuencias; recomendaciones proporcionales a evidencia limitada; evaluación de acceso público y responsabilidad en un contexto nuevo." }
+  }
+}
