@@ -37,7 +37,7 @@ try {
       if (!localStorage.getItem('aptis-b2-vocabulary-v1')) localStorage.setItem('aptis-b2-vocabulary-v1', JSON.stringify({ schemaVersion: 1, units: { 'VOC-COLL-001': { status: 'Learning', mistakes: 2, lapses: 2, repetitions: 0, dueAt: 1 } } }));
     }, seed);
     await page.route('**/data/ai-config.json', route => route.fulfill({ json: { schemaVersion: 1, workerUrl: 'https://worker.test', turnstileSiteKey: 'test-site-key', requestTimeoutMs: 10000 } }));
-    await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', route => route.fulfill({ contentType: 'text/javascript', body: 'window.turnstile={ready:fn=>fn(),render:(el,opts)=>{setTimeout(()=>opts.callback("test-token-long-enough"),20);return "test-widget";},remove:()=>{}};' }));
+    await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', route => route.fulfill({ contentType: 'text/javascript', body: 'window.turnstile={ready:()=>{throw new Error("ready cannot be used with async loading");},render:(el,opts)=>{setTimeout(()=>opts.callback("test-token-long-enough"),20);return "test-widget";},remove:()=>{}};' }));
     const env = { ALLOWED_ORIGIN: new URL(base).origin, TURNSTILE_HOSTNAME: new URL(base).hostname, OPENAI_API_KEY: 'test-only-placeholder', TURNSTILE_SECRET_KEY: 'test-only-placeholder', RATE_LIMIT_SALT: 'test-only-placeholder', DAILY_TOTAL_LIMIT: 1000, DAILY_IP_LIMIT: 1000, MINUTE_IP_LIMIT: 1000, MINUTE_TOTAL_LIMIT: 1000 };
     const quotas = new Quotas({ storage: memoryStorage() }, env);
     env.QUOTAS = { idFromName: x => x, get: () => ({ fetch: (url, opts) => quotas.fetch(new Request(url, opts)) }) };

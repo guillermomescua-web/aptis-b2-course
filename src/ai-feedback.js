@@ -93,8 +93,12 @@ async function loadTurnstile() {
   if (window.turnstile) return;
   if (!turnstileLoading) turnstileLoading = new Promise((resolve, reject) => {
     const script = document.createElement('script'); script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; script.async = true;
-    const timer = setTimeout(() => reject(new Error('No se pudo cargar la verificación.')), 15000);
-    script.onload = () => { clearTimeout(timer); window.turnstile?.ready(resolve); };
+    const timer = setTimeout(() => { script.remove(); reject(new Error('No se pudo cargar la verificación.')); }, 15000);
+    script.onload = () => {
+      clearTimeout(timer);
+      if (typeof window.turnstile?.render !== 'function') { script.remove(); reject(new Error('No se pudo cargar la verificación.')); return; }
+      resolve();
+    };
     script.onerror = () => { clearTimeout(timer); script.remove(); reject(new Error('No se pudo cargar la verificación.')); };
     document.head.append(script);
   }).catch(error => { turnstileLoading = null; throw error; });
