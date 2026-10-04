@@ -142,7 +142,7 @@ async function correct(id) {
     const data = await response.json().catch(() => null);
     if (!response.ok) {
       const details = { 429: 'Has alcanzado un límite de correcciones. Espera antes de reintentar.', 413: 'El audio o texto supera el tamaño permitido.', 403: 'La verificación no es válida. Vuelve a intentarlo.', 503: 'El servicio de corrección no está disponible ahora.' };
-      const message = data?.error?.code === 'AUDIO_INVALID' ? String(data.error.message).slice(0, 200) : details[response.status] || '';
+      const message = data?.error?.code === 'PROVIDER_RATE_LIMIT' ? 'OpenAI ha alcanzado su cuota o límite de uso. Revisa el saldo y los límites de tu proyecto de OpenAI.' : data?.error?.code === 'AUDIO_INVALID' ? String(data.error.message).slice(0, 200) : details[response.status] || '';
       throw new Error(`${failedMessage}${message ? ' ' + message : ''}`);
     }
     if (data?.schemaVersion !== AI_SCHEMA_VERSION || data.kind !== kind || data.exerciseId !== id || typeof data.timestamp !== 'string' || !Number.isFinite(Date.parse(data.timestamp))) throw new Error(failedMessage);
