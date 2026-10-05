@@ -117,3 +117,16 @@ test('Feedback schema rejects extra keys, subjective tracker categories and too 
   assert.throws(() => validateFeedback('writing', { ...writing, priorities: ['1', '2', '3', '4'] }));
   assert.throws(() => validateFeedback('speaking', { ...speaking, trackerErrors: [{ error: 'confidence', correction: 'speak confidently', category: 'TF' }] }));
 });
+
+
+test('Provider usage exposes only safe numeric counts and actual model, including audio retry', async () => {
+  const t = setup({ provider: () => Response.json({ model: 'gpt-6-luna', status: 'completed', usage: { input_tokens: 100, output_tokens: 80, input_tokens_details: { cached_tokens: 20, cache_write_tokens: -1 }, output_tokens_details: { reasoning_tokens: 30 }, private_field: 'must-not-leak' }, output: [{content: [{type:'output_text',text:JSON.stringify(writing)}]}] }) });
+  const body=await (await t.send()).json();
+  assert.equal(body.model,'gpt-6-luna');
+  assert.deepEqual(body.usage,[{inputTokens:100,outputTokens:80,audioInputTokens:0,cachedInputTokens:20,reasoningTokens:30,cacheWriteTokens:0}]);
+  assert.ok(!JSON.stringify(body).includes('must-not-leak'));
+  const audio = setup({kind:'speaking',provider:(url,args,count)=>Response.json({model:'gpt-audio-1.5',usage:{prompt_tokens:300,completion_tokens:100,prompt_tokens_details:{audio_tokens:60}},choices:[{finish_reason:'stop',message:{content:count===1?'broken json':JSON.stringify(speaking)}}]})});
+  const result=await (await audio.send(await audioForm())).json();
+  assert.equal(result.model,'gpt-audio-1.5'); assert.equal(result.usage.length,2);
+  assert.equal(result.usage.reduce((sum,x)=>sum+x.audioInputTokens,0),120);
+});

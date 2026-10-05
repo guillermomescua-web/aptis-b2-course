@@ -77,24 +77,34 @@ async function writingFeedback(ex, answer, env, fetcher) {
   try {
     const feedback = validateFeedback('writing', parseModelJSON(content));
     feedback.wordCount = { current: countWords(answer), target: ex.wordRange || 'No especificado' };
-    return feedback;
+    return { feedback, model: data.model, usage: usageRecord(data) };
   } catch { fail(502, 'PROVIDER_FORMAT', 'La IA devolvió una respuesta incompleta.'); }
 }
 async function speakingFeedback(ex, bytes, duration, env, fetcher) {
   const base64 = audioBase64(bytes);
+  const usage = [];
   for (let attempt = 0; attempt < 2; attempt++) {
     const data = await provider('chat/completions', {
       model: env.SPEAKING_MODEL || 'gpt-audio-1.5', modalities: ['text'], store: false, max_completion_tokens: 3000,
       messages: [
-        { role: 'system', content: `${speakingInstructions}\nEsquema JSON obligatorio: ${JSON.stringify(speakingSchema)}${attempt ? '\nEl formato anterior falló. Respeta todos los campos, tipos y límites; no añadas campos.' : ''}` },
+        { role: 'system', content: `${speakingInstructions}\nRevisión final obligatoria: no conviertas falta de variedad o respuestas breves en errores de Vocabulary. Una expresión correcta como "the supermarket" no es un error por ser básica. En trackerErrors, correction debe ser el reemplazo literal correcto de un error real, nunca una sugerencia de actividades, ejemplos, instrucciones ni consejos. Si no hay errores lingüísticos inequívocos, trackerErrors debe ser []. Usa priorities para consejos de ampliación o variedad.\nEsquema JSON obligatorio: ${JSON.stringify(speakingSchema)}${attempt ? '\nEl formato anterior falló. Respeta todos los campos, tipos y límites; no añadas campos.' : ''}` },
         { role: 'user', content: [{ type: 'text', text: JSON.stringify({ task: ex, durationSeconds: duration }) }, { type: 'input_audio', input_audio: { data: base64, format: 'wav' } }] },
       ],
     }, env, fetcher);
+    usage.push(...usageRecord(data));
     try {
       if (data.choices?.[0]?.finish_reason !== 'stop') throw new Error('Incomplete');
-      return validateFeedback('speaking', parseModelJSON(data.choices[0].message.content));
+      return { feedback: validateFeedback('speaking', parseModelJSON(data.choices[0].message.content)), model: data.model, usage };
     } catch { if (attempt === 1) fail(502, 'PROVIDER_FORMAT', 'La IA devolvió una respuesta incompleta.'); }
   }
+}
+
+// Numeric provider usage only: no request content, audio, identifiers or secrets.
+function usageRecord(data) {
+  const u = data.usage;
+  if (!u) return [];
+  const n = x => Number.isSafeInteger(x) && x >= 0 && x <= 100000000 ? x : 0;
+  return [{ inputTokens: n(u.input_tokens ?? u.prompt_tokens), outputTokens: n(u.output_tokens ?? u.completion_tokens), audioInputTokens: n(u.prompt_tokens_details?.audio_tokens), cachedInputTokens: n(u.input_tokens_details?.cached_tokens ?? u.prompt_tokens_details?.cached_tokens), reasoningTokens: n(u.output_tokens_details?.reasoning_tokens ?? u.completion_tokens_details?.reasoning_tokens), cacheWriteTokens: n(u.input_tokens_details?.cache_write_tokens) }];
 }
 
 export async function handleRequest(request, env, fetcher = fetch) {
@@ -143,8 +153,8 @@ export async function handleRequest(request, env, fetcher = fetch) {
     if (kind === 'speaking') ex = speakingTask(ex, target);
     await verifyTurnstile(token, ip, env, `aptis_${kind}`, fetcher);
     await quota(env, ipHash, 'reserve', kind === 'speaking' ? 2 : 1);
-    const feedback = kind === 'writing' ? await writingFeedback(ex, answer, env, fetcher) : await speakingFeedback(ex, bytes, duration, env, fetcher);
-    return reply({ schemaVersion: AI_SCHEMA_VERSION, kind, exerciseId: id, timestamp: new Date().toISOString(), model: kind === 'writing' ? env.WRITING_MODEL || 'gpt-6-luna' : env.SPEAKING_MODEL || 'gpt-audio-1.5', feedback });
+    const result = kind === 'writing' ? await writingFeedback(ex, answer, env, fetcher) : await speakingFeedback(ex, bytes, duration, env, fetcher);
+    return reply({ schemaVersion: AI_SCHEMA_VERSION, kind, exerciseId: id, timestamp: new Date().toISOString(), model: typeof result.model === 'string' ? result.model.slice(0, 120) : kind === 'writing' ? env.WRITING_MODEL || 'gpt-6-luna' : env.SPEAKING_MODEL || 'gpt-audio-1.5', feedback: result.feedback, usage: result.usage });
   } catch (error) {
     if (error instanceof APIError) { if (error.status === 429) headers['Retry-After'] = '60'; return reply({ error: { code: error.code, message: error.message } }, error.status); }
     return reply({ error: { code: 'INTERNAL', message: 'No se pudo completar la corrección.' } }, 500);
