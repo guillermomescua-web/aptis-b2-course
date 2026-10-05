@@ -54,3 +54,12 @@ El despliegue no está terminado. Las pruebas locales no se presentan como prueb
 ## Publicación de la corrección
 
 La fuente de GitHub Pages se conserva en main. El primer control de publicación detectó que la web aún servía el código anterior del selector. Esta actualización del informe inicia una publicación desde main; se verificará el código servido antes de continuar.
+
+## Prueba real del profesor
+
+- Cuenta profesor real: consulta únicamente Lucía. Ve respuesta Writing guardada, feedback gpt-6-luna, Speaking y feedback gpt-audio-1.5, actividad y Error Tracker. Campos editables exclusivamente de comentario y filtro de semana.
+- Original privado reproducido: 31,859839 s; WAV analizado: 31,92 s. Ambos muestran paused=false y error=null en sus controles multimedia.
+- Comentario técnico opcional guardado sobre W1D3-E03-Q01, recuperado tras recargar. Progreso permanece 0/32; el profesor no aprobó ni desbloqueó sesiones.
+- Confirmación humana recibida para importar los datos v1 a Lucía. Pendiente iniciar sesión de alumna para ejecutar el flujo de importación, comprobar visibilidad del comentario y acceso desde otro dispositivo.
+- Etiquetas del feedback del profesor traducidas a términos legibles en español, sin modificar el contenido de la evaluación.
+- Publicación 93c53fc iniciada desde main mediante GitHub; permanece en cola al comprobarla. Los fixes posteriores aún no se dan por publicados. No se cambió la fuente de GitHub Pages tras el rechazo automático de seleccionar otra rama.
