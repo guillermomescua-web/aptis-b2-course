@@ -6,6 +6,8 @@ export const AI_STORE = 'aptis-b2-ai-feedback-v1';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const categoryNames = { G: 'Grammar', V: 'Vocabulary', C: 'Collocation', R: 'Register', COH: 'Cohesion', TF: 'Task Fulfilment' };
 let saved = { schemaVersion: 1, noticeSeen: false, items: {} };
+// Keep the student's selection when the account refresh renders the controls again.
+const speakingTargets = new Map();
 try {
   const data = JSON.parse(localStorage.getItem(AI_STORE) || 'null');
   if (data?.schemaVersion === 1 && data.items && typeof data.items === 'object' && !Array.isArray(data.items)) {
@@ -20,7 +22,7 @@ try {
   }
 } catch { /* localStorage is optional; the existing course store is independent. */ }
 let accountMode=false,accountStoreKey=null,requestStoreKey=null;
-export function configureAIFeedback(items,userId,loadCache=false){accountMode=true;const nextKey=userId?'aptis-v2-feedback:'+userId:null;if(nextKey!==accountStoreKey){requestIds.clear();requestStoreKey=userId?'aptis-v2-ai-requests:'+userId:null;if(requestStoreKey){try{for(const [k,v]of JSON.parse(localStorage.getItem(requestStoreKey)||'[]'))if(typeof k==='string'&&/^[a-f0-9-]{36}$/i.test(v))requestIds.set(k,v);}catch{}}}accountStoreKey=nextKey;if(loadCache&&accountStoreKey){try{items=JSON.parse(localStorage.getItem(accountStoreKey)||'{}');}catch{}}const valid={};
+export function configureAIFeedback(items,userId,loadCache=false){accountMode=true;const nextKey=userId?'aptis-v2-feedback:'+userId:null;if(nextKey!==accountStoreKey){speakingTargets.clear();requestIds.clear();requestStoreKey=userId?'aptis-v2-ai-requests:'+userId:null;if(requestStoreKey){try{for(const [k,v]of JSON.parse(localStorage.getItem(requestStoreKey)||'[]'))if(typeof k==='string'&&/^[a-f0-9-]{36}$/i.test(v))requestIds.set(k,v);}catch{}}}accountStoreKey=nextKey;if(loadCache&&accountStoreKey){try{items=JSON.parse(localStorage.getItem(accountStoreKey)||'{}');}catch{}}const valid={};
   for(const [id,item] of Object.entries(items && typeof items==='object' && !Array.isArray(items)?items:{})){
     try{if(/^[A-Z0-9-]{1,100}$/.test(id)&&item?.exerciseId===id&&typeof item.timestamp==='string'&&/^[a-f0-9]{64}$/.test(item.sourceHash)){validateFeedback(item.kind,item.feedback);valid[id]=item;}}catch{/* Invalid optional feedback never blocks the course. */}
   }
@@ -61,8 +63,9 @@ function feedbackHTML(item) {
 
 export function aiControlsHTML(kind, q) {
   const item = saved.items[q.id];
+  const selectedTarget = speakingTargets.get(q.id) ?? item?.target ?? 'all';
   const questions = [...q.prompt.matchAll(/^([1-3])\.\s*(.*?)(?=\n[1-3]\.\s|\nPreparation notes:|$)/gms)];
-  const scope = kind === 'speaking' && q.part !== 'Part 4' && questions.length ? `<label class="ai-scope">Esta grabación responde a<select data-ai-target="${esc(q.id)}"><option value="all">Todas las preguntas de esta parte</option>${questions.map(m => `<option value="${m[1]}" ${item?.target === m[1] ? 'selected' : ''}>Pregunta ${m[1]}: ${esc(m[2].trim().slice(0, 90))}</option>`).join('')}</select></label>` : '';
+  const scope = kind === 'speaking' && q.part !== 'Part 4' && questions.length ? `<label class="ai-scope">Esta grabación responde a<select data-ai-target="${esc(q.id)}"><option value="all">Todas las preguntas de esta parte</option>${questions.map(m => `<option value="${m[1]}" ${selectedTarget === m[1] ? 'selected' : ''}>Pregunta ${m[1]}: ${esc(m[2].trim().slice(0, 90))}</option>`).join('')}</select></label>` : '';
   return `<div class="ai-assist" data-ai-panel="${esc(q.id)}" data-ai-kind="${kind}">${scope}${!saved.noticeSeen ? `<p class="ai-privacy" role="note">${privacy}</p>` : ''}<div class="ai-actions"><button class="primary-button" type="button" data-ai-correct="${esc(q.id)}">${kind === 'writing' ? (item ? 'Volver a corregir' : '✨ Corregir con IA') : '🎙️ Corregir Speaking con IA'}</button></div><p class="ai-status" role="status" aria-live="polite"></p><p class="ai-changed" role="status" hidden></p><div class="ai-challenge"></div><div class="ai-feedback">${feedbackHTML(item)}</div></div>`;
 }
 
@@ -131,12 +134,13 @@ async function challenge(id, kind, key) {
 async function correct(id) {
   const p = panel(id); if (!p || inFlight.has(id)) return;
   const kind = p.dataset.aiKind, answer = adapter.getAnswer(id);
+  const target = p.querySelector('[data-ai-target]')?.value || 'all';
+  if (kind === 'speaking') speakingTargets.set(id, target);
   let recording = adapter.getRecording(id);
   if(kind==='speaking'&&accountMode){try{recording=await adapter.ensureRecording(id);}catch{failures.set(id,'No se pudo cargar o guardar el audio privado. Reintenta la subida.');refresh(id);return;}}
   failures.delete(id);
   if (kind === 'writing' && (!answer.trim() || answer.length > 8000 || countWords(answer) > 1500)) { failures.set(id, !answer.trim() ? 'Escribe tu respuesta antes de solicitar una corrección.' : 'La respuesta supera 1500 palabras u 8000 caracteres.'); refresh(id); return; }
   if (kind === 'speaking' && !recording?.blob) { failures.set(id, 'Graba una respuesta antes de solicitar la corrección.'); refresh(id); return; }
-  const target = p.querySelector('[data-ai-target]')?.value || 'all';
   const controller = new AbortController();
   inFlight.set(id, controller); refresh(id);
   let timer;
@@ -192,5 +196,5 @@ export function installAIFeedback(options) {
     p.querySelector('.ai-save-status').textContent = `${count} errores guardados. Los que ya estaban registrados no se duplican.`;
     p.querySelectorAll('[data-ai-error]').forEach(input => { input.checked = false; });
   });
-  document.addEventListener('change', event => { if (event.target.dataset.aiTarget) syncAIFeedback(event.target.dataset.aiTarget); });
+  document.addEventListener('change', event => { if (event.target.dataset.aiTarget) { speakingTargets.set(event.target.dataset.aiTarget,event.target.value); syncAIFeedback(event.target.dataset.aiTarget); } });
 }

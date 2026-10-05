@@ -41,3 +41,10 @@ El despliegue no está terminado. Las pruebas locales no se presentan como prueb
 
 - [Restricción del correo predeterminado de Supabase](https://supabase.com/docs/guides/auth/auth-smtp).
 - [SMTP transaccional de Brevo](https://help.brevo.com/hc/en-us/articles/7924908994450-Send-transactional-emails-using-Brevo-SMTP).
+
+## Prueba real de Speaking y corrección de interfaz
+
+- Speaking W1D3-E03-Q01, pregunta 1: audio humano de 31,92 s; feedback real registrado con modelo gpt-audio-1.5 y provenance worker. Uso registrado: 1212 inputTokens (319 audioInputTokens incluidos), 516 outputTokens. Coste monetario observado todavía pendiente.
+- La respuesta aparece dentro de la academia. No se abrió ChatGPT. La salida IA incluye una explicación de artículo contradictoria; el feedback se conserva fiel al proveedor y no se presenta como una evaluación infalible.
+- Corregido selector de pregunta que se reiniciaba durante refrescos de cuenta: conserva la selección durante el refresco y la captura antes de subir/recuperar el audio. Se limpia al cambiar de usuario. Prueba de regresión específica PASS.
+- Pendientes: comprobación real con cuenta profesor y comentario opcional; confirmación humana para importar el progreso anterior; acceso real desde otro contexto/dispositivo. El curso sigue funcionando sin intervención del profesor.
