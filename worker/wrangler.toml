@@ -7,6 +7,8 @@ workers_dev = true
 enabled = false
 
 [vars]
+SUPABASE_URL = "https://hahwtsmiopmlcqypfojb.supabase.co"
+SUPABASE_PUBLISHABLE_KEY = "sb_publishable_WCDmNYwc_0u_6g_6RoSpnA_XDevZrm5"
 ALLOWED_ORIGIN = "https://guillermomescua-web.github.io"
 TURNSTILE_HOSTNAME = "guillermomescua-web.github.io"
 WRITING_MODEL = "gpt-6-luna"

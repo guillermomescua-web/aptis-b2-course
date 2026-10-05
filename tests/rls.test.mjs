@@ -25,6 +25,10 @@ before(async()=>{
   await q('insert into public.teacher_students(teacher_id,student_id) values($1,$2)',[T,A]);
 });
 after(async()=>{await db?.close();});
+test('Deployment SQL permission probe passes and rolls back all fixtures',async()=>{
+  await db.exec(fs.readFileSync(new URL('../supabase/live_rls_check.sql',import.meta.url),'utf8'));
+  assert.equal((await q("select count(*) as n from auth.users where id::text like '90%'")).rows[0].n,0);
+});
 test('Student A cannot read B through tables or snapshot RPC',async()=>{
   await as(B,()=>save('answer','W1D1-E02-Q01',{text:'Private B answer'}));
   await as(A,async()=>{assert.equal((await q('select * from public.answer_drafts where user_id=$1',[B])).rows.length,0);await assert.rejects(()=>q('select public.learning_snapshot($1)',[B]),/Forbidden/);});
