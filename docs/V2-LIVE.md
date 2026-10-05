@@ -49,3 +49,8 @@ El despliegue no está terminado. Las pruebas locales no se presentan como prueb
 - Corregido selector de pregunta que se reiniciaba durante refrescos de cuenta: conserva la selección durante el refresco y la captura antes de subir/recuperar el audio. Se limpia al cambiar de usuario. Prueba de regresión específica PASS.
 - Pendientes: comprobación real con cuenta profesor y comentario opcional; confirmación humana para importar el progreso anterior; acceso real desde otro contexto/dispositivo. El curso sigue funcionando sin intervención del profesor.
 - SQL real: hash del audio original coincide exactamente con source_hash del feedback; existen los dos objetos original/analysis y el bucket speaking no es público. Tras recargar se recuperan audio y feedback; reproducción comprobada: paused=false, duration=31,859839 s, error=null. Se prepara acceso humano del profesor.
+
+
+## Publicación de la corrección
+
+La fuente de GitHub Pages se conserva en main. El primer control de publicación detectó que la web aún servía el código anterior del selector. Esta actualización del informe inicia una publicación desde main; se verificará el código servido antes de continuar.
