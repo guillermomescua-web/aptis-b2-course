@@ -1,5 +1,6 @@
 import { validateFeedback, AI_SCHEMA_VERSION, countWords } from './ai-schema.js';
 import { recordingToWav } from './ai-audio.js';
+import { accessToken, accountConfig } from './accounts.js';
 
 export const AI_STORE = 'aptis-b2-ai-feedback-v1';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -18,6 +19,14 @@ try {
     }
   }
 } catch { /* localStorage is optional; the existing course store is independent. */ }
+let accountMode=false,accountStoreKey=null,requestStoreKey=null;
+export function configureAIFeedback(items,userId,loadCache=false){accountMode=true;const nextKey=userId?'aptis-v2-feedback:'+userId:null;if(nextKey!==accountStoreKey){requestIds.clear();requestStoreKey=userId?'aptis-v2-ai-requests:'+userId:null;if(requestStoreKey){try{for(const [k,v]of JSON.parse(localStorage.getItem(requestStoreKey)||'[]'))if(typeof k==='string'&&/^[a-f0-9-]{36}$/i.test(v))requestIds.set(k,v);}catch{}}}accountStoreKey=nextKey;if(loadCache&&accountStoreKey){try{items=JSON.parse(localStorage.getItem(accountStoreKey)||'{}');}catch{}}const valid={};
+  for(const [id,item] of Object.entries(items && typeof items==='object' && !Array.isArray(items)?items:{})){
+    try{if(/^[A-Z0-9-]{1,100}$/.test(id)&&item?.exerciseId===id&&typeof item.timestamp==='string'&&/^[a-f0-9]{64}$/.test(item.sourceHash)){validateFeedback(item.kind,item.feedback);valid[id]=item;}}catch{/* Invalid optional feedback never blocks the course. */}
+  }
+  saved={schemaVersion:1,noticeSeen:false,items:valid};persist();}
+export function feedbackItems(){return structuredClone(saved.items);}
+const requestIds=new Map();
 const inFlight = new Map();
 const failures = new Map();
 const changed = new Map();
@@ -33,6 +42,7 @@ async function hash(value) {
   return [...new Uint8Array(digest)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 function persist() {
+  if(accountMode){try{if(accountStoreKey)localStorage.setItem(accountStoreKey,JSON.stringify(saved.items));if(requestStoreKey)localStorage.setItem(requestStoreKey,JSON.stringify([...requestIds]));return true;}catch{return false;}}
   try {
     // Bounded cache of latest feedback only; no student text duplicate or audio blobs.
     const ids = Object.keys(saved.items).sort((a, b) => saved.items[b].timestamp.localeCompare(saved.items[a].timestamp));
@@ -120,7 +130,9 @@ async function challenge(id, kind, key) {
 
 async function correct(id) {
   const p = panel(id); if (!p || inFlight.has(id)) return;
-  const kind = p.dataset.aiKind, answer = adapter.getAnswer(id), recording = adapter.getRecording(id);
+  const kind = p.dataset.aiKind, answer = adapter.getAnswer(id);
+  let recording = adapter.getRecording(id);
+  if(kind==='speaking'&&accountMode){try{recording=await adapter.ensureRecording(id);}catch{failures.set(id,'No se pudo cargar o guardar el audio privado. Reintenta la subida.');refresh(id);return;}}
   failures.delete(id);
   if (kind === 'writing' && (!answer.trim() || answer.length > 8000 || countWords(answer) > 1500)) { failures.set(id, !answer.trim() ? 'Escribe tu respuesta antes de solicitar una corrección.' : 'La respuesta supera 1500 palabras u 8000 caracteres.'); refresh(id); return; }
   if (kind === 'speaking' && !recording?.blob) { failures.set(id, 'Graba una respuesta antes de solicitar la corrección.'); refresh(id); return; }
@@ -130,30 +142,38 @@ async function correct(id) {
   let timer;
   try {
     const config = await getConfig();
-    const converted = kind === 'speaking' ? await recordingToWav(recording.blob) : null;
+    const account = await accountConfig();
+    if(!account.enabled)throw new Error('Las cuentas están pendientes de activar.');
+    const jwt=await accessToken();
+    if(accountMode && !(await adapter.flush()))throw new Error('Resuelve los cambios pendientes antes de corregir.');
+    const converted = kind === 'speaking' ? (accountMode?{duration:recording.server.duration}:await recordingToWav(recording.blob)) : null;
     const sourceHash = await hash(kind === 'writing' ? answer : recording.blob);
     const token = await challenge(id, kind, config.turnstileSiteKey);
     saved.noticeSeen = true; persist();
     let body, headers;
-    if (kind === 'writing') { body = JSON.stringify({ exerciseId: id, answer, turnstileToken: token }); headers = { 'Content-Type': 'application/json' }; }
-    else { body = new FormData(); body.set('exerciseId', id); body.set('audio', converted.blob, 'response.wav'); body.set('duration', String(converted.duration)); body.set('target', target); body.set('turnstileToken', token); }
+    const requestKey=`${id}:${sourceHash}:${target}`;
+    const requestId=requestIds.get(requestKey)||crypto.randomUUID();requestIds.set(requestKey,requestId);persist();
+    body=JSON.stringify({exerciseId:id,turnstileToken:token,requestId,...(kind==='writing'?{answer}:{recordingId:recording.id,target})});
+    headers={'Content-Type':'application/json',Authorization:`Bearer ${jwt}`};
     timer = setTimeout(() => controller.abort(), Math.min(150000, Math.max(10000, config.requestTimeoutMs || 150000)));
-    const response = await fetch(`${config.workerUrl.replace(/\/$/, '')}/api/${kind}-feedback`, { method: 'POST', headers, body, signal: controller.signal, credentials: 'omit', cache: 'no-store' });
+    const response = await fetch(`${account.workerUrl.replace(/\/$/, '')}/api/v2/${kind}-feedback`, { method: 'POST', headers, body, signal: controller.signal, credentials: 'omit', cache: 'no-store' });
     const data = await response.json().catch(() => null);
     if (!response.ok) {
-      const details = { 429: 'Has alcanzado un límite de correcciones. Espera antes de reintentar.', 413: 'El audio o texto supera el tamaño permitido.', 403: 'La verificación no es válida. Vuelve a intentarlo.', 503: 'El servicio de corrección no está disponible ahora.' };
+      const details = { 429: 'Has alcanzado un límite de correcciones. Espera antes de reintentar.', 413: 'El audio o texto supera el tamaño permitido.', 401: 'La sesión ha caducado. Vuelve a iniciar sesión.', 409: 'La corrección está en curso. Reintenta para recuperar el resultado.', 403: 'Esta cuenta no tiene permiso o la verificación ha caducado.', 503: 'El servicio de corrección no está disponible ahora.' };
       const message = data?.error?.code === 'PROVIDER_RATE_LIMIT' ? 'OpenAI ha alcanzado su cuota o límite de uso. Revisa el saldo y los límites de tu proyecto de OpenAI.' : data?.error?.code === 'AUDIO_INVALID' ? String(data.error.message).slice(0, 200) : details[response.status] || '';
       throw new Error(`${failedMessage}${message ? ' ' + message : ''}`);
     }
     if (data?.schemaVersion !== AI_SCHEMA_VERSION || data.kind !== kind || data.exerciseId !== id || typeof data.timestamp !== 'string' || !Number.isFinite(Date.parse(data.timestamp))) throw new Error(failedMessage);
     validateFeedback(kind, data.feedback);
-    const item = { schemaVersion: 1, kind, exerciseId: id, timestamp: data.timestamp, model: String(data.model || ''), feedback: data.feedback, sourceHash, ...(kind === 'speaking' ? { duration: converted.duration, target } : {}) };
+    const item = { schemaVersion: 1, kind, exerciseId: id, timestamp: data.timestamp, model: String(data.model || ''), feedback: data.feedback, sourceHash, id:data.id, recordingId:recording?.id, ...(kind === 'speaking' ? { duration: converted.duration, target } : {}) };
     saved.items[id] = item;
+    requestIds.delete(requestKey);
+    adapter.feedbackSaved?.(item);
     if (!persist()) failures.set(id, 'Corrección lista. Este navegador no pudo guardarla para la próxima recarga.');
     const current = panel(id);
     if (current) current.querySelector('.ai-feedback').innerHTML = feedbackHTML(item);
   } catch (error) {
-    failures.set(id, error.name === 'AbortError' ? `${failedMessage} La solicitud tardó demasiado.` : error.message === failedMessage || error.message?.startsWith(failedMessage) || /pendiente de activar|verificación|preparar el audio|navegador|12 MB|segundo|Vuelve al ejercicio/.test(error.message) ? error.message : failedMessage);
+    failures.set(id, error.name === 'AbortError' ? `${failedMessage} La solicitud tardó demasiado.` : error.message === failedMessage || error.message?.startsWith(failedMessage) || /pendiente|activar|verificación|preparar el audio|navegador|12 MB|segundo|Vuelve al ejercicio|cuenta|sesión|Resuelve/.test(error.message) ? error.message : failedMessage);
   } finally { clearTimeout(timer); inFlight.delete(id); await syncAIFeedback(id); }
 }
 

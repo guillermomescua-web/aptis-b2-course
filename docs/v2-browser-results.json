@@ -1,0 +1,29 @@
+{
+  "mode": "Local PostgreSQL + SDK + Worker with isolated Auth/Storage HTTP adapter and synthetic test provider. Not live Supabase/OpenAI.",
+  "checks": [
+    "Password recovery requests exact safe callback; no credentials in page URL",
+    "Login uses SDK and protected role; no background AI",
+    "Three legacy stores imported with original bytes intact",
+    "Writing persisted in PostgreSQL",
+    "Authenticated UI → Worker → test provider → persisted feedback",
+    "Selected AI error saved to Error Tracker",
+    "Second device recovers Writing and IA",
+    "Two-device conflict shows and retains both versions",
+    "Offline queue survives reload and reconnects",
+    "MediaRecorder original and analysis WAV uploaded privately",
+    "Speaking uses stored exact audio and persists test feedback",
+    "Speaking timers retained",
+    "Listening two plays persist and original controls work",
+    "Vocabulary Lab repetition logic persists",
+    "Diagnostic, mocks, books, PDFs and tracker navigation",
+    "Complete export includes server feedback, vocabulary and reviews",
+    "Teacher dashboard reads assigned data without AI calls or editable answers",
+    "Assigned teacher receives short-lived signed audio",
+    "Teacher review stored as escaped text",
+    "Student sees optional review and can access W8 autonomously",
+    "Mobile login, Writing, navigation and viewport",
+    "No page exceptions in both roles and mobile"
+  ],
+  "providerCalls": 2,
+  "pageErrors": []
+}

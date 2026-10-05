@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { handleRequest, speakingTask } from '../worker/src/index.js';
+import { handleCoreRequest as handleRequest, speakingTask } from '../worker/src/index.js';
 import catalog from '../worker/src/catalog.js';
 import { Quotas } from '../worker/src/quotas.js';
 import { inspectWav } from '../worker/src/audio.js';

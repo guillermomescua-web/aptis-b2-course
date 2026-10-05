@@ -23,7 +23,11 @@ function loadState() {
   return blankState();
 }
 let labState = loadState();
+let accountSave = null;
+export function configureVocabulary(state,save){labState=state;accountSave=save;active=null;}
+export function updateVocabularySnapshot(state){labState=state;}
 function saveState() {
+  if(accountSave){accountSave(labState);return;}
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(labState)); } catch { /* The main course store is independent. */ }
 }
 function progressFor(id) {

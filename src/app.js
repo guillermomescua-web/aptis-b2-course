@@ -1,6 +1,11 @@
 import { exportProgress, validateProgress } from './progress.js';
-import { renderVocabularyLab } from './vocabulary-lab.js';
-import { aiControlsHTML, installAIFeedback, syncAIFeedback } from './ai-feedback.js?v=1.4.2';
+import { renderVocabularyLab, configureVocabulary, updateVocabularySnapshot } from './vocabulary-lab.js';
+import { aiControlsHTML, installAIFeedback, syncAIFeedback, configureAIFeedback, feedbackItems } from './ai-feedback.js';
+import { requireAccount,rpc,query,escapeHTML as accountEsc } from './accounts.js';
+import { LearningStore } from './learning-store.js';
+import { legacyPackage,importPackage,alreadyImported,migrationHTML,conflictHTML,downloadJSON } from './legacy-migration.js';
+import { localRecordings,cacheRecording,uploadRecording,signedAudio } from './speaking-storage.js';
+import { teacherDashboard,installTeacherEvents,reviewsHTML } from './teacher-dashboard.js';
 import { splitWriting } from './writing-plan.js';
 
 const app = document.querySelector('#app');
@@ -14,6 +19,8 @@ document.body.insertAdjacentHTML('beforeend', '<div class="mobile-backdrop" id="
 const STORE = 'aptis-b2-performance-v1';
 const defaultState = () => ({ responses: {}, completed: {}, errors: [], plays: {}, checked: {} });
 let state = loadState();
+let account=null,learningStore=null,legacy=null,vocabularyData=null,teacherReviews=[],serverRecordings=[];
+let feedbackRows=[];
 let course;
 let writingPlan;
 let activeTimer = null;
@@ -28,7 +35,95 @@ function loadState() {
   try { return { ...defaultState(), ...JSON.parse(localStorage.getItem(STORE) || '{}') }; }
   catch { return defaultState(); }
 }
-function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch { /* Private mode may limit storage. */ } }
+function save() {
+  if(account){if(account.role==='student')learningStore.applyState(state);return;}
+  try { localStorage.setItem(STORE, JSON.stringify(state)); } catch { /* Private mode may limit storage. */ }
+}
+
+function syncUI(store){
+  if(!store)return;
+  const focused=document.activeElement;
+  if(focused?.dataset.response){
+    const id=focused.dataset.response,key=`answer:${id}`;
+    if(!store.cache.pending[key] && focused.value!==(store.get('answer',id)?.text||'')){
+      store.cache.pending[key]={kind:'answer',id,data:{text:focused.value},expected:store.cache.rows.answer?.[id]?.revision||0,version:1,conflict:true};
+      store.status='Nueva versión en otro dispositivo';
+      try{localStorage.setItem(store.key,JSON.stringify(store.cache));}catch{}
+    }
+  }
+  state=store.state();updateVocabularySnapshot(store.vocabulary());
+  const status=document.querySelector('#account-sync');
+  if(status){status.textContent=store.status;status.classList.toggle('pending',store.status!=='Guardado en servidor');}
+  document.querySelector('#sync-details').innerHTML=conflictHTML(store);
+}
+async function bootAccounts(){
+  account=await requireAccount();if(!account)return;
+  state=defaultState();configureAIFeedback({},account.id,true);configureVocabulary({schemaVersion:1,units:{}},()=>{});
+  document.querySelector('#account-panel').innerHTML=`<span class="account-name">${esc(account.name)}</span>${account.role==='teacher'?'<a href="#teacher">Panel del profesor</a>':''}<button class="small-button" data-logout>Cerrar sesión</button>${account.role==='student'?'<span id="account-sync" class="sync-status" role="status">Consultando servidor…</span>':''}`;
+  document.querySelector('.sidebar-bottom').textContent=account.role==='teacher'?'Supervisión y comentarios':'Progreso en tu cuenta';
+  if(account.role==='teacher'){installTeacherEvents(app,vocabularyData);return;}
+  const transport={snapshot:()=>rpc('learning_snapshot'),save:p=>rpc('save_entity',{p_kind:p.kind,p_id:p.id,p_data:p.data,p_expected:p.expected})};
+  learningStore=new LearningStore(account.id,transport,localStorage,syncUI);
+  syncUI(learningStore);await learningStore.refresh();
+  configureVocabulary(learningStore.vocabulary(),lab=>{for(const [id,data]of Object.entries(lab.units))learningStore.set('vocabulary',id,data);});
+  try{legacy=legacyPackage();if(legacy&&await alreadyImported(legacy,account,course,vocabularyData))legacy=null;}catch{document.querySelector('#sync-details').textContent='El respaldo antiguo contiene datos dañados. Sus claves originales siguen intactas.';}
+  await refreshAccountExtras();
+  try{for(const clip of await localRecordings(account)){
+    const row=serverRecordings.find(r=>r.id===clip.id);
+    const existing=speakingRecordings.get(clip.exerciseId);
+    if(existing?.server&&row&&existing.server.created_at>row.created_at)continue;
+    const saved={...clip,url:URL.createObjectURL(clip.blob),...(row?.status==='ready'?{server:row}:{})};speakingRecordings.set(clip.exerciseId,saved);
+    if(!saved.server)uploadClip(clip.exerciseId,saved);
+  }}catch{ /* The server remains available when the local audio cache is unavailable. */ }
+  learningStore.flush();
+  window.addEventListener('online',()=>{learningStore.flush().then(()=>refreshAccount());for(const [id,clip]of speakingRecordings)if(!clip.server)uploadClip(id,clip);});
+  window.addEventListener('focus',()=>refreshAccount());
+  setInterval(()=>{if(document.visibilityState==='visible')refreshAccount();},30000);
+}
+async function refreshAccount(){
+  if(account?.role!=='student')return;
+  await learningStore.flush();await learningStore.refresh();await refreshAccountExtras();
+  if(!document.activeElement?.dataset.response&&!activeRecorder&&![...document.querySelectorAll('audio')].some(audio=>!audio.paused))render();
+}
+async function refreshAccountExtras(){
+  if(account?.role!=='student')return;
+  try{
+    [feedbackRows,teacherReviews,serverRecordings]=await Promise.all([query('ai_feedback','user_id',account.id,null),query('teacher_reviews','student_id',account.id,null),query('speaking_recordings','user_id',account.id,null)]);
+    const items={};for(const row of feedbackRows){if(items[row.exercise_id])continue;items[row.exercise_id]={schemaVersion:1,kind:row.kind,exerciseId:row.exercise_id,timestamp:row.created_at,model:row.model,feedback:row.feedback,sourceHash:row.source_hash,id:row.id,provenance:row.provenance,recordingId:row.recording_id,target:row.target,duration:Number(row.duration||0)};}
+    configureAIFeedback(items,account.id);
+  }catch{ /* Keep visible cached feedback when temporarily offline. */ }
+}
+async function uploadClip(id,clip,throwErrors=false){
+  if(!account||!clip)return;
+  try{return await uploadRecording(account,id,clip,message=>{
+    clip.uploadStatus=message;recorderStatus(id,message);
+    const panel=recorderPanel(id);if(panel&&!panel.querySelector('[data-record-retry]'))panel.insertAdjacentHTML('beforeend',`<button class="small-button" data-record-retry="${esc(id)}">Reintentar subida</button>`);
+    if(clip.server)panel?.querySelector('[data-record-retry]')?.remove();
+  });}catch(error){if(throwErrors)throw error;}
+}
+async function restoreRemoteClip(id){
+  if(!account||speakingRecordings.has(id))return;
+  const row=serverRecordings.find(r=>r.exercise_id===id&&r.status==='ready');if(!row)return;
+  try{const clip={id:row.id,server:row,duration:Number(row.duration),url:await signedAudio(row.original_path)};if(speakingRecordings.has(id))return;speakingRecordings.set(id,clip);syncRecorder(id);recorderStatus(id,'Audio privado guardado en servidor.');}catch{recorderStatus(id,'No se pudo cargar el audio privado. Reabre el ejercicio para reintentar.');}
+}
+document.addEventListener('click',async event=>{
+  const button=event.target.closest('button');if(!button)return;
+  if(button.hasAttribute('data-logout')){
+    if(learningStore && !(await learningStore.flush()) && !confirm('Hay cambios pendientes conservados en este dispositivo. ¿Cerrar sesión y sincronizarlos cuando vuelvas a entrar con esta cuenta?'))return;
+    stopActiveRecording();stopListening();for(const clip of speakingRecordings.values())if(clip.url?.startsWith('blob:'))URL.revokeObjectURL(clip.url);
+    speakingRecordings.clear();state=defaultState();teacherReviews=[];configureAIFeedback({});configureVocabulary({schemaVersion:1,units:{}},()=>{});app.replaceChildren();mainNav.replaceChildren();weekNav.replaceChildren();document.querySelector('#sync-details').replaceChildren();
+    const {error}=await account.client.auth.signOut({scope:'local'});if(error){localStorage.removeItem('aptis-v2-auth');location.replace('./auth.html');return;}
+  }
+  if(button.dataset.conflict){learningStore.resolve(button.dataset.conflict,button.dataset.choice==='local');render();}
+  if(button.hasAttribute('data-import-legacy')){
+    button.disabled=true;const message=document.querySelector('#migration-message');
+    try{const report=await importPackage(legacy,account,course,vocabularyData,learningStore);legacy=null;await refreshAccountExtras();render();app.insertAdjacentHTML('afterbegin',`<p class="v2-banner">Importación verificada: ${report.verifiedEntities} registros · ${report.conflictsPreserved} variantes conservadas · ${report.feedbackAdded} feedback. Las claves originales siguen intactas.</p>`);}catch(error){if(message)message.textContent=error.message;button.disabled=false;}
+  }
+  if(button.hasAttribute('data-full-export')&&account?.role==='student'){
+    button.disabled=true;try{[feedbackRows,teacherReviews,serverRecordings]=await Promise.all([query('ai_feedback','user_id',account.id,null),query('teacher_reviews','student_id',account.id,null),query('speaking_recordings','user_id',account.id,null)]);}catch{button.disabled=false;alert('No se pudo obtener el respaldo completo del servidor. Reintenta cuando vuelva la conexión.');return;}button.disabled=false;
+    downloadJSON({app:'aptis-b2-v2-backup',schemaVersion:2,exportedAt:new Date().toISOString(),state:learningStore.state(),vocabulary:learningStore.vocabulary(),ai:{schemaVersion:1,items:feedbackItems()},serverFeedback:feedbackRows,recordings:serverRecordings,reviews:teacherReviews,pending:learningStore.cache.pending,conflictBackups:learningStore.cache.backups},`aptis-b2-respaldo-completo-${new Date().toISOString().slice(0,10)}.json`);
+  }
+});
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const wordCount = value => (String(value || '').trim().match(/\S+/g) || []).length;
 const answerLetter = id => (course.answers[id] || '').match(/^([A-Z])\s*[-–]/)?.[1] || null;
@@ -139,7 +234,7 @@ function speakingVisualHTML(q, ex) {
 
 function recorderHTML(q) {
   const available = !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
-  return `<div class="recorder-panel" data-recorder-panel="${esc(q.id)}"><h4>Graba tu respuesta</h4>${available ? `<div class="recorder-actions"><button class="small-button" type="button" data-record-start="${esc(q.id)}">Grabar</button><button class="small-button" type="button" data-record-stop="${esc(q.id)}" disabled>Detener</button><button class="small-button" type="button" data-record-play="${esc(q.id)}" disabled>Reproducir</button><button class="small-button" type="button" data-record-again="${esc(q.id)}" disabled>Volver a grabar</button><span class="record-clock" data-record-clock="${esc(q.id)}" role="timer">00:00</span></div><audio data-record-audio="${esc(q.id)}" controls hidden aria-label="Tu grabación de ${esc(q.id)}"></audio><p class="record-status" data-record-status="${esc(q.id)}" role="status" aria-live="polite">La grabación queda en este navegador solo durante esta sesión.</p>` : '<p class="record-status">La grabación no está disponible en este navegador. Puedes usar los temporizadores para practicar.</p>'}</div>`;
+  return `<div class="recorder-panel" data-recorder-panel="${esc(q.id)}"><h4>Graba tu respuesta</h4>${available ? `<div class="recorder-actions"><button class="small-button" type="button" data-record-start="${esc(q.id)}">Grabar</button><button class="small-button" type="button" data-record-stop="${esc(q.id)}" disabled>Detener</button><button class="small-button" type="button" data-record-play="${esc(q.id)}" disabled>Reproducir</button><button class="small-button" type="button" data-record-again="${esc(q.id)}" disabled>Volver a grabar</button><span class="record-clock" data-record-clock="${esc(q.id)}" role="timer">00:00</span></div><audio data-record-audio="${esc(q.id)}" controls hidden aria-label="Tu grabación de ${esc(q.id)}"></audio><p class="record-status" data-record-status="${esc(q.id)}" role="status" aria-live="polite">${account ? 'El audio se guarda de forma privada para ti y tu profesor. OpenAI lo recibe al solicitar corrección.' : 'La grabación queda en este navegador solo durante esta sesión.'}</p>` : '<p class="record-status">La grabación no está disponible en este navegador. Puedes usar los temporizadores para practicar.</p>'}</div>`;
 }
 
 function questionHTML(q, speaking) {
@@ -157,7 +252,7 @@ function questionHTML(q, speaking) {
         : answer
           ? `<select class="answer-select" data-response="${esc(q.id)}" aria-label="Respuesta de ${esc(q.id)}"><option value="">Elige una opción</option>${labels.map(o => `<option value="${esc(o.key)}" ${value === o.key ? 'selected' : ''}>${esc(o.key)}${o.text ? ` · ${esc(o.text)}` : ''}</option>`).join('')}</select>`
           : `<input class="answer-input" data-response="${esc(q.id)}" value="${esc(value)}" aria-label="Respuesta de ${esc(q.id)}" placeholder="Tu respuesta" />`;
-  return `<div class="question" id="q-${esc(q.id)}">${q.intro ? `<div class="source-text">${esc(q.intro)}</div>` : ''}<div class="question-id">${esc(q.id)}${q.wordRange ? ` · ${esc(q.wordRange)} PALABRAS` : ''}</div>${stimulus.visual}<div class="question-prompt">${esc(stimulus.prompt)}</div>${field}<div class="question-feedback" id="feedback-${esc(q.id)}"></div></div>`;
+  return `<div class="question" id="q-${esc(q.id)}">${q.intro ? `<div class="source-text">${esc(q.intro)}</div>` : ''}<div class="question-id">${esc(q.id)}${q.wordRange ? ` · ${esc(q.wordRange)} PALABRAS` : ''}</div>${stimulus.visual}<div class="question-prompt">${esc(stimulus.prompt)}</div>${field}${reviewsHTML(teacherReviews.filter(r=>r.exercise_id===q.id))}<div class="question-feedback" id="feedback-${esc(q.id)}"></div></div>`;
 }
 
 function rangeClass(range, value) {
@@ -353,6 +448,7 @@ function syncRecorder(id) {
   if (!panel) return;
   const recording = activeRecorder?.id === id && activeRecorder.recorder.state === 'recording';
   const saved = speakingRecordings.get(id);
+  if(saved?.uploadStatus&&!recording)recorderStatus(id,saved.uploadStatus);
   panel.querySelector('[data-record-start]').disabled = recording;
   panel.querySelector('[data-record-stop]').disabled = !recording;
   panel.querySelector('[data-record-play]').disabled = recording || !saved;
@@ -389,7 +485,11 @@ async function startRecording(id, again = false) {
         const previous = speakingRecordings.get(id);
         if (previous) URL.revokeObjectURL(previous.url);
         const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
-        speakingRecordings.set(id, { url: URL.createObjectURL(blob), blob, duration: (Date.now() - started) / 1000 });
+        const clip={id:crypto.randomUUID(),url:URL.createObjectURL(blob),blob,duration:(Date.now()-started)/1000};
+        speakingRecordings.set(id,clip);
+        if(account?.role==='student') {
+          uploadClip(id,clip);
+        }
         recorderStatus(id, 'Grabación lista. Puedes reproducirla o volver a grabar.');
       } else recorderStatus(id, 'No se recibió audio. Inténtalo de nuevo.');
       if (activeRecorder?.recorder === recorder) activeRecorder = null;
@@ -404,7 +504,7 @@ async function startRecording(id, again = false) {
       if (clock) clock.textContent = `${String(Math.floor(elapsed / 60)).padStart(2, '0')}:${String(elapsed % 60).padStart(2, '0')}`;
     };
     tick(); ownTick = setInterval(tick, 250);
-    recorderStatus(id, 'Grabando… La voz no se envía a ningún servidor.');
+    recorderStatus(id, account ? 'Grabando… Al terminar se guardará de forma privada en tu cuenta.' : 'Grabando… La voz no se envía a ningún servidor.');
     syncRecorder(id);
   } catch {
     recorderStatus(id, 'No se pudo acceder al micrófono. Revisa el permiso del navegador o usa los temporizadores.');
@@ -428,7 +528,9 @@ async function importProgress(file) {
   if (!file) return;
   try {
     if (file.size > 10 * 1024 * 1024) throw new Error('El archivo supera el tamaño admitido.');
-    const incoming = validateProgress(JSON.parse((await file.text()).replace(/^\uFEFF/, '')), course);
+    const parsed=JSON.parse((await file.text()).replace(/^\uFEFF/, ''));
+    if(account){if(account.role!=='student')throw Error('Solo la alumna puede importar.');const report=await importPackage(parsed,account,course,vocabularyData,learningStore);await refreshAccountExtras();render();document.getElementById('progress-message').textContent=`Importación comprobada: ${report.verifiedEntities} registros. ${report.conflictsPreserved} variantes conservadas.`;return;}
+    const incoming = validateProgress(parsed, course);
     if (!window.confirm('¿Reemplazar todo el progreso guardado en este navegador por el del archivo? Esta acción no se puede deshacer.')) {
       if (message) message.textContent = 'Importación cancelada. El progreso actual sigue intacto.';
       return;
@@ -443,9 +545,11 @@ async function importProgress(file) {
 
 function render() {
   if (!course) return;
+  if(account?.role==='teacher'){mainNav.innerHTML='<a class="nav-link" href="#teacher">Panel del profesor</a>';weekNav.innerHTML='';topProgress.textContent='Supervisión';breadcrumb.textContent='PROFESOR';teacherDashboard(app,account,course,writingPlan,vocabularyData);return;}
   stopActiveRecording();
   renderNav();
   const hash = location.hash.slice(1) || 'dashboard';
+  if(hash==='teacher'){app.innerHTML='<section class="card">Esta sección es exclusiva del profesor.</section>';return;}
   if (hash.startsWith('session=')) sessionView(hash.slice(8));
   else if (hash === 'diagnostic') diagnosticView();
   else if (hash === 'mocks') mocksView();
@@ -459,12 +563,17 @@ function render() {
   menu.classList.remove('open'); document.getElementById('mobile-backdrop').classList.remove('show');
   document.querySelectorAll('[data-recorder-panel]').forEach(panel => { if (panel.querySelector('[data-record-start]')) syncRecorder(panel.dataset.recorderPanel); });
   document.querySelectorAll('[data-ai-panel]').forEach(panel => syncAIFeedback(panel.dataset.aiPanel));
+  if(account?.role==='student'){app.insertAdjacentHTML('afterbegin',migrationHTML(legacy));app.insertAdjacentHTML('beforeend','<section class="card server-backup"><button class="small-button" data-full-export>Descargar respaldo completo</button></section>');}
+  document.querySelectorAll('[data-recorder-panel]').forEach(panel=>restoreRemoteClip(panel.dataset.recorderPanel));
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 installAIFeedback({
   getAnswer: id => state.responses[id] || '',
   getRecording: id => activeRecorder?.id === id ? null : speakingRecordings.get(id),
+  ensureRecording: async id=>{const clip=speakingRecordings.get(id);if(!clip)throw Error('Audio no disponible');if(!clip.blob){const response=await fetch(await signedAudio(clip.server.original_path));if(!response.ok)throw Error('Audio no disponible');clip.blob=await response.blob();}if(!clip.server)await uploadClip(id,clip,true);return clip;},
+  flush:()=>learningStore?.flush()||Promise.resolve(false),
+  feedbackSaved:()=>refreshAccountExtras(),
   addErrors: (id, errors) => {
     let count = 0;
     for (const error of errors) {
@@ -501,7 +610,8 @@ document.addEventListener('click', e => {
   if (button.dataset.recordStart) startRecording(button.dataset.recordStart);
   if (button.dataset.recordStop) stopActiveRecording();
   if (button.dataset.recordAgain) startRecording(button.dataset.recordAgain, true);
-  if (button.dataset.recordPlay) recorderPanel(button.dataset.recordPlay)?.querySelector('[data-record-audio]')?.play();
+  if(button.dataset.recordPlay){const clip=speakingRecordings.get(button.dataset.recordPlay);if(clip?.server&&!clip.blob)signedAudio(clip.server.original_path).then(url=>{const player=recorderPanel(button.dataset.recordPlay)?.querySelector('[data-record-audio]');if(player){player.src=url;player.play().catch(()=>{});}}).catch(()=>recorderStatus(button.dataset.recordPlay,'No se pudo cargar el audio.'));else recorderPanel(button.dataset.recordPlay)?.querySelector('[data-record-audio]')?.play();}
+  if(button.dataset.recordRetry)uploadClip(button.dataset.recordRetry,speakingRecordings.get(button.dataset.recordRetry));
 
 
   if (button.hasAttribute('data-export-progress')) downloadProgress();
@@ -528,5 +638,6 @@ app.innerHTML = '<div class="card">Cargando el curso…</div>';
 Promise.all([
   fetch('./data/course.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   fetch('./audio/manifest.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
+  fetch('./data/vocabulary.json').then(r=>r.json()),
   fetch('./data/writing-plan.json').then(r => { if (!r.ok) throw new Error('Writing plan unavailable'); return r.json(); }),
-]).then(([data, manifest, plan]) => { course = data; audioManifest = manifest.files || {}; writingPlan = plan; render(); }).catch(() => { app.innerHTML = '<div class="card"><h1>No se pudo cargar el curso</h1><p>Abre esta web desde un servidor estático o desde GitHub Pages para permitir la lectura del archivo de datos.</p></div>'; });
+]).then(async ([data,manifest,vocab,plan])=>{course=data;audioManifest=manifest.files||{};writingPlan=plan;vocabularyData=vocab;await bootAccounts();render();}).catch(error=>{app.innerHTML=`<div class="card"><h1>No se pudo abrir la academia</h1><p>${esc(error.message||'Comprueba la conexión.')}</p><a href="./auth.html">Ir al acceso</a></div>`;});

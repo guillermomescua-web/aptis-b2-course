@@ -1,12 +1,20 @@
 {
-  "name": "aptis-b2-course",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "test": "node --test tests/*.test.mjs",
-    "test:browser": "node tests/browser.mjs",
-    "verify": "node tools/verify_v1_4.mjs",
-    "catalog": "node tools/build_ai_catalog.mjs"
-  },
-  "devDependencies": { "playwright": "^1.55.0" }
+    "name":  "aptis-b2-course",
+    "private":  true,
+    "type":  "module",
+    "scripts":  {
+                    "test":  "node --test tests/*.test.mjs",
+                    "test:browser":  "node tests/v2-browser.mjs",
+                    "verify":  "node tools/verify_v2.mjs",
+                    "catalog":  "node tools/build_ai_catalog.mjs",
+                    "build:vendor":  "node tools/build_vendor.mjs"
+                },
+    "devDependencies":  {
+                            "@electric-sql/pglite":  "0.3.14",
+                            "esbuild":  "0.25.12",
+                            "playwright":  "^1.55.0"
+                        },
+    "dependencies":  {
+                         "@supabase/supabase-js":  "2.102.0"
+                     }
 }

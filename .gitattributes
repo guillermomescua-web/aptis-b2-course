@@ -1,0 +1,2 @@
+# Generated SDK contains intentional whitespace in regular-expression strings.
+src/vendor/supabase.js -whitespace

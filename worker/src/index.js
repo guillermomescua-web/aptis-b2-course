@@ -1,4 +1,5 @@
 import catalog from './catalog.js';
+import { handleAuthenticated } from './v2-handler.js';
 import { writingSchema, speakingSchema, validateFeedback, parseModelJSON, countWords, AI_SCHEMA_VERSION } from '../../src/ai-schema.js';
 import { writingInstructions, speakingInstructions } from './prompts.js';
 import { inspectWav, audioBase64, MAX_AUDIO_BYTES } from './audio.js';
@@ -33,7 +34,7 @@ async function ipDigest(ip, salt) {
 }
 async function quota(env, ipHash, phase, cost = 1) {
   const stub = env.QUOTAS.get(env.QUOTAS.idFromName('course-global-budget'));
-  const result = await stub.fetch('https://internal/quota', { method: 'POST', body: JSON.stringify({ ipHash, phase, cost }) });
+  const result = await stub.fetch('https://internal/quota', { method: 'POST', body: JSON.stringify({ ipHash, phase, cost, userId:env._VERIFIED_USER,kind:cost===2?'speaking':'writing' }) });
   if (!result.ok) fail(429, 'RATE_LIMIT', 'Has alcanzado el límite de correcciones. Espera antes de volver a intentarlo.');
 }
 async function verifyTurnstile(token, ip, env, action, fetcher) {
@@ -107,7 +108,7 @@ function usageRecord(data) {
   return [{ inputTokens: n(u.input_tokens ?? u.prompt_tokens), outputTokens: n(u.output_tokens ?? u.completion_tokens), audioInputTokens: n(u.prompt_tokens_details?.audio_tokens), cachedInputTokens: n(u.input_tokens_details?.cached_tokens ?? u.prompt_tokens_details?.cached_tokens), reasoningTokens: n(u.output_tokens_details?.reasoning_tokens ?? u.completion_tokens_details?.reasoning_tokens), cacheWriteTokens: n(u.input_tokens_details?.cache_write_tokens) }];
 }
 
-export async function handleRequest(request, env, fetcher = fetch) {
+export async function handleCoreRequest(request, env, fetcher = fetch) {
   const origin = request.headers.get('Origin');
   const headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Vary': 'Origin' };
   if (origin === env.ALLOWED_ORIGIN) headers['Access-Control-Allow-Origin'] = origin;
@@ -160,4 +161,5 @@ export async function handleRequest(request, env, fetcher = fetch) {
     return reply({ error: { code: 'INTERNAL', message: 'No se pudo completar la corrección.' } }, 500);
   }
 }
+export function handleRequest(request, env, fetcher = fetch) { return handleAuthenticated(request,env,fetcher,handleCoreRequest); }
 export default { fetch: (request, env) => handleRequest(request, env) };

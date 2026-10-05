@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const [supabaseUrl,supabasePublishableKey]=process.argv.slice(2);
+if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(supabaseUrl||'')||!(supabasePublishableKey||'').startsWith('sb_publishable_'))throw Error('Provide the public Supabase URL and publishable key only. Never provide a secret key.');
+const file=new URL('../data/account-config.json',import.meta.url);const config=JSON.parse(fs.readFileSync(file));
+fs.writeFileSync(file,JSON.stringify({...config,enabled:true,supabaseUrl,supabasePublishableKey},null,2)+'\n');
+const worker=new URL('../worker/wrangler.toml',import.meta.url);let source=fs.readFileSync(worker,'utf8');
+source=source.replace(/SUPABASE_URL = .*\n/,'').replace(/SUPABASE_PUBLISHABLE_KEY = .*\n/,'');
+source=source.replace('[vars]',`[vars]\nSUPABASE_URL = "${supabaseUrl}"\nSUPABASE_PUBLISHABLE_KEY = "${supabasePublishableKey}"`);
+fs.writeFileSync(worker,source);
+console.log('Public configuration written. A backend secret must be supplied securely before deployment.');
