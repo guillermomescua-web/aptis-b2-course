@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Acceso · APTIS B2</title><link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./styles.css?v=2"><link rel="stylesheet" href="./v2.css?v=2"></head>
+<body class="auth-page"><main class="auth-card"><a class="eyebrow" href="./index.html">APTIS B2 · PERFORMANCE COURSE</a><h1 id="auth-title">Entra en tu academia</h1><p>Tu curso y tu progreso, en todos tus dispositivos.</p>
+<form method="post" id="login-form"><label>Correo<input name="email" type="email" autocomplete="username" required maxlength="254"></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label><button class="primary-button" type="submit" disabled>Entrar</button></form>
+<button id="forgot" class="small-button" type="button">¿Has olvidado tu contraseña?</button>
+<form method="post" id="reset-form" hidden><label>Correo<input name="email" type="email" autocomplete="email" required maxlength="254"></label><button class="primary-button" type="submit" disabled>Enviar enlace de recuperación</button></form>
+<form method="post" id="password-form" hidden><label>Nueva contraseña<input name="password" type="password" autocomplete="new-password" minlength="12" required></label><label>Repite la contraseña<input name="repeat" type="password" autocomplete="new-password" minlength="12" required></label><button class="primary-button" type="submit" disabled>Guardar contraseña</button></form>
+<p id="auth-message" role="status" aria-live="polite"></p><p class="ai-meta">Acceso por invitación de la academia.</p></main><script type="module" src="./src/auth-page.js"></script></body></html>

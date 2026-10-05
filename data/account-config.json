@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "supabaseUrl": "https://hahwtsmiopmlcqypfojb.supabase.co",
+  "supabasePublishableKey": "sb_publishable_WCDmNYwc_0u_6g_6RoSpnA_XDevZrm5",
+  "authRedirectUrl": "https://guillermomescua-web.github.io/aptis-b2-course/auth.html",
+  "workerUrl": "https://aptis-b2-ai.aptis-b2-ai.workers.dev",
+  "setupOnly": true
+}
