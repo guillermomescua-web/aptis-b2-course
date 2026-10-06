@@ -52,3 +52,7 @@ Formato comprobado contra [preparación oficial General](https://www.britishcoun
 La escucha humana de las voces y el segundo dispositivo físico corresponden a la prueba manual. Se verifican integridad y reproducción; no se afirma haber valorado físicamente el sonido. Una transcripción opcional de cuatro muestras fue rechazada por revisión automática de permisos y no se ejecutó, sin gasto adicional.
 
 Al completar la comprobación publicada se congela v2.1: no ampliar alcance, salvo corregir fallos reales.
+
+## Publicación
+
+La release se publica desde main. Si una subida mediante integración no inicia Pages, la edición final de esta documentación desde GitHub activa el build sin cambiar su fuente. Confirmar el SHA desplegado y los archivos publicados antes de cerrar. Los audios ya generados se publican como archivos; desplegar no debe regenerarlos.
