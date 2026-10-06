@@ -6,7 +6,7 @@ const headers={apikey:config.supabasePublishableKey};
 const settings=await fetch(config.supabaseUrl+'/auth/v1/settings',{headers}).then(r=>r.json());
 assert.equal(settings.disable_signup,true,'Public signup must be disabled');
 const checks=['Public signup disabled'];
-for(const table of ['profiles','user_roles','teacher_students','answer_drafts','session_progress','exercise_progress','listening_progress','error_entries','vocabulary_progress','ai_feedback','speaking_recordings','teacher_reviews','migration_imports','entity_conflicts','activity_events']){
+for(const table of ['profiles','user_roles','teacher_students','answer_drafts','session_progress','exercise_progress','listening_progress','error_entries','vocabulary_progress','reading_progress','ai_feedback','speaking_recordings','teacher_reviews','migration_imports','entity_conflicts','activity_events']){
  const r=await fetch(config.supabaseUrl+'/rest/v1/'+table+'?select=*&limit=1',{headers});
  assert.ok([401,403].includes(r.status),table+' anonymous denied: '+r.status);checks.push(table+': anonymous denied '+r.status);
 }
