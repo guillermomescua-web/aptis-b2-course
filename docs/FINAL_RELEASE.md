@@ -60,3 +60,7 @@ Al completar la comprobación publicada se congela v2.1: no ampliar alcance, sal
 ## Publicación
 
 La release se publica desde main. Si una subida mediante integración no inicia Pages, la edición final de esta documentación desde GitHub activa el build sin cambiar su fuente. Confirmar el SHA desplegado y los archivos publicados antes de cerrar. Los audios ya generados se publican como archivos; desplegar no debe regenerarlos.
+
+## Cierre de alcance
+
+La v2.1 es la versión final de este proyecto. Tras verificar el despliegue se congela su alcance: conservar contenido y datos; intervenir únicamente para corregir fallos reales. La escucha humana y la prueba desde un segundo dispositivo forman la aceptación manual prevista.
