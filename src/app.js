@@ -1,3 +1,4 @@
+import {renderReadingLab,configureReading,updateReadingSnapshot} from './reading-lab.js';
 import { exportProgress, validateProgress } from './progress.js';
 import { renderVocabularyLab, configureVocabulary, updateVocabularySnapshot } from './vocabulary-lab.js';
 import { aiControlsHTML, installAIFeedback, syncAIFeedback, configureAIFeedback, feedbackItems } from './ai-feedback.js';
@@ -30,6 +31,7 @@ let currentAudio = null;
 const speakingRecordings = new Map();
 let activeRecorder = null;
 let audioManifest = {};
+let listeningBusy=false,activeMock=null;
 
 function loadState() {
   try { return { ...defaultState(), ...JSON.parse(localStorage.getItem(STORE) || '{}') }; }
@@ -51,20 +53,21 @@ function syncUI(store){
       try{localStorage.setItem(store.key,JSON.stringify(store.cache));}catch{}
     }
   }
-  state=store.state();updateVocabularySnapshot(store.vocabulary());
+  state=store.state();updateVocabularySnapshot(store.vocabulary());updateReadingSnapshot(Object.fromEntries(store.entries('reading')));
   const status=document.querySelector('#account-sync');
   if(status){status.textContent=store.status;status.classList.toggle('pending',store.status!=='Guardado en servidor');}
   document.querySelector('#sync-details').innerHTML=conflictHTML(store);
 }
 async function bootAccounts(){
   account=await requireAccount();if(!account)return;
-  state=defaultState();configureAIFeedback({},account.id,true);configureVocabulary({schemaVersion:1,units:{}},()=>{});
+  state=defaultState();configureReading({},()=>{});configureAIFeedback({},account.id,true);configureVocabulary({schemaVersion:1,units:{}},()=>{});
   document.querySelector('#account-panel').innerHTML=`<span class="account-name">${esc(account.name)}</span>${account.role==='teacher'?'<a href="#teacher">Panel del profesor</a>':''}<button class="small-button" data-logout>Cerrar sesión</button>${account.role==='student'?'<span id="account-sync" class="sync-status" role="status">Consultando servidor…</span>':''}`;
   document.querySelector('.sidebar-bottom').textContent=account.role==='teacher'?'Supervisión y comentarios':'Progreso en tu cuenta';
   if(account.role==='teacher'){installTeacherEvents(app,vocabularyData);return;}
   const transport={snapshot:()=>rpc('learning_snapshot'),save:p=>rpc('save_entity',{p_kind:p.kind,p_id:p.id,p_data:p.data,p_expected:p.expected})};
   learningStore=new LearningStore(account.id,transport,localStorage,syncUI);
   syncUI(learningStore);await learningStore.refresh();
+  configureReading(Object.fromEntries(learningStore.entries('reading')),(id,data)=>learningStore.set('reading',id,data));
   configureVocabulary(learningStore.vocabulary(),lab=>{for(const [id,data]of Object.entries(lab.units))learningStore.set('vocabulary',id,data);});
   try{legacy=legacyPackage();if(legacy&&await alreadyImported(legacy,account,course,vocabularyData))legacy=null;}catch{document.querySelector('#sync-details').textContent='El respaldo antiguo contiene datos dañados. Sus claves originales siguen intactas.';}
   await refreshAccountExtras();
@@ -111,7 +114,7 @@ document.addEventListener('click',async event=>{
   if(button.hasAttribute('data-logout')){
     if(learningStore && !(await learningStore.flush()) && !confirm('Hay cambios pendientes conservados en este dispositivo. ¿Cerrar sesión y sincronizarlos cuando vuelvas a entrar con esta cuenta?'))return;
     stopActiveRecording();stopListening();for(const clip of speakingRecordings.values())if(clip.url?.startsWith('blob:'))URL.revokeObjectURL(clip.url);
-    speakingRecordings.clear();state=defaultState();teacherReviews=[];configureAIFeedback({});configureVocabulary({schemaVersion:1,units:{}},()=>{});app.replaceChildren();mainNav.replaceChildren();weekNav.replaceChildren();document.querySelector('#sync-details').replaceChildren();
+    speakingRecordings.clear();state=defaultState();configureReading({},()=>{});teacherReviews=[];configureAIFeedback({});configureVocabulary({schemaVersion:1,units:{}},()=>{});app.replaceChildren();mainNav.replaceChildren();weekNav.replaceChildren();document.querySelector('#sync-details').replaceChildren();
     const {error}=await account.client.auth.signOut({scope:'local'});if(error){localStorage.removeItem('aptis-v2-auth');location.replace('./auth.html');return;}
   }
   if(button.dataset.conflict){learningStore.resolve(button.dataset.conflict,button.dataset.choice==='local');render();}
@@ -121,7 +124,7 @@ document.addEventListener('click',async event=>{
   }
   if(button.hasAttribute('data-full-export')&&account?.role==='student'){
     button.disabled=true;try{[feedbackRows,teacherReviews,serverRecordings]=await Promise.all([query('ai_feedback','user_id',account.id,null),query('teacher_reviews','student_id',account.id,null),query('speaking_recordings','user_id',account.id,null)]);}catch{button.disabled=false;alert('No se pudo obtener el respaldo completo del servidor. Reintenta cuando vuelva la conexión.');return;}button.disabled=false;
-    downloadJSON({app:'aptis-b2-v2-backup',schemaVersion:2,exportedAt:new Date().toISOString(),state:learningStore.state(),vocabulary:learningStore.vocabulary(),ai:{schemaVersion:1,items:feedbackItems()},serverFeedback:feedbackRows,recordings:serverRecordings,reviews:teacherReviews,pending:learningStore.cache.pending,conflictBackups:learningStore.cache.backups},`aptis-b2-respaldo-completo-${new Date().toISOString().slice(0,10)}.json`);
+    downloadJSON({app:'aptis-b2-v2-backup',schemaVersion:2,exportedAt:new Date().toISOString(),state:learningStore.state(),vocabulary:learningStore.vocabulary(),reading:Object.fromEntries(learningStore.entries('reading')),ai:{schemaVersion:1,items:feedbackItems()},serverFeedback:feedbackRows,recordings:serverRecordings,reviews:teacherReviews,pending:learningStore.cache.pending,conflictBackups:learningStore.cache.backups},`aptis-b2-respaldo-completo-${new Date().toISOString().slice(0,10)}.json`);
   }
 });
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -164,13 +167,14 @@ function renderNav() {
     navLink('#mocks', '▣', 'Simulacros'),
     navLink('#books', '▤', 'Masterbooks'),
     navLink('#vocabulary-lab', '✎', 'Vocabulary Lab'),
+    navLink('#reading-lab', '▥', 'Reading Lab'),
     navLink('#tracker', '◇', 'Error Tracker'),
     navLink('#pdfs', '↓', 'Descargar PDFs'),
   ].join('');
   weekNav.innerHTML = Array.from({ length: 8 }, (_, wi) => {
     const w = wi + 1;
     const done = [1, 2, 3, 4].filter(d => state.completed[sessionId(w, d)]).length;
-    return `<div class="week-group"><button class="week-title" type="button" data-week-toggle="${w}" aria-expanded="true"><span>Semana ${String(w).padStart(2, '0')}</span><small>${done}/4</small></button><div class="days" id="days-${w}">${[1, 2, 3, 4].map(d => { const id = sessionId(w, d), skills = sessionSkills(id); return `<a class="day-link ${state.completed[id] ? 'done' : ''} ${location.hash === `#session=${id}` ? 'active' : ''}" href="#session=${id}" title="Semana ${w}, día ${d}: ${skills.join(', ')}"><span class="day-label">D${d}${state.completed[id] ? ' ✓' : ''}</span><span class="day-skills" aria-label="Skills: ${esc(skills.join(', '))}">${skills.map(skill => `<span class="skill-chip">${esc(skill)}</span>`).join('')}</span></a>`; }).join('')}</div></div>`;
+    return `<div class="week-group"><button class="week-title" type="button" data-week-toggle="${w}" aria-expanded="true"><span>Semana ${String(w).padStart(2, '0')}</span><small>${done}/4</small></button><div class="days" id="days-${w}">${[1, 2, 3, 4].map(d => { const id = sessionId(w, d), skills = sessionSkills(id); return `<a class="day-link ${state.completed[id] ? 'done' : sessionExercises(id).some(ex=>ex.questions.some(q=>state.responses[q.id]?.trim())) ? 'started' : ''} ${location.hash === `#session=${id}` ? 'active' : ''}" href="#session=${id}" title="Semana ${w}, día ${d}: ${skills.join(', ')}"><span class="day-label">${id}${state.completed[id] ? ' ✓' : ''}<small class="session-status">${sessionStatus(id)} · 60 min</small></span><span class="day-skills" aria-label="Skills: ${esc(skills.join(', '))}">${skills.map(skill => `<span class="skill-chip">${esc(skill)}</span>`).join('')}</span></a>`; }).join('')}</div></div>`;
   }).join('');
   topProgress.textContent = `${completedSessions()} / 32 sesiones`;
 }
@@ -187,7 +191,7 @@ function dashboard() {
   breadcrumb.textContent = 'PANEL';
   const done = completedSessions();
   const next = Array.from({ length: 8 }, (_, w) => Array.from({ length: 4 }, (_, d) => sessionId(w + 1, d + 1))).flat().find(id => !state.completed[id]) || 'W8D4';
-  app.innerHTML = pageHeader('Tu espacio de estudio', 'Avanza a tu ritmo.', account ? 'Ocho semanas, cuatro sesiones por semana. Tus respuestas y tu progreso se guardan en tu cuenta para continuar desde cualquier dispositivo.' : 'Ocho semanas, cuatro sesiones por semana. Tus respuestas y tu progreso se guardan en este navegador.', '32 SESIONES · 8 SEMANAS') +
+  app.innerHTML = pageHeader('Tu espacio de estudio', account?`Hola, ${account.name}. APTIS B2`:'Avanza a tu ritmo.', account ? 'Ocho semanas, cuatro sesiones por semana. Tus respuestas y tu progreso se guardan en tu cuenta para continuar desde cualquier dispositivo.' : 'Ocho semanas, cuatro sesiones por semana. Tus respuestas y tu progreso se guardan en este navegador.', '32 SESIONES · 8 SEMANAS') +
     `<div class="stats">
       <div class="stat-card"><div class="stat-label">Sesiones completadas</div><div class="stat-value">${done}<span style="font-size:16px;color:#91a0af"> / 32</span></div><div class="stat-note">${Math.round(done / 32 * 100)}% del curso</div></div>
       <div class="stat-card"><div class="stat-label">Preguntas respondidas</div><div class="stat-value">${responseCount()}</div><div class="stat-note">de ${totalQuestions()} en todo el material</div></div>
@@ -197,8 +201,8 @@ function dashboard() {
     <div class="dashboard-grid"><section class="card"><h2 class="card-title">Tu recorrido</h2><p class="card-subtitle">Marca cada sesión cuando hayas corregido las respuestas y anotado los errores importantes.</p>${Array.from({ length: 8 }, (_, wi) => {
       const n = wi + 1, count = [1, 2, 3, 4].filter(d => state.completed[sessionId(n, d)]).length;
       return `<div class="week-row"><span class="week-name">Semana ${String(n).padStart(2, '0')}</span><div class="week-bar" aria-label="${count} de 4 sesiones"><span style="width:${count * 25}%"></span></div><span class="week-count">${count} / 4 sesiones</span></div>`;
-    }).join('')}</section><div><section class="continue-card"><p class="eyebrow">SIGUIENTE PASO</p><h2>${next.replace('W', 'Semana ').replace('D', ' · Día ')}</h2><p>Una sesión de aproximadamente 60 minutos. Trabaja con el tiempo indicado antes de consultar la corrección.</p><a class="primary-button" href="#session=${next}">Abrir sesión <span>→</span></a></section><section class="card section-space"><h2 class="card-title">Cómo usar el curso</h2><p class="card-subtitle" style="margin-bottom:12px">Haz los ejercicios en orden. Consulta la solución al terminar y registra los errores que se repiten.</p><a class="text-link" href="#book=start">Leer la guía inicial →</a></section></div></div>
-    <section class="section-space"><h2 class="section-heading">Accesos rápidos</h2><div class="quick-grid"><a class="quick-link" href="#vocabulary-lab">Vocabulary Lab <span>↗</span></a><a class="quick-link" href="#mocks">Simulacros <span>↗</span></a><a class="quick-link" href="#books">Masterbooks <span>↗</span></a><a class="quick-link" href="#tracker">Error Tracker <span>↗</span></a></div></section>`;
+    }).join('')}</section><div><section class="continue-card"><p class="eyebrow">SIGUIENTE PASO</p><h2>${next.replace('W', 'Semana ').replace('D', ' · Día ')}</h2><p>Una sesión de aproximadamente 60 minutos. Trabaja con el tiempo indicado antes de consultar la corrección.</p><a class="primary-button" href="#session=${next}">Continuar <span>→</span></a></section><section class="card section-space"><h2 class="card-title">Cómo usar el curso</h2><p class="card-subtitle" style="margin-bottom:12px">Haz los ejercicios en orden. Consulta la solución al terminar y registra los errores que se repiten.</p><a class="text-link" href="#book=start">Leer la guía inicial →</a></section></div></div>
+    <section class="section-space"><h2 class="section-heading">Accesos rápidos</h2><div class="quick-grid"><a class="quick-link" href="#book=writing">Writing <span>↗</span></a><a class="quick-link" href="#book=speaking">Speaking <span>↗</span></a><a class="quick-link" href="#vocabulary-lab">Vocabulary Lab <span>↗</span></a><a class="quick-link" href="#reading-lab">Reading Lab <span>↗</span></a><a class="quick-link" href="#mocks">Simulacros <span>↗</span></a><a class="quick-link" href="#books">Masterbooks <span>↗</span></a><a class="quick-link" href="#tracker">Error Tracker <span>↗</span></a></div></section>`;
   app.innerHTML += progressControls();
 }
 
@@ -206,7 +210,7 @@ function exerciseHTML(ex, index) {
   const audio = ex.title.toLowerCase().includes('listening') ? audioHTML(ex) : '';
   const speaking = ex.title.toLowerCase().includes('speaking');
   const privacyNote = '';
-  return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${ex.context ? `<div class="source-text">${esc(ex.context)}</div>` : ''}${audio}${privacyNote}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] ? keyHTML(ex) : ''}</article>`;
+  return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${ex.context ? `<div class="source-text">${esc(ex.context)}</div>` : ''}${audio}${privacyNote}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] && !document.body.classList.contains('mock-attempt') ? keyHTML(ex) : ''}</article>`;
 }
 
 function writingAssistHTML(q) { return aiControlsHTML('writing', q); }
@@ -274,7 +278,7 @@ function audioHTML(ex) {
     ids = all.filter(id => { const n = Number(id.match(/-R(\d{2})$/)?.[1]); return n >= range[0] && n <= range[1]; });
   }
   if (!ids.length) return '';
-  return `<div class="audio-panel"><h4>Audio con voz del navegador · texto oculto durante el intento</h4><p style="font-size:11px;color:#6f8494;margin:0 0 10px">Escucha cada grabación un máximo de dos veces. La voz depende del navegador y de las voces instaladas.</p>${ids.map(id => `<div class="audio-row"><span>${esc(id)}</span><button class="small-button" type="button" data-play="${esc(id)}" ${state.plays[id] >= 2 ? 'disabled' : ''}>▶ Escuchar</button><small>${state.plays[id] || 0} / 2 escuchas</small></div>`).join('')}<button class="small-button" type="button" data-stop-audio>Detener audio</button></div>`;
+  return `<div class="audio-panel"><h4>Listening · texto oculto durante el intento</h4><p style="font-size:11px;color:#6f8494;margin:0 0 10px">Escucha cada grabación un máximo de dos veces. Voces generadas con IA y archivos estáticos; si un archivo falta, se utiliza la voz del navegador.</p>${ids.map(id => `<div class="audio-row"><span>${esc(id)}</span><button class="small-button" type="button" data-play="${esc(id)}" ${state.plays[id] >= 2 ? 'disabled' : ''}>▶ Escuchar</button><small>${state.plays[id] || 0} / 2 escuchas</small></div>`).join('')}<button class="small-button" type="button" data-stop-audio>Detener audio</button></div>`;
 }
 
 function renderExercisePage(kind, id, exercises, meta) {
@@ -285,16 +289,20 @@ function renderExercisePage(kind, id, exercises, meta) {
   const skills = kind === 'session' ? sessionSkills(id) : [];
   const timed = kind === 'mock' ? (id.endsWith('-A') ? [['Core', 25], ['Reading', 35]] : id.endsWith('-B') ? [['Writing', 50], ['Revisión', 10]] : [['Listening', 40], ['Speaking', 12], ['Revisión', 8]]) : [['Sesión completa', 60]];
   app.innerHTML = pageHeader(meta.eyebrow, meta.title, meta.subtitle, meta.aside || '') +
-    `<div class="session-meta"><span class="tag green">${exercises.length} ejercicios</span><span class="tag">${exercises.reduce((n, e) => n + e.questions.length, 0)} preguntas</span>${skills.map(skill => `<span class="tag skill-summary">${esc(skill)}</span>`).join('')}${done ? '<span class="tag gold">Completado ✓</span>' : ''}</div>
+    `<div class="session-meta"><span class="tag green">${exercises.length} ejercicios</span><span class="tag">${exercises.reduce((n, e) => n + e.questions.length, 0)} preguntas</span>${skills.map(skill => `<span class="tag skill-summary">${esc(skill)}</span>`).join('')}${done ? '<span class="tag gold">Completada ✓</span>' : kind==='session'?`<span class="tag">${sessionStatus(id)}</span>`:''}</div>
     <div class="session-actions"><button class="primary-button" type="button" data-complete="${esc(id)}">${done ? 'Marcar como pendiente' : 'Marcar como completado'}</button>${meta.pdf ? `<a class="secondary-button" href="${pdfUrl(meta.pdf)}" target="_blank" rel="noopener">Abrir PDF original ↗</a>` : ''}<a class="secondary-button" href="#tracker">Registrar un error</a></div>
     <div class="timer-panel"><h4>Temporizadores</h4><div class="timer-row">${timed.map(([label, min]) => `<button type="button" class="small-button" data-timer="${min * 60}" data-timer-label="${esc(label)} · ${min} min">${esc(label)} · ${min} min</button>`).join('')}</div></div>
     ${kind === 'mock' ? '<div class="notice" style="margin-bottom:20px">Los bloques distribuyen cada simulacro en tres sesiones de 60 minutos: A (Core + Reading), B (Writing + revisión), C (Listening + Speaking + revisión). Conserva el mismo número de simulacro en los tres bloques.</div>' : ''}
     ${weeklyWriting ? `<div class="notice writing-plan-note"><strong>Writing principal: 3 bloques esta semana.</strong> ${esc(weeklyWriting.reason)} El resto está en «Práctica extra de Writing». El plan del PDF se conserva como referencia.</div>` : ''}
     ${kind === 'session' && course.sessions[id]?.plan ? `<section class="card" style="margin-bottom:20px"><h2 class="card-title">Plan original de la sesión · referencia del PDF</h2><div class="source-text" style="margin:13px 0 0">${esc(course.sessions[id].plan)}</div></section>` : ''}
     <div class="exercise-list">${blocks.primary.map(exerciseHTML).join('')}</div>${blocks.extra.length ? `<details class="writing-extra section-space"><summary>Práctica extra de Writing · ${blocks.extra.length} bloques opcionales</summary><p>Esta práctica no bloquea la finalización de la sesión. Tus respuestas y correcciones anteriores se conservan.</p><div class="exercise-list">${blocks.extra.map((ex, i) => exerciseHTML(ex, blocks.primary.length + i)).join('')}</div></details>` : ''}${kind === 'session' && course.sessions[id]?.correction ? `<section class="card section-space"><h2 class="card-title">Corrección y transferencia</h2><p class="book-text">${esc(course.sessions[id].correction)}</p></section>` : ''}<div class="session-actions"><button class="primary-button" type="button" data-complete="${esc(id)}">${done ? 'Marcar como pendiente' : 'Marcar como completado'}</button><a class="secondary-button" href="#tracker">Ir al Error Tracker</a></div>`;
-  for (const ex of exercises) if (state.checked[ex.id]) updateFeedback(ex);
+  for (const ex of exercises) if (state.checked[ex.id] && !document.body.classList.contains('mock-attempt')) updateFeedback(ex);
 }
 
+function sessionStatus(id){
+ if(state.completed[id])return 'Completada';
+ const exercises=sessionExercises(id);return exercises.some(ex=>state.checked[ex.id]||ex.questions.some(q=>state.responses[q.id]?.trim())||Object.keys(state.plays).some(r=>r.startsWith(ex.id+'-R')&&state.plays[r]>0)||serverRecordings.some(r=>ex.questions.some(q=>q.id===r.exercise_id)&&r.status==='ready'))?'Empezada':'Pendiente';
+}
 function sessionView(id) {
   const m = id.match(/^W([1-8])D([1-4])$/);
   if (!m) return dashboard();
@@ -320,8 +328,16 @@ function mockHome(n) {
 }
 
 function mockBlock(n, b) {
+  const attempting=activeMock?.n===n&&activeMock?.b===b&&!activeMock.finished;
+  document.body.classList.toggle('mock-attempt',attempting);
+  if(!activeMock||activeMock.n!==n||activeMock.b!==b){
+    if(![1,2,3,4].includes(n)||!['A','B','C'].includes(b))return mocksView();
+    breadcrumb.textContent=`SIMULACRO ${n} · BLOQUE ${b}`;
+    app.innerHTML=`<section class="card mock-intro"><p class="eyebrow">SIMULACRO ${n} · BLOQUE ${b}</p><h1>Un intento, con tus tiempos de examen.</h1><p>Trabaja sin consultar ayudas. Al terminar el intento podrás abrir las correcciones. Tus respuestas y contadores de escucha se conservan.</p><div class="mock-components">${(b==='A'?[['Grammar & Vocabulary','25 min · 25 + 25 preguntas'],['Reading','35 min · cuatro partes']]:b==='B'?[['Writing','50 min · cuatro partes']]:[['Listening','40 min · 17 tareas · 20 grabaciones'],['Speaking','12 min · cuatro partes']]).map(([title,time])=>`<div><strong>${title}</strong>${time}</div>`).join('')}</div><button class="primary-button" data-mock-start="${n}-${b}">Comenzar</button><p><a class="text-link" href="#mock=${n}">Volver al simulacro</a></p></section>`;return;
+  }
   if (![1, 2, 3, 4].includes(n) || !['A', 'B', 'C'].includes(b)) return mocksView();
   renderExercisePage('mock', `MOCK${n}-${b}`, mockExercises(n, b), { crumb: `MOCK ${n} / BLOQUE ${b}`, eyebrow: `SIMULACRO ${String(n).padStart(2, '0')} · BLOQUE ${b}`, title: `Bloque ${b}`, subtitle: b === 'A' ? 'Core y Reading, 60 minutos en total.' : b === 'B' ? 'Writing, 50 minutos, más 10 minutos de revisión.' : 'Listening y Speaking, 52 minutos, más 8 minutos de revisión.', aside: 'BLOQUE DE 60 MIN', pdf: '13_MOCK_EXAMS.pdf' });
+  if(attempting)app.insertAdjacentHTML('afterbegin','<div class="mock-exit"><button class="secondary-button" data-mock-finish>Terminar intento y consultar correcciones</button></div>');
 }
 
 const bookMap = { start: '00_START_HERE.pdf', writing: '10_WRITING_MASTERBOOK.pdf', vocabulary: '11_VOCABULARY_MASTERBOOK.pdf', speaking: '12_SPEAKING_MASTERBOOK.pdf', tracker: '15_PROGRESS_ERROR_TRACKER.pdf' };
@@ -423,7 +439,9 @@ function markPlay(id) {
 }
 
 async function playRecording(id) {
-  if (!course.recordings[id] || (state.plays[id] || 0) >= 2) return;
+  if (listeningBusy || !course.recordings[id] || (state.plays[id] || 0) >= 2) return;
+  listeningBusy=true;const button=document.querySelector(`[data-play="${id}"]`);if(button)button.disabled=true;
+  try {
   stopListening();
   const file = audioManifest[id];
   if (typeof file === 'string' && /^[\w.-]+\.(mp3|ogg|wav)$/i.test(file)) {
@@ -436,6 +454,7 @@ async function playRecording(id) {
     } catch { candidate.pause(); }
   }
   if (playSpeech(course.recordings[id])) markPlay(id);
+  } finally {listeningBusy=false;if(button)button.disabled=(state.plays[id]||0)>=2;}
 }
 
 function recorderPanel(id) { return [...document.querySelectorAll('[data-recorder-panel]')].find(el => el.dataset.recorderPanel === id); }
@@ -543,12 +562,13 @@ async function importProgress(file) {
   }
 }
 
-function render() {
+async function render() {
   if (!course) return;
   if(account?.role==='teacher'){mainNav.innerHTML='<a class="nav-link" href="#teacher">Panel del profesor</a>';weekNav.innerHTML='';topProgress.textContent='Supervisión';breadcrumb.textContent='PROFESOR';teacherDashboard(app,account,course,writingPlan,vocabularyData);return;}
   stopActiveRecording();
   renderNav();
   const hash = location.hash.slice(1) || 'dashboard';
+  if(!hash.startsWith('mock='))document.body.classList.remove('mock-attempt');
   if(hash==='teacher'){app.innerHTML='<section class="card">Esta sección es exclusiva del profesor.</section>';return;}
   if (hash.startsWith('session=')) sessionView(hash.slice(8));
   else if (hash === 'diagnostic') diagnosticView();
@@ -556,6 +576,7 @@ function render() {
   else if (hash.startsWith('mock=')) { const p = new URLSearchParams(hash); const n = Number(p.get('mock')); const b = p.get('block'); b ? mockBlock(n, b) : mockHome(n); }
   else if (hash === 'books') booksView();
   else if (hash === 'vocabulary-lab') vocabularyLabView();
+  else if(hash==='reading-lab'){breadcrumb.textContent='READING LAB';await renderReadingLab(app);if(location.hash!=='#reading-lab')return;}
   else if (hash.startsWith('book=')) bookView(hash.slice(5));
   else if (hash === 'tracker') trackerView();
   else if (hash === 'pdfs') pdfsView();
@@ -596,6 +617,8 @@ document.addEventListener('change', e => { if (e.target.dataset.response) { stat
 document.addEventListener('click', e => {
   const button = e.target.closest('button');
   if (!button) return;
+  if(button.dataset.mockStart){const [n,b]=button.dataset.mockStart.split('-');activeMock={n:Number(n),b,finished:false};render();startTimer(b==='A'?3600:b==='B'?3000:3120,'Simulacro '+n+' · Bloque '+b);}
+  if(button.hasAttribute('data-mock-finish')&&activeMock){activeMock.finished=true;render();if(activeTimer)clearInterval(activeTimer);activeTimer=null;document.getElementById('floating-timer')?.remove();}
   if (button.dataset.check) {
     const id = button.dataset.check, ex = course.exercises.find(e => e.id === id); state.checked[id] = !state.checked[id]; save();
     const card = document.getElementById(id); const panel = card.querySelector('.key-panel'); if (panel) panel.remove(); else card.insertAdjacentHTML('beforeend', keyHTML(ex));

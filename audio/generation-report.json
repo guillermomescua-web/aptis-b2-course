@@ -1,0 +1,1350 @@
+{
+  "model": "gpt-4o-mini-tts",
+  "createdAt": "2026-10-06T15:03:51.412Z",
+  "method": "One-time static generation. Dialogues assembled from distinct voices; scripts unchanged.",
+  "costBasis": {
+    "textInputPerMillion": 0.6,
+    "audioOutputPerMillion": 12,
+    "estimatedPerMinute": 0.015
+  },
+  "recordings": {
+    "W1D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "078ba998648ae38de2c51fd6261fb1697dc045417934e3b33ac808ed8f788a4f",
+      "sourceDuration": 23.55,
+      "duration": 23.351,
+      "tempo": 1.0085069444444446,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "5dea8607b9a7aaf25adf279f47eab4b7a25104bde7d4fd4020c35208030eb4da",
+      "requestIds": [
+        "req_c536852da349420398b2e50b801b6b45"
+      ]
+    },
+    "MOCK01-LIST-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "cd180356acc90bbc00b302674883e89aa1b32be256a09cc50b09f90b79cd5a45",
+      "sourceDuration": 11.7,
+      "duration": 13.873,
+      "tempo": 0.843375,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "94c2b032ba9ca7c11f422a4f1c70b02d9b3912f3a58633f2501a65fa9b3058e7",
+      "requestIds": [
+        "req_76593078329f48bbb13ec986fff80baa"
+      ]
+    },
+    "MOCK01-LIST-R02": {
+      "encodingVersion": 2,
+      "scriptHash": "839781d13f64d4c55bf2ffe05547dbc9c3c94aeb1c886e073c6938e35ac00c5c",
+      "sourceDuration": 10.8,
+      "duration": 10.286,
+      "tempo": 1.05,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "00304bf0f98d35a936ae771730ea95c7d64742c6dc2c72bff87dc071ee912003",
+      "requestIds": [
+        "req_e9b4eba32e9f43eb9d5da9d457e86a1e"
+      ]
+    },
+    "MOCK01-LIST-R03": {
+      "encodingVersion": 2,
+      "scriptHash": "af7d9331c0a83d1668f7efb1d7f030747c2033f4aad051e4af4d30346315330c",
+      "sourceDuration": 11.3,
+      "duration": 11.027,
+      "tempo": 1.0247549019607844,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "e6824c286491fad40d4cdb3acaf759bc07364029054413d288ee49360a49f3c7",
+      "requestIds": [
+        "req_dbabad2a8a39494686523be216847bd4"
+      ]
+    },
+    "MOCK01-LIST-R04": {
+      "encodingVersion": 2,
+      "scriptHash": "69ac0a135ae7312f035f6131142c6fb0a64bd4818b1e9a755a9dcf5083ce062b",
+      "sourceDuration": 11.1,
+      "duration": 12.139,
+      "tempo": 0.9144285714285714,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "65c4c2ea830b1d61545c2393d1b6773741cfa7ac55f1e1e2ee3a81c077d875bb",
+      "requestIds": [
+        "req_dafcb7cd30b543c5ba4b686d3b0dbbdc"
+      ]
+    },
+    "MOCK01-LIST-R05": {
+      "encodingVersion": 2,
+      "scriptHash": "dfe307b3b05753a859c1160bf900890f72fde0e4afae3f9de7a5dd797f6d60be",
+      "sourceDuration": 13.9,
+      "duration": 13.238,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "fc2e6ecf1796f0da3493a65892337adcb5b54fd0d3c7414f15fea6ac8e4bebe9",
+      "requestIds": [
+        "req_d95ff9daa1264ac48d1cdc0950928313"
+      ]
+    },
+    "MOCK01-LIST-R06": {
+      "encodingVersion": 2,
+      "scriptHash": "bd307dc3e2556aa8aedc6fc392b8139b486530c27f83b31cfcfe88bddd24cbd0",
+      "sourceDuration": 10,
+      "duration": 9.524,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "5e5f4954f4e8a4f526537af78e49cc9af63af28357b4f2e0e81c878cbd2f2dc8",
+      "requestIds": [
+        "req_80915598fd9c46cd8d6df34a4941bf09"
+      ]
+    },
+    "MOCK01-LIST-R07": {
+      "encodingVersion": 2,
+      "scriptHash": "09763752df43382e39506d47a69659359fd3202f6123f90be3c76e56fc3eb162",
+      "sourceDuration": 11.11,
+      "duration": 10.581,
+      "tempo": 1.05,
+      "voices": [
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "06ebe7eb4e744d46689b69194c904e0bed4c68d5738743712f959145c53d7d2f",
+      "requestIds": [
+        "req_93081e445d72476f89e1d8ad3378222c",
+        "req_47898773eed347a3942b141b32576c19",
+        "req_4ccb16f14b1c403ca0676060953dce7e"
+      ]
+    },
+    "MOCK01-LIST-R08": {
+      "encodingVersion": 2,
+      "scriptHash": "e3397ac42c57adad08af5fe3da49d723c3a0df6b8fee50c37f0e9fbec526a364",
+      "sourceDuration": 10.1,
+      "duration": 9.619,
+      "tempo": 1.05,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "e82f6cac32d1610610d15266bee42e36b3456504fc3b74267bea9f30c2f6cfb4",
+      "requestIds": [
+        "req_1b9adee13a564625a507561c95dbcb69"
+      ]
+    },
+    "MOCK01-LIST-R09": {
+      "encodingVersion": 2,
+      "scriptHash": "44747dae0da1b0fff14ea2f1cbb10b58401735b54974d35aebabf7e439a8d8a5",
+      "sourceDuration": 11.45,
+      "duration": 10.905,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "90c82a59fedb183a40ed159b893f0360bbf09eb8679b2967f8c1b0d556327874",
+      "requestIds": [
+        "req_a0a019e341014721a24752b9a36ebade"
+      ]
+    },
+    "MOCK01-LIST-R10": {
+      "encodingVersion": 2,
+      "scriptHash": "da97a581770e2255a9b0e2e10173ee8360fe84fc87cb5773a08b058bbbe58e26",
+      "sourceDuration": 11.6,
+      "duration": 11.048,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "093ac8df1fc357e0a2e40d89ab57e8067b5c42e3c2179b3ccb1c045b572018d8",
+      "requestIds": [
+        "req_1b10eba3160c49b18642e68af2c286ad"
+      ]
+    },
+    "MOCK01-LIST-R11": {
+      "encodingVersion": 2,
+      "scriptHash": "16c4e5bb1adcbacad0e46de2ea90610af7d5e21b44e7b494ea755b8808322eab",
+      "sourceDuration": 10.65,
+      "duration": 10.143,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "046b8dde3567462843bdee4fbe2e890a7e29bbf4a4f27735124b49a02b4cd2a8",
+      "requestIds": [
+        "req_7362cae69b8041559d31e1209f070337"
+      ]
+    },
+    "MOCK01-LIST-R12": {
+      "encodingVersion": 2,
+      "scriptHash": "9bb25d4dfc7c07325dde077e6af5c2cf3d6002efcbab5775a6620bd2aaa43de2",
+      "sourceDuration": 9.9,
+      "duration": 11.351,
+      "tempo": 0.8721428571428572,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "9accfb1357a00cb4f13d8b09c689197a5b5359bba3de5718b4e3e3a64c7a671a",
+      "requestIds": [
+        "req_13b0ca6f6df641968d4ce2e30cad1299"
+      ]
+    },
+    "MOCK01-LIST-R13": {
+      "encodingVersion": 2,
+      "scriptHash": "371e6fe8d64cb7004ac0235a87743956c13e65d961ec11415d6a4bbedc51b6c9",
+      "sourceDuration": 10.75,
+      "duration": 11.098,
+      "tempo": 0.9686197916666667,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "744554f8ec8e4b869bf32b4ffedc5e01214fd060a96fee133be9376922ace998",
+      "requestIds": [
+        "req_32e9695e7f474ce49e638c84b705a16d"
+      ]
+    },
+    "MOCK01-LIST-R14": {
+      "encodingVersion": 2,
+      "scriptHash": "f1b66a956ad24bdc6f42df364a91f3d7a08283efe4f0f086270ef6bacd460ea1",
+      "sourceDuration": 15.75,
+      "duration": 17.095,
+      "tempo": 0.9213235294117648,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "fa8d5409b52fcb61729ef334c507fc466661e768dcc3ff17a9ce3865eac926db",
+      "requestIds": [
+        "req_573b6845a8ae4af4a8109945652822a1"
+      ]
+    },
+    "MOCK01-LIST-R15": {
+      "encodingVersion": 2,
+      "scriptHash": "47e6bf27992c560cabf83db4ea7b4790afd1288e0dfecaf94657db4d65f48839",
+      "sourceDuration": 18.6,
+      "duration": 17.714,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "6143e2616bab490bce564737ab7c06d0508bb749e627db9f08c57d950e2a21f5",
+      "requestIds": [
+        "req_ecd5ef343efe4c55a0e621643188e968"
+      ]
+    },
+    "MOCK01-LIST-R16": {
+      "encodingVersion": 2,
+      "scriptHash": "83f500eb9761596743188e065f97a27601de1783ad39a824ba27b4ac485f242e",
+      "sourceDuration": 18.35,
+      "duration": 17.476,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "8eaf19255e0f6dc1a9223bee9c5d1d531cb12f7336207962efe43ae90a92f4e1",
+      "requestIds": [
+        "req_9300d9ed01564c398a1a466ff6454a14"
+      ]
+    },
+    "MOCK01-LIST-R17": {
+      "encodingVersion": 2,
+      "scriptHash": "14e9cc200e847f9faeef0f3ce1e399cae818efcfd26a0b99a3dc22a84fe87e09",
+      "sourceDuration": 18.05,
+      "duration": 17.19,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "ddb4caa8880a29f88836eaaf548784ee3b1bdede3e6a908a0a1d3a2611375a9f",
+      "requestIds": [
+        "req_e5dd38368cbd491f89d146b654e5b07e"
+      ]
+    },
+    "MOCK01-LIST-R18": {
+      "encodingVersion": 2,
+      "scriptHash": "54570aecc3590a5227ffec8995f9d7f3ade80cd179f9f54ce283e2fd47a6cc04",
+      "sourceDuration": 47.05,
+      "duration": 44.81,
+      "tempo": 1.05,
+      "voices": [
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "16b1aa90292ef7f0d3382fccfcde64f0ed5d1a7f65fc249db99bfd419711d6ea",
+      "requestIds": [
+        "req_f7ffe453bc344b0db35fdca50c760ea9",
+        "req_66ed30f343ca47ed935041b4ad4105be",
+        "req_2b7ea33db2ab45e2a4556c7d4ea1e31e",
+        "req_72a7013126bc4de4b861612c3bffd874",
+        "req_5e514517dd2347baa3f7cab788f1cba2",
+        "req_8e6bd5890e0043e6beb279b9a7de27d6"
+      ]
+    },
+    "MOCK01-LIST-R19": {
+      "encodingVersion": 2,
+      "scriptHash": "6c73d750f5799f17595ed692e9ff860f431e77c9aa33e6fb803712d6502bd572",
+      "sourceDuration": 61.15,
+      "duration": 65.549,
+      "tempo": 0.9328880070546737,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "cbaf645d74730e7ae826f6eecdc4ba4360bbdaebbeb2e0ff162280f908270ce2",
+      "requestIds": [
+        "req_67207216202c4ec2b8d25c8d0d9e918b"
+      ]
+    },
+    "MOCK01-LIST-R20": {
+      "encodingVersion": 2,
+      "scriptHash": "959cc5fb1140fbe7d04bd7312f0a4e3a4c09d1e7bea568cf542582cb908e634b",
+      "sourceDuration": 58.95,
+      "duration": 60,
+      "tempo": 0.9825000000000002,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "dff08d581e995cb490b4368872d3c29943e822210176aeb67150a81b475020b0",
+      "requestIds": [
+        "req_a09e4938e57045a0ba41d82f33822996"
+      ]
+    },
+    "MOCK02-LIST-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "8612e3056c2772a7c31f4f8bdb940e8885ec2c06b41ebf2f6b0e089d6817f2c6",
+      "sourceDuration": 12.4,
+      "duration": 11.81,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "e53ba4cc48aaec7d5be631aadff32d460858f714f6311d6877cf078680e2e2a9",
+      "requestIds": [
+        "req_3e67486509b3489584ae99c483acdfa1"
+      ]
+    },
+    "MOCK02-LIST-R02": {
+      "encodingVersion": 2,
+      "scriptHash": "d7741c998cfb4e0f970f6036e2a12427221c6ad59d1fddbeca031268ad1c0298",
+      "sourceDuration": 10.1,
+      "duration": 9.711,
+      "tempo": 1.0400595238095238,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "7add7e66e68d2227a164674966da6a131e37414c7dce58cde6556a1e9c2fcbab",
+      "requestIds": [
+        "req_e51f8d64873c4c03bb889158ed132b6b"
+      ]
+    },
+    "MOCK02-LIST-R03": {
+      "encodingVersion": 2,
+      "scriptHash": "c5f1aff9a168c68e194573d44f56fdbb7486ab03df8fc73f252d165373b12db2",
+      "sourceDuration": 13.2,
+      "duration": 12.571,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "ab640e3dece3fbac27d0e8e3ca596cc87800dc36c4d34a869840f0910fe99487",
+      "requestIds": [
+        "req_5cb5199933a148f9a9a3803dceebdcfc"
+      ]
+    },
+    "MOCK02-LIST-R04": {
+      "encodingVersion": 2,
+      "scriptHash": "53bc6f5a5519fbc2c2a48e44613facd7f1c12652c2286f57c7f8bfa3fcd871e8",
+      "sourceDuration": 9.43,
+      "duration": 8.981,
+      "tempo": 1.05,
+      "voices": [
+        "marin",
+        "cedar"
+      ],
+      "sha256": "3da4b00a394aa819fc30f70b89e2b40c7e1f8236c4121f6d607bfae585e1dea5",
+      "requestIds": [
+        "req_d20ea861f1ff4479aa52f7104275f71f",
+        "req_87da61e7d6a24adeb97a353cbbe4c507"
+      ]
+    },
+    "MOCK02-LIST-R05": {
+      "encodingVersion": 2,
+      "scriptHash": "3ae5e5d9b4ed9796a75939768b088e3491be0203fb44fa84fc06aa3de27ec06c",
+      "sourceDuration": 9.75,
+      "duration": 9.286,
+      "tempo": 1.05,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "e63146cd5564e169b19cb69d1ace5d4629ed5ea0bddcecb112427771cc0cd542",
+      "requestIds": [
+        "req_a702147d349144879a19446b38cede9e"
+      ]
+    },
+    "MOCK02-LIST-R06": {
+      "encodingVersion": 2,
+      "scriptHash": "c9a1fd9b41d9b4921d431a487d869eb1f5958a4d0a2ee41bbad2f3489863d48f",
+      "sourceDuration": 11.45,
+      "duration": 10.905,
+      "tempo": 1.05,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "6052bcb8b048f2469e96eaf9653bcc683f92ad91bb94efaf9ff21813afc35db0",
+      "requestIds": [
+        "req_b964c3e6ff314978b63b0408b3190fa9"
+      ]
+    },
+    "MOCK02-LIST-R07": {
+      "encodingVersion": 2,
+      "scriptHash": "8eceea2f03f4a86a1edbf8dd506407f41931768599920960340c11f8b5c0f67e",
+      "sourceDuration": 12.9,
+      "duration": 12.286,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "f53d9a691dd159160358b5566cde55b8726e4722633d6cccc8d6488eda1fb016",
+      "requestIds": [
+        "req_d928531bbd744dce83b9a98d721b5044"
+      ]
+    },
+    "MOCK02-LIST-R08": {
+      "encodingVersion": 2,
+      "scriptHash": "f2ebacbd42e9467c9ff73adac9c6b1e80d27517b1286e38f2220ac831cea41ee",
+      "sourceDuration": 11.3,
+      "duration": 11.098,
+      "tempo": 1.0181770833333332,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "b84302d6098379f8f7c09e481023546789931acdddac10b0a503f41d371132f5",
+      "requestIds": [
+        "req_616faa085dba4bff998bb9863c88ef06"
+      ]
+    },
+    "MOCK02-LIST-R09": {
+      "encodingVersion": 2,
+      "scriptHash": "cff4b48c77bac891101e7dcd9c16612a8275b7480d1cf520315b406c01b12dad",
+      "sourceDuration": 13.05,
+      "duration": 12.429,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "1b381dbc7c63a53ee41e928dd1f2b972eb4421309f5e486459921e6d460efb8c",
+      "requestIds": [
+        "req_02da19b731414d068d2b26551a14a568"
+      ]
+    },
+    "MOCK02-LIST-R10": {
+      "encodingVersion": 2,
+      "scriptHash": "ce9052cc6479aa2dbf07c70a8e882d7d239cb7c00dad7f75a1c0f05f258c686f",
+      "sourceDuration": 11.65,
+      "duration": 11.676,
+      "tempo": 0.9978009259259261,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "cb247d83482d24f2cc2213257e5441e29a0aa8aefb4b7a62c890728eb301e6d7",
+      "requestIds": [
+        "req_56986ac686e14c23922ebbcbf29be86d"
+      ]
+    },
+    "MOCK02-LIST-R11": {
+      "encodingVersion": 2,
+      "scriptHash": "d1a78c636b190688bd4fb6715a33f1c1d1776d595cb1ae974acde3ccc4039bf8",
+      "sourceDuration": 10.35,
+      "duration": 9.857,
+      "tempo": 1.05,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "db4d9d772d7b06b06592e7ebe32b4ed94535e6a1eea6d76dbdf216f97a533864",
+      "requestIds": [
+        "req_f37e3421b55d489eb1ca48d113a986a2"
+      ]
+    },
+    "MOCK02-LIST-R12": {
+      "encodingVersion": 2,
+      "scriptHash": "7dd65377c61e6eee06f7754f0986c910f6919287b5b72cdea5f9b0cd3780a84b",
+      "sourceDuration": 10.68,
+      "duration": 10.726,
+      "tempo": 0.9956875,
+      "voices": [
+        "cedar",
+        "marin"
+      ],
+      "sha256": "6bd131c5fdcb5cf3f6ed3ade10965ce02b39989cce47955b09705a5f32c78260",
+      "requestIds": [
+        "req_947fb8d1167e4b958e85323f98dfc401",
+        "req_616fbdd08ed3467f91cc5da231438caa"
+      ]
+    },
+    "MOCK02-LIST-R13": {
+      "encodingVersion": 2,
+      "scriptHash": "b9f396fc4ad677488e9b5d9cabc48900cab65d45a49ecc73c8e9a0433a4aa919",
+      "sourceDuration": 13.85,
+      "duration": 13.19,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "dfb566e7fb73ff608276d09713f805db8bd97ef3aff091f476de228b20a9027c",
+      "requestIds": [
+        "req_9ced1551fb904b5e99fe4405446ff5c5"
+      ]
+    },
+    "MOCK02-LIST-R14": {
+      "encodingVersion": 2,
+      "scriptHash": "72b26a79057d4e661a4eab6d191a82d5b7bcae622111f677b03103a295062ce8",
+      "sourceDuration": 16.8,
+      "duration": 16,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "90cf0da027bbcd7fa47f61393860653250c9898e8fd11b84376f621c777b9ef3",
+      "requestIds": [
+        "req_8f9eb24db44b47ba8ed8703e352a5262"
+      ]
+    },
+    "MOCK02-LIST-R15": {
+      "encodingVersion": 2,
+      "scriptHash": "4915a7a944fa6c1fdb0d75a6b52166b75c87d3a6be2c432118a89bb2ad6fcd79",
+      "sourceDuration": 17.95,
+      "duration": 17.095,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "3806fb60fb2cc3363a2dd3fb4712f17f343cb7a55441ab8e47ea20d4199c2f68",
+      "requestIds": [
+        "req_1979b22bcd614289bdb9a935d0512428"
+      ]
+    },
+    "MOCK02-LIST-R16": {
+      "encodingVersion": 2,
+      "scriptHash": "f30b9453f0a6732ae54910df655c0cbbca03af03dcdeff5a834382335c3a3b4d",
+      "sourceDuration": 15.75,
+      "duration": 15.568,
+      "tempo": 1.0117187500000002,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "ad5f8d71cab1b5e8c53f1a71855bddc5e005e593eb4dbb493a78b23e26f8c87d",
+      "requestIds": [
+        "req_12b5bfb2f80c47d6b594b36a57a05321"
+      ]
+    },
+    "MOCK02-LIST-R17": {
+      "encodingVersion": 2,
+      "scriptHash": "4a532b3fd1dcf38cfa8e0a6d33e6bfafb5f701e1aa0ca32e8c933dac13250e20",
+      "sourceDuration": 18.75,
+      "duration": 17.857,
+      "tempo": 1.05,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "17b016cd5bc3d83cc944d2dcd5ce22f8af106ba381415bb752344dad22fc29c6",
+      "requestIds": [
+        "req_3d5f43ff26204dcf97c4c1a37aadc225"
+      ]
+    },
+    "MOCK02-LIST-R18": {
+      "encodingVersion": 2,
+      "scriptHash": "f0356334af885074160a2ea83818a414d7e05edf6af88294cf42b690292a7125",
+      "sourceDuration": 48.98,
+      "duration": 46.648,
+      "tempo": 1.05,
+      "voices": [
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "ac862712cbc93657bf24a3172aee1db420833f96d217aff1e68adb36bc2199ab",
+      "requestIds": [
+        "req_b0b63fb681ec42828e19074eb5418a00",
+        "req_a90a0f29b63a43e78cc47c9721910277",
+        "req_54df0697d3254e1fb44b74592f0a42fa",
+        "req_4ea328af58b146a89a4bb13a9db8b3f7",
+        "req_56518b3291cc49409ff67a4053725f8e",
+        "req_5786fbb542eb437698bc67e819139606",
+        "req_533377a7302f4f1f97e027d822679949"
+      ]
+    },
+    "MOCK02-LIST-R19": {
+      "encodingVersion": 2,
+      "scriptHash": "392a2e30e18353105b10b15b2274cb16b687d50782e511406d06fef3207d61df",
+      "sourceDuration": 68.2,
+      "duration": 64.952,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "172c771ccbce311d80b1a1dbf74459d956c92cf2be67ab4243cd3b469becb7c4",
+      "requestIds": [
+        "req_0336244e2af04a94a0731376150b8d2d"
+      ]
+    },
+    "MOCK02-LIST-R20": {
+      "encodingVersion": 2,
+      "scriptHash": "e5d3f54959f79c0e29476635c5e86d8cc338ad71654a86c47bac9d2079f79034",
+      "sourceDuration": 67,
+      "duration": 63.81,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "56985235dc77048b795dc8183a72c27cf876eaced18b5f7f40f3d58686b5c680",
+      "requestIds": [
+        "req_6881656b9fb34a16b56cbb243e765b29"
+      ]
+    },
+    "MOCK03-LIST-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "677f2cd98c74c625034be2822129b3f4f5347d8a2fe6d65a04ab874947c0eac5",
+      "sourceDuration": 13.55,
+      "duration": 12.905,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "525691884b689e6207fcbd07c5e929b6ff30d0c1f282755a5e9a2df7c0b92eb6",
+      "requestIds": [
+        "req_6fd12a26ffa0470f8801ed5163138bdf"
+      ]
+    },
+    "MOCK03-LIST-R02": {
+      "encodingVersion": 2,
+      "scriptHash": "e4dd023c6f51decb329a79f70f3c5722dadd3102fea9f85c51bf941c47a3c431",
+      "sourceDuration": 10.75,
+      "duration": 10.238,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "f37f06396ef704303b8fac25ec427e360851394c331ec1f9534645279e95feda",
+      "requestIds": [
+        "req_0247e74a5ccf4824b67cd726132fa074"
+      ]
+    },
+    "MOCK03-LIST-R03": {
+      "encodingVersion": 2,
+      "scriptHash": "b05d86fc4c68fc01046b6d8379615910e4ccb1142575adbe03cf9ad51910317e",
+      "sourceDuration": 11.55,
+      "duration": 11.792,
+      "tempo": 0.9794852941176472,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "ec81d12d7c7b9568a28c089a38fd04c58ca77d1d6e962b6d68666dcb619cad23",
+      "requestIds": [
+        "req_36e6f49eabf94563bb24b0178d9dfbc3"
+      ]
+    },
+    "MOCK03-LIST-R04": {
+      "encodingVersion": 2,
+      "scriptHash": "10836cd84adcf4260128c3251f6be853d76a818ddfe5d4d631dfbf5260636452",
+      "sourceDuration": 10.05,
+      "duration": 9.571,
+      "tempo": 1.05,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "86121d7bfaf77d3a76352185cc6def6c04d772147757b58b131a0c502ef517ba",
+      "requestIds": [
+        "req_03665ec9f8934917aa6210f724e098d3"
+      ]
+    },
+    "MOCK03-LIST-R05": {
+      "encodingVersion": 2,
+      "scriptHash": "4609636aafe5e24bc07a13f22d2f396570960db88958d80eb57bf038fcd38142",
+      "sourceDuration": 9.33,
+      "duration": 10.054,
+      "tempo": 0.9279838709677419,
+      "voices": [
+        "marin",
+        "cedar"
+      ],
+      "sha256": "ae6ae629f911143a23b0b2144667c89e12b53fa48d4f2e8c7e61e5ecc9519847",
+      "requestIds": [
+        "req_9da95aa42afe4215ae7abd11f8ffd4dd",
+        "req_939898e693014021bff02622b599a637"
+      ]
+    },
+    "MOCK03-LIST-R06": {
+      "encodingVersion": 2,
+      "scriptHash": "e73f64f49802b3e7c3421740f2aff82911697bca690fd1e44dd37f1a0eecfe4b",
+      "sourceDuration": 13.15,
+      "duration": 12.524,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "e752100075503aae8472d799650f068ecfe6e1064b24945e0b0dd450f3770a0f",
+      "requestIds": [
+        "req_aef2d1d8f926400ab0caf718cfcf30bf"
+      ]
+    },
+    "MOCK03-LIST-R07": {
+      "encodingVersion": 2,
+      "scriptHash": "c0cf9b02d2c0c0b74c797c6acbbb9a9b2d9e2e924a9ceebfad8530fc65a34cd2",
+      "sourceDuration": 13,
+      "duration": 12.381,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "2bbaeed510e96940aa83863e45193f6cdc6440428b23f27eb8c3639a92a97419",
+      "requestIds": [
+        "req_92c5d755a6d94852a84103f77c08b5ba"
+      ]
+    },
+    "MOCK03-LIST-R08": {
+      "encodingVersion": 2,
+      "scriptHash": "4a8abb175ccb8d4e4b63032bfb81084a65baf016b5838b5a8e1e16f854eed396",
+      "sourceDuration": 11.45,
+      "duration": 10.905,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "df71507e223ef327a66b9749d2d6e42b98ae544a4fa4d09d08a713476d9cc111",
+      "requestIds": [
+        "req_ef5557727d3344abb3e19fc0360d0365"
+      ]
+    },
+    "MOCK03-LIST-R09": {
+      "encodingVersion": 2,
+      "scriptHash": "1ca11acd460b106846908eadfbd17e6321cb7e6cee6be6d80e066546af650381",
+      "sourceDuration": 8.75,
+      "duration": 8.671,
+      "tempo": 1.0091666666666665,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "661e9f445eb8cc465ef92ef07f5594febd3a414d7a5be94f5e04bcb36e872db1",
+      "requestIds": [
+        "req_90fd313a2984455e9e0d0a7424a386e5"
+      ]
+    },
+    "MOCK03-LIST-R10": {
+      "encodingVersion": 2,
+      "scriptHash": "ed5d5bdf5b43bfcaa3641ed37034b56b47864114cdcf7f9fed9e4f21a552354a",
+      "sourceDuration": 10.85,
+      "duration": 11.061,
+      "tempo": 0.9808838383838383,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "c76d6d596963dc2c84f427e3981a2c9e4d3dcb7f42e2a2c82275b0d569c0199b",
+      "requestIds": [
+        "req_586d43b1fdd8409bb0452e4846cb36d3"
+      ]
+    },
+    "MOCK03-LIST-R11": {
+      "encodingVersion": 2,
+      "scriptHash": "8aded013c65f7afc11d706efc4abbb41c4406b7d48fe76cd0480d5a9b88fb2e8",
+      "sourceDuration": 12.05,
+      "duration": 11.476,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "d57b0a32bb691c04c3d3053614954946cb30e83dde897455e6643c27a378f1b9",
+      "requestIds": [
+        "req_2b72f90a39b54b83a2549e7f50739385"
+      ]
+    },
+    "MOCK03-LIST-R12": {
+      "encodingVersion": 2,
+      "scriptHash": "85eaa469d7b2eab1f99dbe179095e8f683a0a7deb37c76a621b006f556edc77e",
+      "sourceDuration": 13,
+      "duration": 12.381,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "d8f2e86bf6c4a8f59f82d81d261ba6b5dff93dfc17673708b6c83e10490ba7af",
+      "requestIds": [
+        "req_fa79f92cbe394a5caa8ac1dcde106fc7"
+      ]
+    },
+    "MOCK03-LIST-R13": {
+      "encodingVersion": 2,
+      "scriptHash": "d6142ef4affd3b0fbaee5f4dd79700d0a4ac504f96b0a9726539a724e23fb97b",
+      "sourceDuration": 11.45,
+      "duration": 10.905,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "0b6b828d87e7674dcd53a8f1e73cd3f084bb82c1e635d5c13e69f05e671c2391",
+      "requestIds": [
+        "req_e899fa68d83742bc9a06baa5ff94bfb9"
+      ]
+    },
+    "MOCK03-LIST-R14": {
+      "encodingVersion": 2,
+      "scriptHash": "e51d906ee9c4e63c6391bf142868ceccc87dcfa19898a619376b3a10b08cd175",
+      "sourceDuration": 17.7,
+      "duration": 16.857,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "94cb95d28f331804155041da041d95a12eadf5c7c9b460bde52706c21630a0da",
+      "requestIds": [
+        "req_0b4361277eb34a75a87f9f27cfe49f75"
+      ]
+    },
+    "MOCK03-LIST-R15": {
+      "encodingVersion": 2,
+      "scriptHash": "c80a782b5d418f5d65cc40222b275242bba52680f69417c656f74add39943235",
+      "sourceDuration": 16.55,
+      "duration": 16.994,
+      "tempo": 0.9738605442176871,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "a24745239ffb25b061663203908585ae7d6464e2d8d8fb604f547a32fcdcdc4f",
+      "requestIds": [
+        "req_f02fbc6722294d2c9d8566123f9f469a"
+      ]
+    },
+    "MOCK03-LIST-R16": {
+      "encodingVersion": 2,
+      "scriptHash": "f1f4083b788bb983c33d61465ac05edfda4c2c1cfdefb25199fca075ef42fccc",
+      "sourceDuration": 16.2,
+      "duration": 15.754,
+      "tempo": 1.0282978723404255,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "eca1bca56a2a9d528ab882f6fd938c85685185c6e4b2cf8f7c16cb935be297e0",
+      "requestIds": [
+        "req_83a66203b69c4174bccd1a36f6600adf"
+      ]
+    },
+    "MOCK03-LIST-R17": {
+      "encodingVersion": 2,
+      "scriptHash": "49047c8f0c1530b071f25c3010fcc943f4f962ea2980bf9f218850bc29cc852f",
+      "sourceDuration": 18.9,
+      "duration": 18,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "da6c7348443e8edc6465212c75a8085c85157ece9142c4475ffe4955b153af10",
+      "requestIds": [
+        "req_e0170e846e0043d69bd97d1248fd02f7"
+      ]
+    },
+    "MOCK03-LIST-R18": {
+      "encodingVersion": 2,
+      "scriptHash": "f3adeaf4250b154f1356f0c94cf0410f3a6a4bc8c1c222b9e6c930a24f88412a",
+      "sourceDuration": 54.78,
+      "duration": 55.145,
+      "tempo": 0.9933899371069183,
+      "voices": [
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar"
+      ],
+      "sha256": "46f33b7869e170f560f031acf5c9414d553a580ccb3da274280d911125204df8",
+      "requestIds": [
+        "req_97c7feded92d46bf84f0ef6fd821b960",
+        "req_df83bb3f30894e34b78869a5d876587c",
+        "req_70e5c878c40443a3886ed6a3ebf70892",
+        "req_a2e51210682943afb50cda15f40e03f3",
+        "req_4d5db1ec1f9f46ca973f91f3e5d8f36a",
+        "req_cf8595cf253746baaab7a65685c45097",
+        "req_f0b8b27665dd46ecb84f655a62727500"
+      ]
+    },
+    "MOCK03-LIST-R19": {
+      "encodingVersion": 2,
+      "scriptHash": "8f686cd1308e9322ce3d21b7c78aa9297af4a962246a7cc0adb6c96a9fe2ee12",
+      "sourceDuration": 73.15,
+      "duration": 69.667,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "aa5ef5e612ec665b970ae3f39a7a456a7b1af86bf81e9b4e0941ea97b15887b8",
+      "requestIds": [
+        "req_3431f0abc07848e99fe89fb7bd5b3843"
+      ]
+    },
+    "MOCK03-LIST-R20": {
+      "encodingVersion": 2,
+      "scriptHash": "fdcd7ff240dab5954832229def48a163e9214a696d7aacb84706253a15e35232",
+      "sourceDuration": 62.85,
+      "duration": 59.857,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "b1d9f66a1be4ec52c2ecb555908c7c97aaa7fa079033ef1161ca2cbb199fb76b",
+      "requestIds": [
+        "req_5601296a34a847d79ea410fef2e36d73"
+      ]
+    },
+    "MOCK04-LIST-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "ef8f10ac2f237ddb6516587b3a0b67c610fe90a5bfa847372b5ab803ac8c811c",
+      "sourceDuration": 9.85,
+      "duration": 9.711,
+      "tempo": 1.0143154761904762,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "3581026465d3f4387433397209f37fd3db61694343f0a845c88753150b7935e5",
+      "requestIds": [
+        "req_f3f7f59f8ea541408463462fc959c6b8"
+      ]
+    },
+    "MOCK04-LIST-R02": {
+      "encodingVersion": 2,
+      "scriptHash": "4dfbcef8635eff595efd7162216641c9860be80a79438b53c0dfe13b71e7cda2",
+      "sourceDuration": 10.25,
+      "duration": 9.762,
+      "tempo": 1.05,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "65555ffffa63174afa9571cf9fbd9f4f99f195fb9b7c27994c811f2da0a24983",
+      "requestIds": [
+        "req_11ee5924f3744a1b8a26af42238b3248"
+      ]
+    },
+    "MOCK04-LIST-R03": {
+      "encodingVersion": 2,
+      "scriptHash": "33e6f9312e09e30f57ceed56a23cdf5d8ab881ba94adfe98b0c03ff77c957f34",
+      "sourceDuration": 10.85,
+      "duration": 10.333,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "2d2a6241f88fb926f3875355ee91b5e92d2168dd70b0b14297147e40edcad947",
+      "requestIds": [
+        "req_c546dc37df5349248138af1fd783bd02"
+      ]
+    },
+    "MOCK04-LIST-R04": {
+      "encodingVersion": 2,
+      "scriptHash": "a1ab7a770742cbb8de2952697c7d38ac1c15f15f9f818375565b5305ef16ed18",
+      "sourceDuration": 12.85,
+      "duration": 12.238,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "c9ba7c36ac0872e50e3950b438fd57daa2fde0e59234b42256e8a1918c4d9332",
+      "requestIds": [
+        "req_413a411fa4c141e1afaaa8d3ddfd3e7b"
+      ]
+    },
+    "MOCK04-LIST-R05": {
+      "encodingVersion": 2,
+      "scriptHash": "ef1f3b9c3dd7b2a27bda54d677d993c0956673927e07bfa01b86373ee01f4c8e",
+      "sourceDuration": 9.6,
+      "duration": 9.143,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "7bbd03c708a0328092043af9ddafd311442eead5361a29e0c7459aed5161149f",
+      "requestIds": [
+        "req_24d995f3c2f74029a70d164de8900871"
+      ]
+    },
+    "MOCK04-LIST-R06": {
+      "encodingVersion": 2,
+      "scriptHash": "98edcc6484697a3c962b0a9017ee7d6b648b8f7fa3b6e68facce710b683a63c3",
+      "sourceDuration": 9.9,
+      "duration": 9.429,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "7c4423b40ac43b927e775ccc38aa794fad12036f4e5a9d827e1de7cb7bb92872",
+      "requestIds": [
+        "req_047799e3d0c44bb88e454ed9996abf26"
+      ]
+    },
+    "MOCK04-LIST-R07": {
+      "encodingVersion": 2,
+      "scriptHash": "647da52c7604b3b3eb3aff3cc2655b73cf3dcea5a4edfbe4a685b4551cec088c",
+      "sourceDuration": 10.1,
+      "duration": 10.405,
+      "tempo": 0.9707222222222223,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "ca8a15e14346baa6265c882fb67aafb656f1ebbd2291577e7b2cc130d5e144ea",
+      "requestIds": [
+        "req_daaed4bc81b64448aba417dc6eb1a9e3"
+      ]
+    },
+    "MOCK04-LIST-R08": {
+      "encodingVersion": 2,
+      "scriptHash": "46361069aa54e9f8635f14e6188ef1bf7fda969c3e1a7ffc8420585746f11d5a",
+      "sourceDuration": 9.75,
+      "duration": 11.397,
+      "tempo": 0.855514705882353,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "a73d92df732b2f55782c3367f9945d960a4b3f57b4fc68b8498f929b79e21ceb",
+      "requestIds": [
+        "req_620263e76b4c45bd9bf43c49ff504022"
+      ]
+    },
+    "MOCK04-LIST-R09": {
+      "encodingVersion": 2,
+      "scriptHash": "28f4ea6108eb4529e509f848d6b6cf363127714b3d559243a1c7942037b79d5d",
+      "sourceDuration": 14.3,
+      "duration": 13.619,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "c4f508844f8e0fc17db08669a37a4ffc1813cbbdd2fb710ebf3a739823446106",
+      "requestIds": [
+        "req_e49a60de8ac04f1ab763f1c2c88d8c27"
+      ]
+    },
+    "MOCK04-LIST-R10": {
+      "encodingVersion": 2,
+      "scriptHash": "af8fecb1183fa53895d72b8bfa7ed6fdb742fd07821f35821d2c805063a87dbb",
+      "sourceDuration": 11.31,
+      "duration": 10.771,
+      "tempo": 1.05,
+      "voices": [
+        "cedar",
+        "marin",
+        "cedar"
+      ],
+      "sha256": "e16b995612e2bfe37430185f341c728fd64c3d1ddf5218eeb27d6434b79bd23b",
+      "requestIds": [
+        "req_1c4dcba64b8b4570a4fc4cd91e77422f",
+        "req_2c93e603c47040059d6e09833a54197a",
+        "req_90f94c6746154984abd2634a6789e7d9"
+      ]
+    },
+    "MOCK04-LIST-R11": {
+      "encodingVersion": 2,
+      "scriptHash": "958b057dac21a0869be9dd83bb1c60dd6263efa3858861ba67c1727891ed7a38",
+      "sourceDuration": 12.45,
+      "duration": 11.857,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "30e2673180ef19895698acaff3f0d35dfaea19e99da19b440a69fd48f173cb99",
+      "requestIds": [
+        "req_dc02dc65aecd43c8a5a62cc688bf1baa"
+      ]
+    },
+    "MOCK04-LIST-R12": {
+      "encodingVersion": 2,
+      "scriptHash": "69f746c957004a73b04708fc18514b895c7d764031665bba63f73777f5b799e5",
+      "sourceDuration": 10.5,
+      "duration": 10,
+      "tempo": 1.05,
+      "voices": [
+        "fable"
+      ],
+      "sha256": "9a158e6919b2cb9f9d9cc27a7fde23758624813830d55e3797dba6fe63d62158",
+      "requestIds": [
+        "req_726eab6c7dac432e95f0cc93e9dcbcd8"
+      ]
+    },
+    "MOCK04-LIST-R13": {
+      "encodingVersion": 2,
+      "scriptHash": "4754e4cbb4623c6e2d88b61ba1843d500fe00def6096a13bddd3c84058ee67e5",
+      "sourceDuration": 11.3,
+      "duration": 11.098,
+      "tempo": 1.0181770833333332,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "ba9e572ff0d893af103c8f2c97352be6323a9aafc6a54f4a794b74a1c87f05e5",
+      "requestIds": [
+        "req_f965012390f445da8f51e394464d5f71"
+      ]
+    },
+    "MOCK04-LIST-R14": {
+      "encodingVersion": 2,
+      "scriptHash": "af5d4a5cc27e34fa6b4330d3bcf5b9c0f0e14b9f6dc05b8452612e02134cdbc8",
+      "sourceDuration": 17.95,
+      "duration": 17.43,
+      "tempo": 1.0298237179487177,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "e983bdf94f05ea61b1a41f2872f6faa7e8817d0e14408edd8c5df7dc64ca69df",
+      "requestIds": [
+        "req_86f84198ac7e4cd48009a8be5a905488"
+      ]
+    },
+    "MOCK04-LIST-R15": {
+      "encodingVersion": 2,
+      "scriptHash": "b2801473a21bdb4457253c1a61ece7e03c4c613b15f291c4597af8a592d172c2",
+      "sourceDuration": 21.25,
+      "duration": 20.238,
+      "tempo": 1.05,
+      "voices": [
+        "coral"
+      ],
+      "sha256": "817ac8779aa890cec1f37f67847e670c7910fe8974ad5ce9edadf56569ef3233",
+      "requestIds": [
+        "req_6c98f3247dec44d085f9fa7123e35e6c"
+      ]
+    },
+    "MOCK04-LIST-R16": {
+      "encodingVersion": 2,
+      "scriptHash": "3f512b4bd72c25d1864ae186270ed571baf068f76c82a12aa77bae91b4f6bbbf",
+      "sourceDuration": 18.35,
+      "duration": 17.476,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "b4ef6cc20b1f2206f4148ab68b30f19dd5af43a2b7f60d010d848f7e7b64eb14",
+      "requestIds": [
+        "req_aa79f05141dd404a85bfd987ad517380"
+      ]
+    },
+    "MOCK04-LIST-R17": {
+      "encodingVersion": 2,
+      "scriptHash": "6e298ad7e77ae0e7f0b927d5810282ad3c3763db59e5e7c6fef855be6d49ae02",
+      "sourceDuration": 21.05,
+      "duration": 20.048,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "ad8e24664d8d27079e25f3b1d3f8f95a649e60f7430ca6354e6e274250be88f0",
+      "requestIds": [
+        "req_cd0ca9729c4d4be98efa5fd645b0c36e"
+      ]
+    },
+    "MOCK04-LIST-R18": {
+      "encodingVersion": 2,
+      "scriptHash": "759cfefaffaab5c93a9a0ea551bc03445d7b8d02f0c68a0f85374101d197cac0",
+      "sourceDuration": 60.23,
+      "duration": 57.362,
+      "tempo": 1.05,
+      "voices": [
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "f30b0e9b8508e3804013c75e5abf5f0782171b10ad9769e635adfd84bb603497",
+      "requestIds": [
+        "req_c278711a4a5f4376ae4d5fa28ace1ce6",
+        "req_096f01cc626743a1887a4a157e290c5f",
+        "req_d8c7315a16554b2f8aa06da27c926500",
+        "req_aafa40d6b844445f82e1d9e68fed4006",
+        "req_28c2c932ef6f4f6991f1f38501569482",
+        "req_29b03d24e0a1481fb7b1511d7826aa3c",
+        "req_1f4666a7344a4a5fae239cc2fb650348"
+      ]
+    },
+    "MOCK04-LIST-R19": {
+      "encodingVersion": 2,
+      "scriptHash": "add4e80c062919b7fe9770b31677e5df58c5a6ec4aa16d0da96bbac1af993779",
+      "sourceDuration": 70.15,
+      "duration": 66.81,
+      "tempo": 1.05,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "d6e0db420b10cb348ca57c0c6e51bc7c3e8995742caf34aca3b87777231d7db7",
+      "requestIds": [
+        "req_bcc7e9bc659c44de8f5740012bfbf6e9"
+      ]
+    },
+    "MOCK04-LIST-R20": {
+      "encodingVersion": 2,
+      "scriptHash": "91acce3d7cd6f80a3b4cce153a9babca80d81865b8be2ad87908450025ce91b3",
+      "sourceDuration": 71.6,
+      "duration": 68.19,
+      "tempo": 1.05,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "c6c0640d50d55d721f393bb014d60283e9f68e04f5d8d775436b579c980f68b3",
+      "requestIds": [
+        "req_edee8a7c0e78440c8fd515925a4116bf"
+      ]
+    },
+    "W2D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "989b426aab03609dac189c0fa9ecb2542c48e6d1def830d19e77171ed4dd15c5",
+      "sourceDuration": 31.75,
+      "duration": 31.214,
+      "tempo": 1.017175925925926,
+      "voices": [
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "f1684a5e2691730e28e073b281855faa2a5d694181e53e44ee46faed487c60ce",
+      "requestIds": [
+        "req_98caf7a4e9074762a485fa3b85ba96f7",
+        "req_af33a9ab8c9f4361be91f1fa05042d99",
+        "req_94d5c5a2a8bd487787e4ab717162d085",
+        "req_ac4bb0d8ab7c41a0a7f8b09137b436be",
+        "req_63ebd310fc6a4034b35285f71a6ac493",
+        "req_650f228279444d93838331c82b9a05ee"
+      ]
+    },
+    "W3D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "594cadb28cf5b05b616f4e3b2fb289a7cc7f381b8a4b8cbb978e9d947c4bc416",
+      "sourceDuration": 45.3,
+      "duration": 43.143,
+      "tempo": 1.05,
+      "voices": [
+        "sage"
+      ],
+      "sha256": "465fb3801430266215d076245e2a0dbae150aa51ecf891bb13a7f813ad95c081",
+      "requestIds": [
+        "req_3b3d035a41094d06a1a0fdc5dc9561aa"
+      ]
+    },
+    "W4D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "bd12c9ce10f5d2ac9a9c346a4e949ee25273154d679035cc97c6086be257d5de",
+      "sourceDuration": 32.93,
+      "duration": 31.362,
+      "tempo": 1.05,
+      "voices": [
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "eacf9452efe5e613e9ea2ab6ebfbf0b6bf451d8f3a3ac2b92dc3bfc9aaebf139",
+      "requestIds": [
+        "req_27aeb2d58b044b2d86cd47a011a8a7b7",
+        "req_f953f7e9ad6847c5879df68523b7e02b",
+        "req_93d85eebf3134d75814b4749fbda7c99",
+        "req_6e71c8b4250745beae5606093b7e18aa",
+        "req_ef5de77fad3f49eb961af6055c8a0940",
+        "req_3002e184299e4497802f399255652220",
+        "req_7248a5e5d7de45ebabd0cf634a3f8813"
+      ]
+    },
+    "W5D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "9b12926f1b5138c63475fc794f83cdd310ae2c54fc5a2e733425d337d3f21fcc",
+      "sourceDuration": 27.1,
+      "duration": 28.786,
+      "tempo": 0.941425702811245,
+      "voices": [
+        "marin"
+      ],
+      "sha256": "5fd3c00a32e81428fd09fa27517a75cd2dbe7763e58617a9175df27595a37398",
+      "requestIds": [
+        "req_eff7f705f2c74f8291fa616c4d186eb9"
+      ]
+    },
+    "W6D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "7aaece9803f95bc8e614d00b84794dd9d97ecc650f9277c5e3c426650458cbe1",
+      "sourceDuration": 29.15,
+      "duration": 29.832,
+      "tempo": 0.977125468164794,
+      "voices": [
+        "cedar"
+      ],
+      "sha256": "70da8c9ec434ed501bba28ca3929b6b8c8c8c60b86b09889606699669caa46af",
+      "requestIds": [
+        "req_88518851e54c4d159f6d9e442a7b1869"
+      ]
+    },
+    "W7D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "345b647d0e632eb71d65b4ca8604027ff4b258c21751228f88961eb8d6bde3df",
+      "sourceDuration": 42.53,
+      "duration": 40.505,
+      "tempo": 1.05,
+      "voices": [
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin",
+        "cedar",
+        "marin"
+      ],
+      "sha256": "1200c8d2bb2e4adaaef5b66df74805fa3e9e9bfcd5d705dec54b00cecea5f8fc",
+      "requestIds": [
+        "req_bb32f869e64e4775bf22b97e15cef76f",
+        "req_95232a9347694e789bdd225ee1a57105",
+        "req_42ba2c6a17ce4bcfae502f99a8c48825",
+        "req_931b8c03a4b2415883f692a45502b1a6",
+        "req_7ae775c7abfd49e092fda375883fadbb",
+        "req_9fedee12813f4ee7b184b8961ee822de",
+        "req_0868c43a10f34b9fb188c263e5eff9cc"
+      ]
+    },
+    "W8D4-E03-R01": {
+      "encodingVersion": 2,
+      "scriptHash": "fb693c6d81b3a726e2c0d90ea34304f39847f0be35662bb9bb026833cdc37cdd",
+      "sourceDuration": 54.75,
+      "duration": 52.143,
+      "tempo": 1.05,
+      "voices": [
+        "ash"
+      ],
+      "sha256": "51f3060828fbf480eade64093effbb30c124db2b199146379fa667e3d1a52a72",
+      "requestIds": [
+        "req_6079e2f6bb6f434582ce7ef17f1ad9a6"
+      ]
+    }
+  },
+  "totalSeconds": 1905.51,
+  "estimatedGenerationUSD": 0.4764,
+  "costStatus": "Estimate from actual duration; final billed cost must be checked in OpenAI Usage.",
+  "observedCost": {
+    "date": "2026-10-06",
+    "source": "OpenAI Usage, Default project, last seven days, spend categories",
+    "model": "gpt-4o-mini-tts-2025-12-15",
+    "audioOutputUSD": 0.46,
+    "textInputUSD": 0.009,
+    "totalApproximateUSD": 0.47,
+    "precision": "Usage displayed rounded category totals; includes initial sample generation."
+  }
+}

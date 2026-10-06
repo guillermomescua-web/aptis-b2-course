@@ -19,12 +19,20 @@ before(async()=>{
   `);
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/001_mvp.sql',import.meta.url),'utf8'));
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/002_content_refs.sql',import.meta.url),'utf8'));
+  await db.exec(fs.readFileSync(new URL('../supabase/migrations/003_reading_lab.sql',import.meta.url),'utf8'));
   for(const [id,role]of [[A,'student'],[B,'student'],[T,'teacher']]){
     await q('insert into auth.users values($1,$2)',[id,role+'@example.invalid']);await q('insert into public.user_roles(user_id,role) values($1,$2)',[id,role]);await q('insert into public.profiles values($1,$2)',[id,role]);
   }
   await q('insert into public.teacher_students(teacher_id,student_id) values($1,$2)',[T,A]);
 });
 after(async()=>{await db?.close();});
+test('Reading progress is private, revision checked and visible only to assigned teacher',async()=>{
+ const value={part:2,attempts:1,correct:3,incorrect:2,errors:{reference:2},lastAt:Date.now()};
+ await as(A,async()=>{assert.equal((await save('reading','RL-P2-01',value)).ok,true);await assert.rejects(()=>save('reading','RL-P2-02',{...value,correct:5}),/Invalid/);await assert.rejects(()=>save('reading','RL-P3-01',value),/Invalid/);const conflict=await save('reading','RL-P2-01',{...value,correct:4,incorrect:1,errors:{reference:1}},0);assert.equal(conflict.ok,false);});
+ await as(B,async()=>{assert.equal((await q('select * from public.reading_progress where user_id=$1',[A])).rows.length,0);});
+ await as(T,async()=>{assert.equal((await q('select public.learning_snapshot($1) as s',[A])).rows[0].s.reading[0].data.correct,3);await assert.rejects(()=>save('reading','RL-P2-01',value),/Forbidden/);await assert.rejects(()=>q('update public.reading_progress set data=$1::jsonb where user_id=$2',[JSON.stringify(value),A]),/permission denied/);});
+ await db.exec('set role anon');try{await assert.rejects(()=>q('select * from public.reading_progress'),/permission denied/);}finally{await db.exec('reset role');}
+});
 test('Deployment SQL permission probe passes and rolls back all fixtures',async()=>{
   await db.exec(fs.readFileSync(new URL('../supabase/live_rls_check.sql',import.meta.url),'utf8'));
   assert.equal((await q("select count(*) as n from auth.users where id::text like '90%'")).rows[0].n,0);

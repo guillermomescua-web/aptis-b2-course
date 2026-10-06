@@ -15,6 +15,9 @@ importers:
       '@electric-sql/pglite':
         specifier: 0.3.14
         version: 0.3.14
+      '@ffmpeg-installer/win32-x64':
+        specifier: ^4.1.0
+        version: 4.1.0
       esbuild:
         specifier: 0.25.12
         version: 0.25.12
@@ -183,6 +186,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@ffmpeg-installer/win32-x64@4.1.0':
+    resolution: {integrity: sha512-Drt5u2vzDnIONf4ZEkKtFlbvwj6rI3kxw1Ck9fpudmtgaZIHD4ucsWB2lCZBXRxJgXR+2IMSti+4rtM4C4rXgg==}
+    cpu: [x64]
+    os: [win32]
+
   '@supabase/auth-js@2.102.0':
     resolution: {integrity: sha512-Iq9tdBTTPUelC/j7u9I/hs8gCiy44LYSw22N4TNSYEzb1oS98iytXDutWWyJATgYDRxParjeNm+Qmh9NSNFcVw==}
     engines: {node: '>=20.0.0'}
@@ -334,6 +342,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
+
+  '@ffmpeg-installer/win32-x64@4.1.0': {}
 
   '@supabase/auth-js@2.102.0':
     dependencies:

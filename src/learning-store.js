@@ -1,4 +1,4 @@
-export const KINDS=['answer','session','exercise','listening','error','vocabulary'];
+export const KINDS=['answer','session','exercise','listening','error','vocabulary','reading'];
 const keyOf=(kind,id)=>`${kind}:${id}`;
 const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
 const same=(a,b)=>JSON.stringify(canonical(a??null))===JSON.stringify(canonical(b??null));

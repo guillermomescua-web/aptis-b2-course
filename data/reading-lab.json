@@ -1,0 +1,1633 @@
+{
+  "schemaVersion": 1,
+  "provenance": "original practice",
+  "notice": "Práctica original independiente; no son preguntas oficiales del British Council.",
+  "part2": [
+    {
+      "id": "RL-P2-01",
+      "topic": "The repaired bicycle",
+      "first": "My neighbour offered me a bicycle that had been unused for several years.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Its tyres were flat, so I took it to a repair shop near my office.",
+          "category": "reference",
+          "explanation": "Its refers to the bicycle introduced in the opening sentence.",
+          "evidence": "Its tyres were flat, so I took it to a repair shop near my office."
+        },
+        {
+          "id": "B",
+          "text": "The mechanic there discovered that the brakes also needed replacing.",
+          "category": "reference",
+          "explanation": "The mechanic there refers to the repair shop.",
+          "evidence": "The mechanic there discovered that the brakes also needed replacing."
+        },
+        {
+          "id": "C",
+          "text": "That extra work made the repair more expensive than I had expected.",
+          "category": "reference",
+          "explanation": "That extra work refers to replacing the brakes.",
+          "evidence": "That extra work made the repair more expensive than I had expected."
+        },
+        {
+          "id": "D",
+          "text": "Rather than pay the full amount immediately, I asked whether I could spread the cost.",
+          "category": "reference",
+          "explanation": "The full amount refers to the unexpectedly expensive repair.",
+          "evidence": "Rather than pay the full amount immediately, I asked whether I could spread the cost."
+        },
+        {
+          "id": "E",
+          "text": "He agreed to two payments, which meant I could collect the bike that afternoon.",
+          "category": "reference",
+          "explanation": "He refers to the mechanic, answering the request about payment.",
+          "evidence": "He agreed to two payments, which meant I could collect the bike that afternoon."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-02",
+      "topic": "A quieter library",
+      "first": "Our local library recently received several complaints about noise.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Most of them concerned group meetings held beside the study desks.",
+          "category": "cohesion",
+          "explanation": "Them refers to the complaints.",
+          "evidence": "Most of them concerned group meetings held beside the study desks."
+        },
+        {
+          "id": "B",
+          "text": "To keep those meetings without disturbing readers, the manager proposed using an empty room upstairs.",
+          "category": "cohesion",
+          "explanation": "Those meetings refers to the group meetings.",
+          "evidence": "To keep those meetings without disturbing readers, the manager proposed using an empty room upstairs."
+        },
+        {
+          "id": "C",
+          "text": "The room had previously been used for storage and was full of boxes.",
+          "category": "cohesion",
+          "explanation": "The room refers to the proposed upstairs room.",
+          "evidence": "The room had previously been used for storage and was full of boxes."
+        },
+        {
+          "id": "D",
+          "text": "Volunteers cleared these out during the following weekend.",
+          "category": "cohesion",
+          "explanation": "These refers to the boxes.",
+          "evidence": "Volunteers cleared these out during the following weekend."
+        },
+        {
+          "id": "E",
+          "text": "With the space finally available, the first upstairs meeting took place on Monday.",
+          "category": "cohesion",
+          "explanation": "The cleared space allows the meeting to take place.",
+          "evidence": "With the space finally available, the first upstairs meeting took place on Monday."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-03",
+      "topic": "An unexpected journey",
+      "first": "I arrived at the station expecting to catch the last train home.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "A notice on the departure board said that it had been cancelled.",
+          "category": "chronology",
+          "explanation": "It refers to the last train.",
+          "evidence": "A notice on the departure board said that it had been cancelled."
+        },
+        {
+          "id": "B",
+          "text": "After reading it, I went to the information desk to ask about alternatives.",
+          "category": "chronology",
+          "explanation": "Reading it refers to the cancellation notice.",
+          "evidence": "After reading it, I went to the information desk to ask about alternatives."
+        },
+        {
+          "id": "C",
+          "text": "The assistant suggested a replacement bus leaving from outside the main entrance.",
+          "category": "chronology",
+          "explanation": "The assistant answers the question at the information desk.",
+          "evidence": "The assistant suggested a replacement bus leaving from outside the main entrance."
+        },
+        {
+          "id": "D",
+          "text": "When I reached that entrance, a driver was already checking passengers onto the bus.",
+          "category": "chronology",
+          "explanation": "That entrance refers to the main entrance just mentioned.",
+          "evidence": "When I reached that entrance, a driver was already checking passengers onto the bus."
+        },
+        {
+          "id": "E",
+          "text": "I showed him my train ticket and found one of the few seats still free.",
+          "category": "chronology",
+          "explanation": "Him refers to the bus driver.",
+          "evidence": "I showed him my train ticket and found one of the few seats still free."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-04",
+      "topic": "The missing parcel",
+      "first": "A parcel I had ordered was marked as delivered, although nothing had arrived at my door.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "I contacted the delivery company and asked where the driver had left it.",
+          "category": "reference",
+          "explanation": "It refers to the missing parcel.",
+          "evidence": "I contacted the delivery company and asked where the driver had left it."
+        },
+        {
+          "id": "B",
+          "text": "They sent me a photograph showing a blue front door.",
+          "category": "reference",
+          "explanation": "They refers to the delivery company contacted.",
+          "evidence": "They sent me a photograph showing a blue front door."
+        },
+        {
+          "id": "C",
+          "text": "Mine is green, so the picture confirmed that the address had been confused.",
+          "category": "reference",
+          "explanation": "Mine contrasts the writer’s door with the photographed blue door.",
+          "evidence": "Mine is green, so the picture confirmed that the address had been confused."
+        },
+        {
+          "id": "D",
+          "text": "Armed with this evidence, I asked the company to contact the driver again.",
+          "category": "reference",
+          "explanation": "This evidence refers to the mismatching door colour.",
+          "evidence": "Armed with this evidence, I asked the company to contact the driver again."
+        },
+        {
+          "id": "E",
+          "text": "He returned an hour later with the parcel and an apology.",
+          "category": "reference",
+          "explanation": "He refers to the driver whom the company contacted again.",
+          "evidence": "He returned an hour later with the parcel and an apology."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-05",
+      "topic": "A community garden",
+      "first": "Residents in our building decided to turn an unused courtyard into a garden.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Before buying any plants, we asked an expert to examine the ground.",
+          "category": "cohesion",
+          "explanation": "The expert is introduced before her report.",
+          "evidence": "Before buying any plants, we asked an expert to examine the ground."
+        },
+        {
+          "id": "B",
+          "text": "Her report warned that the soil was unsuitable for growing vegetables.",
+          "category": "cohesion",
+          "explanation": "Her report refers to the expert’s examination.",
+          "evidence": "Her report warned that the soil was unsuitable for growing vegetables."
+        },
+        {
+          "id": "C",
+          "text": "Because of this problem, we chose raised beds filled with fresh compost instead.",
+          "category": "cohesion",
+          "explanation": "This problem refers to the unsuitable soil.",
+          "evidence": "Because of this problem, we chose raised beds filled with fresh compost instead."
+        },
+        {
+          "id": "D",
+          "text": "The wooden frames for these beds were donated by a nearby carpenter.",
+          "category": "cohesion",
+          "explanation": "These beds refers to the raised beds.",
+          "evidence": "The wooden frames for these beds were donated by a nearby carpenter."
+        },
+        {
+          "id": "E",
+          "text": "His contribution left enough money in our budget to buy the compost and seeds.",
+          "category": "cohesion",
+          "explanation": "His contribution refers to the carpenter’s donated frames.",
+          "evidence": "His contribution left enough money in our budget to buy the compost and seeds."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-06",
+      "topic": "Learning to present",
+      "first": "I agreed to give a presentation at work despite having little experience of public speaking.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "To prepare for it, I recorded a practice talk on my phone.",
+          "category": "chronology",
+          "explanation": "It refers to the presentation.",
+          "evidence": "To prepare for it, I recorded a practice talk on my phone."
+        },
+        {
+          "id": "B",
+          "text": "Watching the recording, I noticed that I spoke too quickly whenever I felt nervous.",
+          "category": "chronology",
+          "explanation": "The recording must have been made before it can be watched.",
+          "evidence": "Watching the recording, I noticed that I spoke too quickly whenever I felt nervous."
+        },
+        {
+          "id": "C",
+          "text": "This habit made the important points difficult to follow.",
+          "category": "chronology",
+          "explanation": "This habit refers to speaking too quickly.",
+          "evidence": "This habit made the important points difficult to follow."
+        },
+        {
+          "id": "D",
+          "text": "I therefore added short pauses after those points and practised again.",
+          "category": "chronology",
+          "explanation": "Therefore introduces a response to the problem; those points refers back.",
+          "evidence": "I therefore added short pauses after those points and practised again."
+        },
+        {
+          "id": "E",
+          "text": "In the second recording, the pauses made my message much clearer.",
+          "category": "chronology",
+          "explanation": "The second recording follows the revised practice.",
+          "evidence": "In the second recording, the pauses made my message much clearer."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-07",
+      "topic": "The shared office",
+      "first": "Our small business rented a shared office to reduce its costs.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "The rent included a meeting room that several businesses could book.",
+          "category": "reference",
+          "explanation": "The rent refers to the rented office.",
+          "evidence": "The rent included a meeting room that several businesses could book."
+        },
+        {
+          "id": "B",
+          "text": "At first, bookings for this room were written on a sheet beside its door.",
+          "category": "reference",
+          "explanation": "This room refers to the meeting room.",
+          "evidence": "At first, bookings for this room were written on a sheet beside its door."
+        },
+        {
+          "id": "C",
+          "text": "The sheet disappeared one morning, leaving nobody sure which bookings were valid.",
+          "category": "reference",
+          "explanation": "The sheet refers to the booking sheet.",
+          "evidence": "The sheet disappeared one morning, leaving nobody sure which bookings were valid."
+        },
+        {
+          "id": "D",
+          "text": "To prevent a similar confusion, the building manager introduced an online calendar.",
+          "category": "reference",
+          "explanation": "A similar confusion refers to the loss of booking information.",
+          "evidence": "To prevent a similar confusion, the building manager introduced an online calendar."
+        },
+        {
+          "id": "E",
+          "text": "Since then, everyone has checked the calendar before arranging a meeting.",
+          "category": "reference",
+          "explanation": "Since then refers to the introduction of the online calendar.",
+          "evidence": "Since then, everyone has checked the calendar before arranging a meeting."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-08",
+      "topic": "The weekend exhibition",
+      "first": "A friend invited me to exhibit some photographs at a small arts centre.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "I accepted, but discovered that the centre required every picture to be framed.",
+          "category": "cohesion",
+          "explanation": "Acceptance follows the invitation.",
+          "evidence": "I accepted, but discovered that the centre required every picture to be framed."
+        },
+        {
+          "id": "B",
+          "text": "Buying frames for all of them would have exceeded my limited budget.",
+          "category": "cohesion",
+          "explanation": "Them refers to the pictures; framing creates the cost.",
+          "evidence": "Buying frames for all of them would have exceeded my limited budget."
+        },
+        {
+          "id": "C",
+          "text": "To avoid that expense, I borrowed a set from the photography club.",
+          "category": "cohesion",
+          "explanation": "That expense refers to buying frames.",
+          "evidence": "To avoid that expense, I borrowed a set from the photography club."
+        },
+        {
+          "id": "D",
+          "text": "Unfortunately, two of the borrowed frames were too small for my prints.",
+          "category": "cohesion",
+          "explanation": "Borrowed frames must be introduced before their size problem.",
+          "evidence": "Unfortunately, two of the borrowed frames were too small for my prints."
+        },
+        {
+          "id": "E",
+          "text": "I replaced those two prints with smaller ones and completed the display on time.",
+          "category": "cohesion",
+          "explanation": "Those two prints refers to the prints that did not fit.",
+          "evidence": "I replaced those two prints with smaller ones and completed the display on time."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-09",
+      "topic": "Changing a recipe",
+      "first": "I planned to bake a cake using a recipe my grandmother had given me.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "It called for almonds, which one of my guests could not eat.",
+          "category": "reference",
+          "explanation": "It refers to the recipe.",
+          "evidence": "It called for almonds, which one of my guests could not eat."
+        },
+        {
+          "id": "B",
+          "text": "To make it safe for her, I replaced them with sunflower seeds.",
+          "category": "reference",
+          "explanation": "Them refers to almonds and her to the guest.",
+          "evidence": "To make it safe for her, I replaced them with sunflower seeds."
+        },
+        {
+          "id": "C",
+          "text": "This substitution made the mixture drier than it should have been.",
+          "category": "reference",
+          "explanation": "This substitution refers to sunflower seeds replacing almonds.",
+          "evidence": "This substitution made the mixture drier than it should have been."
+        },
+        {
+          "id": "D",
+          "text": "I added a little extra milk to correct that difference.",
+          "category": "reference",
+          "explanation": "That difference refers to the drier mixture.",
+          "evidence": "I added a little extra milk to correct that difference."
+        },
+        {
+          "id": "E",
+          "text": "The adjusted mixture baked well, and my guest asked for the new recipe.",
+          "category": "reference",
+          "explanation": "The adjusted mixture refers to the mixture after adding milk.",
+          "evidence": "The adjusted mixture baked well, and my guest asked for the new recipe."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-10",
+      "topic": "A lost membership card",
+      "first": "I realised that my swimming-pool membership card was missing when I reached reception.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "The receptionist offered to look up my details without it.",
+          "category": "chronology",
+          "explanation": "It refers to the missing card.",
+          "evidence": "The receptionist offered to look up my details without it."
+        },
+        {
+          "id": "B",
+          "text": "Her search showed that my membership had actually expired the previous week.",
+          "category": "chronology",
+          "explanation": "Her search follows the offer to look up details.",
+          "evidence": "Her search showed that my membership had actually expired the previous week."
+        },
+        {
+          "id": "C",
+          "text": "Until that moment, I had assumed the annual payment was automatic.",
+          "category": "chronology",
+          "explanation": "That moment refers to discovering the expired membership.",
+          "evidence": "Until that moment, I had assumed the annual payment was automatic."
+        },
+        {
+          "id": "D",
+          "text": "Once she explained that it was not, I paid for another year at the desk.",
+          "category": "chronology",
+          "explanation": "The explanation corrects the assumption about automatic payment.",
+          "evidence": "Once she explained that it was not, I paid for another year at the desk."
+        },
+        {
+          "id": "E",
+          "text": "She then issued a replacement card with the new expiry date.",
+          "category": "chronology",
+          "explanation": "The new expiry date results from the payment for another year.",
+          "evidence": "She then issued a replacement card with the new expiry date."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-11",
+      "topic": "The museum survey",
+      "first": "The town museum asked visitors how it could improve its exhibitions.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Many respondents said the written descriptions were difficult to understand.",
+          "category": "cohesion",
+          "explanation": "Respondents answers the museum’s question.",
+          "evidence": "Many respondents said the written descriptions were difficult to understand."
+        },
+        {
+          "id": "B",
+          "text": "In response to these comments, staff tested shorter descriptions with a school group.",
+          "category": "cohesion",
+          "explanation": "These comments refers to difficulty understanding descriptions.",
+          "evidence": "In response to these comments, staff tested shorter descriptions with a school group."
+        },
+        {
+          "id": "C",
+          "text": "The pupils understood the new versions but wanted more information about everyday life.",
+          "category": "cohesion",
+          "explanation": "The new versions refers to shorter descriptions tested with pupils.",
+          "evidence": "The pupils understood the new versions but wanted more information about everyday life."
+        },
+        {
+          "id": "D",
+          "text": "Their suggestion led the museum to add examples of how ordinary people used the objects.",
+          "category": "cohesion",
+          "explanation": "Their suggestion refers to the pupils’ request about everyday life.",
+          "evidence": "Their suggestion led the museum to add examples of how ordinary people used the objects."
+        },
+        {
+          "id": "E",
+          "text": "These examples are now displayed beside the shorter descriptions.",
+          "category": "cohesion",
+          "explanation": "These examples refers to the newly added everyday uses.",
+          "evidence": "These examples are now displayed beside the shorter descriptions."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-12",
+      "topic": "A walking route",
+      "first": "We set off along a coastal path that we had never used before.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "After about an hour, we reached a gate with a warning about unstable ground ahead.",
+          "category": "chronology",
+          "explanation": "The gate is encountered during the walk.",
+          "evidence": "After about an hour, we reached a gate with a warning about unstable ground ahead."
+        },
+        {
+          "id": "B",
+          "text": "Rather than ignore the warning, we consulted the map for another route.",
+          "category": "chronology",
+          "explanation": "The warning must be seen before an alternative is sought.",
+          "evidence": "Rather than ignore the warning, we consulted the map for another route."
+        },
+        {
+          "id": "C",
+          "text": "It showed a narrow lane running inland to the village where we wanted to finish.",
+          "category": "chronology",
+          "explanation": "It refers to the map.",
+          "evidence": "It showed a narrow lane running inland to the village where we wanted to finish."
+        },
+        {
+          "id": "D",
+          "text": "The lane was longer than the coastal path, but its surface was safe.",
+          "category": "chronology",
+          "explanation": "The lane refers to the inland route identified on the map.",
+          "evidence": "The lane was longer than the coastal path, but its surface was safe."
+        },
+        {
+          "id": "E",
+          "text": "We followed it and arrived later than planned, relieved to have avoided the dangerous section.",
+          "category": "chronology",
+          "explanation": "It now refers to the lane that was followed.",
+          "evidence": "We followed it and arrived later than planned, relieved to have avoided the dangerous section."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-13",
+      "topic": "A language exchange",
+      "first": "I joined a language exchange to improve my Spanish conversation.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "The organiser paired me with a student who wanted to practise English.",
+          "category": "reference",
+          "explanation": "The organiser belongs to the exchange introduced.",
+          "evidence": "The organiser paired me with a student who wanted to practise English."
+        },
+        {
+          "id": "B",
+          "text": "We agreed to divide each meeting equally between the two languages.",
+          "category": "reference",
+          "explanation": "We refers to the writer and the assigned partner.",
+          "evidence": "We agreed to divide each meeting equally between the two languages."
+        },
+        {
+          "id": "C",
+          "text": "This arrangement worked until we started discussing subjects that I found difficult in Spanish.",
+          "category": "reference",
+          "explanation": "This arrangement refers to dividing meeting time equally.",
+          "evidence": "This arrangement worked until we started discussing subjects that I found difficult in Spanish."
+        },
+        {
+          "id": "D",
+          "text": "To help with those subjects, my partner suggested preparing a few useful expressions beforehand.",
+          "category": "reference",
+          "explanation": "Those subjects refers to difficult discussion subjects.",
+          "evidence": "To help with those subjects, my partner suggested preparing a few useful expressions beforehand."
+        },
+        {
+          "id": "E",
+          "text": "Using her suggestion, I felt more confident and kept to our original arrangement.",
+          "category": "reference",
+          "explanation": "Her suggestion refers to preparing useful expressions.",
+          "evidence": "Using her suggestion, I felt more confident and kept to our original arrangement."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-14",
+      "topic": "The café queue",
+      "first": "Customers at the café where I work often complained about the long lunchtime queue.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Our manager observed it for a week to discover where the delays occurred.",
+          "category": "cohesion",
+          "explanation": "It refers to the lunchtime queue.",
+          "evidence": "Our manager observed it for a week to discover where the delays occurred."
+        },
+        {
+          "id": "B",
+          "text": "She noticed that people choosing sandwiches prevented others from paying for drinks.",
+          "category": "cohesion",
+          "explanation": "She refers to the observing manager.",
+          "evidence": "She noticed that people choosing sandwiches prevented others from paying for drinks."
+        },
+        {
+          "id": "C",
+          "text": "To separate these two groups, she moved the sandwiches to a different counter.",
+          "category": "cohesion",
+          "explanation": "These two groups refers to sandwich buyers and drink buyers.",
+          "evidence": "To separate these two groups, she moved the sandwiches to a different counter."
+        },
+        {
+          "id": "D",
+          "text": "The new counter needed another member of staff during the busiest hour.",
+          "category": "cohesion",
+          "explanation": "The new counter refers to the separate sandwich counter.",
+          "evidence": "The new counter needed another member of staff during the busiest hour."
+        },
+        {
+          "id": "E",
+          "text": "Although this increased staffing costs, customers were served faster and complaints decreased.",
+          "category": "cohesion",
+          "explanation": "This refers to employing another staff member.",
+          "evidence": "Although this increased staffing costs, customers were served faster and complaints decreased."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-15",
+      "topic": "Restoring an old film",
+      "first": "An archive discovered a damaged film showing our town nearly a century ago.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Before it could be shown to the public, specialists had to repair the fragile material.",
+          "category": "chronology",
+          "explanation": "It refers to the damaged film.",
+          "evidence": "Before it could be shown to the public, specialists had to repair the fragile material."
+        },
+        {
+          "id": "B",
+          "text": "They then produced a digital copy from the repaired film.",
+          "category": "chronology",
+          "explanation": "They refers to the specialists and then follows repairing.",
+          "evidence": "They then produced a digital copy from the repaired film."
+        },
+        {
+          "id": "C",
+          "text": "Unlike the original, this copy could be viewed repeatedly without causing further damage.",
+          "category": "chronology",
+          "explanation": "This copy refers to the digital copy.",
+          "evidence": "Unlike the original, this copy could be viewed repeatedly without causing further damage."
+        },
+        {
+          "id": "D",
+          "text": "The archive used it to organise a screening for local residents.",
+          "category": "chronology",
+          "explanation": "It refers to the safe digital copy used for screening.",
+          "evidence": "The archive used it to organise a screening for local residents."
+        },
+        {
+          "id": "E",
+          "text": "Several people at that event recognised buildings which no longer exist.",
+          "category": "chronology",
+          "explanation": "That event refers to the screening.",
+          "evidence": "Several people at that event recognised buildings which no longer exist."
+        }
+      ]
+    },
+    {
+      "id": "RL-P2-16",
+      "topic": "The volunteer rota",
+      "first": "Our animal shelter needed a more reliable way to organise weekend volunteers.",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "sentences": [
+        {
+          "id": "A",
+          "text": "Previously, each volunteer had sent their availability in a separate message.",
+          "category": "reference",
+          "explanation": "Previously introduces the former system being replaced.",
+          "evidence": "Previously, each volunteer had sent their availability in a separate message."
+        },
+        {
+          "id": "B",
+          "text": "Keeping track of these messages took so long that some shifts were left unfilled.",
+          "category": "reference",
+          "explanation": "These messages refers to separate availability messages.",
+          "evidence": "Keeping track of these messages took so long that some shifts were left unfilled."
+        },
+        {
+          "id": "C",
+          "text": "To solve the problem, a volunteer created a shared online rota.",
+          "category": "reference",
+          "explanation": "The problem refers to unfilled shifts caused by tracking messages.",
+          "evidence": "To solve the problem, a volunteer created a shared online rota."
+        },
+        {
+          "id": "D",
+          "text": "It allowed everyone to see which shifts still needed help.",
+          "category": "reference",
+          "explanation": "It refers to the shared rota.",
+          "evidence": "It allowed everyone to see which shifts still needed help."
+        },
+        {
+          "id": "E",
+          "text": "As a result, those gaps were filled sooner and the animals received more regular care.",
+          "category": "reference",
+          "explanation": "Those gaps refers to shifts still needing help.",
+          "evidence": "As a result, those gaps were filled sooner and the animals received more regular care."
+        }
+      ]
+    }
+  ],
+  "part3": [
+    {
+      "id": "RL-P3-01",
+      "topic": "Working from home",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "Working at home saves my daily journey, but I miss exchanging ideas without arranging a call. I work better when somebody can question my thinking immediately. One quiet day at home would be useful for reports; spending the entire week there would leave me feeling cut off. I would choose a mixture, with most days in the office."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "I expected to enjoy the freedom, yet my workday has become longer. Messages arrive in the evening and I feel obliged to answer because my computer is always nearby. The lack of travel is helpful, but it has not compensated for losing a clear finishing time. I would return to the office if I could."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "My job involves checking figures, so interruptions are costly. At home I can finish a difficult calculation before speaking to anyone. I was worried about feeling lonely, but regular calls have been enough. I deliberately shut down at five and leave the room. I see little reason to go back to our noisy office."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "I manage a team whose work can mostly be done anywhere. Remote working could help colleagues with caring responsibilities, although some new staff still need face-to-face guidance. Before making it permanent, I would compare results over several months. A policy based only on whether people enjoy it would overlook the purpose of the business."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Prefers a combination while keeping more time with colleagues",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "One quiet day at home; most days in the office",
+          "explanation": "Anna expresa esta idea: One quiet day at home; most days in the office."
+        },
+        {
+          "id": "2",
+          "text": "Finds it harder to separate work from personal time",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Messages arrive in the evening; losing a clear finishing time",
+          "explanation": "Ben expresa esta idea: Messages arrive in the evening; losing a clear finishing time."
+        },
+        {
+          "id": "3",
+          "text": "Does concentrated tasks more efficiently away from the office",
+          "answer": "C",
+          "category": "opinion",
+          "evidence": "Interruptions are costly; finish a difficult calculation",
+          "explanation": "Cara expresa esta idea: Interruptions are costly; finish a difficult calculation."
+        },
+        {
+          "id": "4",
+          "text": "Wants evidence of performance before a lasting decision",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Compare results over several months",
+          "explanation": "Dan expresa esta idea: Compare results over several months."
+        },
+        {
+          "id": "5",
+          "text": "Expected isolation to be a problem but found a solution",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Worried about feeling lonely; regular calls have been enough",
+          "explanation": "Cara expresa esta idea: Worried about feeling lonely; regular calls have been enough."
+        },
+        {
+          "id": "6",
+          "text": "Values spontaneous discussion with other people",
+          "answer": "A",
+          "category": "opinion",
+          "evidence": "Question my thinking immediately",
+          "explanation": "Anna expresa esta idea: Question my thinking immediately."
+        },
+        {
+          "id": "7",
+          "text": "Acknowledges that remote work will not suit every employee equally",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Caring responsibilities; new staff need face-to-face guidance",
+          "explanation": "Dan expresa esta idea: Caring responsibilities; new staff need face-to-face guidance."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-02",
+      "topic": "Public transport",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "I use the bus every day and usually arrive on time. The fares are reasonable, especially with a monthly pass. My frustration is information: when something does go wrong, the app still shows the original timetable. Knowing whether a bus is actually coming would matter more to me than a small reduction in the price."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "The railway is convenient for my office, but taking my children anywhere by train can cost more than driving. I understand that maintenance has to be paid for. Even so, family tickets ought to make occasional trips affordable. I would travel by rail much more at weekends if the total fare were less discouraging."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "I used to think an extra bus route would persuade me to leave the car. Now that there is one near my house, I have discovered the real problem: it stops running before my evening shift ends. A service that cannot bring me home is only half a solution. Its frequency during the afternoon is already fine."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "Although a new underground line would be impressive, improving existing buses should come first. Small changes to junctions could prevent delays and benefit many routes at once. Building the line might still make sense later, once those changes have been tried. Spending the whole budget on a single project now seems premature."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Needs services at a different time rather than more frequent daytime departures",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Stops running before my evening shift ends",
+          "explanation": "Cara expresa esta idea: Stops running before my evening shift ends."
+        },
+        {
+          "id": "2",
+          "text": "Would choose trains more often if group travel cost less",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Family tickets; travel by rail more at weekends",
+          "explanation": "Ben expresa esta idea: Family tickets; travel by rail more at weekends."
+        },
+        {
+          "id": "3",
+          "text": "Prioritises reliable updates over cheaper fares",
+          "answer": "A",
+          "category": "opinion",
+          "evidence": "Knowing whether a bus is actually coming",
+          "explanation": "Anna expresa esta idea: Knowing whether a bus is actually coming."
+        },
+        {
+          "id": "4",
+          "text": "Supports a major project only after simpler improvements",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Building the line might still make sense later",
+          "explanation": "Dan expresa esta idea: Building the line might still make sense later."
+        },
+        {
+          "id": "5",
+          "text": "Changed their explanation for relying on a car",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Used to think an extra route; discovered the real problem",
+          "explanation": "Cara expresa esta idea: Used to think an extra route; discovered the real problem."
+        },
+        {
+          "id": "6",
+          "text": "Accepts that the system has expenses but questions the price for families",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "Maintenance has to be paid for; family tickets",
+          "explanation": "Ben expresa esta idea: Maintenance has to be paid for; family tickets."
+        },
+        {
+          "id": "7",
+          "text": "Suggests a change that would improve several services together",
+          "answer": "D",
+          "category": "inference",
+          "evidence": "Junctions; benefit many routes at once",
+          "explanation": "Dan expresa esta idea: Junctions; benefit many routes at once."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-03",
+      "topic": "Learning online",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "Recorded lessons fit around my changing work shifts. I often stop a video to try a calculation, then replay the explanation if I get stuck. A live class would give me quicker answers, but I would miss too many sessions. Being able to control when and how quickly I study is the main reason I continue."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "I registered for an online course because the subject interested me. Without a fixed meeting time, however, I kept postponing the work. The content was excellent; my problem was getting started. I now attend a weekly class where the teacher expects me to participate. That small obligation has made a considerable difference."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "Our team uses online courses for basic training, and they are convenient. I would not use them alone for practical skills, though. Seeing someone perform a task on screen is not the same as having them watch you attempt it. Combining an introductory video with supervised practice would give us the best of both approaches."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "I live far from any college offering my subject. Online study has opened a door that was previously closed, but the discussions have been unexpectedly valuable too. Students in other countries challenge assumptions I had never questioned. I originally enrolled for the qualification; I now appreciate the different perspectives at least as much."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Needs other people’s expectations to maintain a study routine",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Teacher expects me to participate",
+          "explanation": "Ben expresa esta idea: Teacher expects me to participate."
+        },
+        {
+          "id": "2",
+          "text": "Values being able to revisit explanations at their own pace",
+          "answer": "A",
+          "category": "opinion",
+          "evidence": "Stop a video; replay the explanation",
+          "explanation": "Anna expresa esta idea: Stop a video; replay the explanation."
+        },
+        {
+          "id": "3",
+          "text": "Believes screen-based teaching should be supplemented for hands-on work",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Introductory video with supervised practice",
+          "explanation": "Cara expresa esta idea: Introductory video with supervised practice."
+        },
+        {
+          "id": "4",
+          "text": "Gained an unanticipated benefit from other learners",
+          "answer": "D",
+          "category": "inference",
+          "evidence": "Discussions have been unexpectedly valuable",
+          "explanation": "Dan expresa esta idea: Discussions have been unexpectedly valuable."
+        },
+        {
+          "id": "5",
+          "text": "Was satisfied with teaching material despite failing to make progress",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "Content was excellent; problem was getting started",
+          "explanation": "Ben expresa esta idea: Content was excellent; problem was getting started."
+        },
+        {
+          "id": "6",
+          "text": "Would find scheduled lessons difficult to attend consistently",
+          "answer": "A",
+          "category": "inference",
+          "evidence": "Changing work shifts; miss too many sessions",
+          "explanation": "Anna expresa esta idea: Changing work shifts; miss too many sessions."
+        },
+        {
+          "id": "7",
+          "text": "Previously lacked a nearby opportunity to study the subject",
+          "answer": "D",
+          "category": "inference",
+          "evidence": "Far from any college offering my subject",
+          "explanation": "Dan expresa esta idea: Far from any college offering my subject."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-04",
+      "topic": "Visiting museums",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "I enjoy finding out how ordinary people lived, rather than admiring famous possessions. A simple kitchen tool can interest me if its label explains what someone did with it. Digital screens sometimes help, but I would rather have a clear story than another button to press. The size of a collection is not what makes a visit memorable."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "Taking my son to museums has changed what I look for. We need room to pause, sit down and talk about what we have seen. An exhibition can be fascinating and still feel exhausting if there is no place to rest. I am happy to pay for a visit that considers this; free admission alone does not persuade me."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "I used to rush through every gallery to feel I had seen everything. Now I choose one section and spend an hour there. Learning a few things properly is more satisfying than collecting a list of objects I have passed. I sometimes return for another section, although travelling a long distance would make that approach less practical."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "A museum should protect its objects, but that does not require visitors to remain passive. A good workshop lets people explore a technique without touching valuable originals. Such activities can make a difficult subject accessible. I support them as long as they explain the collection, rather than turning the museum into an unrelated entertainment centre."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Prefers depth of understanding to covering the whole collection",
+          "answer": "C",
+          "category": "opinion",
+          "evidence": "Choose one section; learning a few things properly",
+          "explanation": "Cara expresa esta idea: Choose one section; learning a few things properly."
+        },
+        {
+          "id": "2",
+          "text": "Judges facilities for taking breaks as part of a good visit",
+          "answer": "B",
+          "category": "opinion",
+          "evidence": "No place to rest; room to pause",
+          "explanation": "Ben expresa esta idea: No place to rest; room to pause."
+        },
+        {
+          "id": "3",
+          "text": "Accepts interactive activities when they serve an educational purpose",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "As long as they explain the collection",
+          "explanation": "Dan expresa esta idea: As long as they explain the collection."
+        },
+        {
+          "id": "4",
+          "text": "Values explanations of everyday use more than impressive objects",
+          "answer": "A",
+          "category": "opinion",
+          "evidence": "Simple kitchen tool; clear story",
+          "explanation": "Anna expresa esta idea: Simple kitchen tool; clear story."
+        },
+        {
+          "id": "5",
+          "text": "Recognises a limitation to making repeated visits",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Travelling a long distance",
+          "explanation": "Cara expresa esta idea: Travelling a long distance."
+        },
+        {
+          "id": "6",
+          "text": "Would pay for a comfortable experience rather than choose solely by price",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Happy to pay; free admission alone",
+          "explanation": "Ben expresa esta idea: Happy to pay; free admission alone."
+        },
+        {
+          "id": "7",
+          "text": "Does not equate technology with an interesting exhibition",
+          "answer": "A",
+          "category": "inference",
+          "evidence": "Clear story than another button",
+          "explanation": "Anna expresa esta idea: Clear story than another button."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-05",
+      "topic": "Shopping locally",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "The small shops near my home remember what I like and give useful advice. I cannot buy everything there, because their range is limited. For specialist items I still order online. Supporting local businesses matters to me, but pretending they can meet every need would not help them understand what customers actually want."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "I used to buy groceries online to save time. After several deliveries with unwanted replacements, I began visiting a shop again. Choosing the food myself takes longer but avoids surprises when I cook. I might use delivery during a particularly busy week, provided I could reject substitutions before the order arrived."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "A campaign urged us to shop locally, but our village store closes before I finish work. I would gladly use it if it stayed open later even one evening a week. Asking residents to change their habits without offering realistic access seems unfair. Lower prices would be welcome, but they would not solve my problem."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "I run a bookshop and know that we cannot match every online discount. Instead, we organise events and help readers discover unfamiliar writers. These services take time, so I hope visitors who enjoy them will occasionally buy a book. I am not asking people to avoid the internet; I want them to recognise what their spending supports."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Requires better opening hours before changing where they shop",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Closes before I finish work",
+          "explanation": "Cara expresa esta idea: Closes before I finish work."
+        },
+        {
+          "id": "2",
+          "text": "Appreciates personal service while accepting a restricted selection",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "Useful advice; range is limited",
+          "explanation": "Anna expresa esta idea: Useful advice; range is limited."
+        },
+        {
+          "id": "3",
+          "text": "Returned to in-person shopping after unreliable product choices",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Unwanted replacements; choosing food myself",
+          "explanation": "Ben expresa esta idea: Unwanted replacements; choosing food myself."
+        },
+        {
+          "id": "4",
+          "text": "Explains how purchases sustain benefits beyond the products",
+          "answer": "D",
+          "category": "inference",
+          "evidence": "Events; recognise what spending supports",
+          "explanation": "Dan expresa esta idea: Events; recognise what spending supports."
+        },
+        {
+          "id": "5",
+          "text": "Might resume delivery if a specific condition were met",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "Could reject substitutions before the order arrived",
+          "explanation": "Ben expresa esta idea: Could reject substitutions before the order arrived."
+        },
+        {
+          "id": "6",
+          "text": "Believes cheaper goods alone would not remove the main obstacle",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Lower prices would not solve my problem",
+          "explanation": "Cara expresa esta idea: Lower prices would not solve my problem."
+        },
+        {
+          "id": "7",
+          "text": "Tries to compete through expertise rather than price",
+          "answer": "D",
+          "category": "opinion",
+          "evidence": "Cannot match discounts; discover unfamiliar writers",
+          "explanation": "Dan expresa esta idea: Cannot match discounts; discover unfamiliar writers."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-06",
+      "topic": "Exercise habits",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "I train with friends twice a week. On days when I feel tired, knowing they are waiting gets me out of the house. The exercise itself would be much the same alone, but I doubt I would do it regularly. We do not compete over speed; keeping the appointment is more useful to me than improving a personal record."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "The gym has everything I need, yet getting there uses time I cannot spare. Short sessions at home have been easier to maintain. I miss some equipment, but an ideal workout that never happens is less useful than a simple one I actually do. I would reconsider the gym if one opened closer to work."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "Walking used to seem too gentle to count as exercise. Since I started climbing the hill near my flat, I have changed my mind. The effort is real, and being outdoors helps me relax afterwards. I am less interested in measuring steps than in how I feel. Bad weather occasionally keeps me in, but that is a small drawback."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "After an injury I had to stop following the routine I found online. A professional helped me adapt it to what my body could manage. General advice can encourage people to start, but it should not replace individual guidance when something hurts. My progress is slower now, although I am more confident that it will last."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Depends on a social commitment to remain consistent",
+          "answer": "A",
+          "category": "inference",
+          "evidence": "Knowing they are waiting",
+          "explanation": "Anna expresa esta idea: Knowing they are waiting."
+        },
+        {
+          "id": "2",
+          "text": "Favours a manageable routine over an impractical ideal",
+          "answer": "B",
+          "category": "opinion",
+          "evidence": "Simple one I actually do",
+          "explanation": "Ben expresa esta idea: Simple one I actually do."
+        },
+        {
+          "id": "3",
+          "text": "Revised an earlier view about the value of a mild-looking activity",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Too gentle; changed my mind",
+          "explanation": "Cara expresa esta idea: Too gentle; changed my mind."
+        },
+        {
+          "id": "4",
+          "text": "Recommends tailored help when physical problems arise",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Individual guidance when something hurts",
+          "explanation": "Dan expresa esta idea: Individual guidance when something hurts."
+        },
+        {
+          "id": "5",
+          "text": "Accepts less rapid improvement for a more sustainable approach",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Slower now; confident it will last",
+          "explanation": "Dan expresa esta idea: Slower now; confident it will last."
+        },
+        {
+          "id": "6",
+          "text": "Would consider changing location if travelling became easier",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "If one opened closer to work",
+          "explanation": "Ben expresa esta idea: If one opened closer to work."
+        },
+        {
+          "id": "7",
+          "text": "Cares more about well-being than numerical targets",
+          "answer": "C",
+          "category": "opinion",
+          "evidence": "Less interested in measuring steps",
+          "explanation": "Cara expresa esta idea: Less interested in measuring steps."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-07",
+      "topic": "Planning holidays",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "I book accommodation well ahead because arriving somewhere without a bed would worry me. Once that is settled, I leave the days open. A timetable of attractions makes a holiday feel like work. I might reserve a particularly popular museum, but I prefer discovering most things as I go along."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "Last year I tried choosing restaurants and activities at the last moment. We wasted hours comparing options and disagreed about what to do. This year everyone will suggest a few priorities before we leave. I do not want a minute-by-minute plan, just enough agreement to avoid spending our holiday making the same decisions repeatedly."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "A tour made me nervous because I assumed it would be rigid. In fact, our guide changed the schedule when the weather turned bad and offered different walks for different abilities. That flexibility persuaded me to book another. I would not choose any organised trip automatically, though; the group size and approach still matter."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "Travelling outside the main holiday season often makes places quieter and more affordable. I enjoy that, but people should check what remains open. An empty beach is attractive; arriving to find every café closed is less convenient. I recommend the quieter months to independent travellers who are comfortable making a few compromises."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Secures the overnight essentials but avoids organising every day",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "Accommodation ahead; days open",
+          "explanation": "Anna expresa esta idea: Accommodation ahead; days open."
+        },
+        {
+          "id": "2",
+          "text": "Wants advance agreement to reduce repeated group decisions",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Suggest priorities; same decisions repeatedly",
+          "explanation": "Ben expresa esta idea: Suggest priorities; same decisions repeatedly."
+        },
+        {
+          "id": "3",
+          "text": "Had a negative expectation of organised travel that proved inaccurate",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Assumed rigid; guide changed schedule",
+          "explanation": "Cara expresa esta idea: Assumed rigid; guide changed schedule."
+        },
+        {
+          "id": "4",
+          "text": "Recommends a cheaper period with a warning about reduced services",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Affordable; check what remains open",
+          "explanation": "Dan expresa esta idea: Affordable; check what remains open."
+        },
+        {
+          "id": "5",
+          "text": "Would make an exception for an attraction needing advance booking",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "Reserve a particularly popular museum",
+          "explanation": "Anna expresa esta idea: Reserve a particularly popular museum."
+        },
+        {
+          "id": "6",
+          "text": "Supports planning without wanting a detailed timetable",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "Not a minute-by-minute plan",
+          "explanation": "Ben expresa esta idea: Not a minute-by-minute plan."
+        },
+        {
+          "id": "7",
+          "text": "Would assess particular tours despite a good earlier experience",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Group size and approach still matter",
+          "explanation": "Cara expresa esta idea: Group size and approach still matter."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-08",
+      "topic": "Choosing news sources",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "I check several reports when a story is important. Small differences in the facts can show what still needs confirming. This takes longer than reading a headline, but I would rather wait than repeat something misleading. For ordinary local events one reliable source is usually enough; I do not compare everything."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "Constant news alerts made it difficult to concentrate. I now read a summary once in the evening and have switched off most notifications. I am still interested in events, but knowing about each development immediately rarely changes what I can do. An urgent local warning is the exception, so I keep those alerts enabled."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "I like podcasts because an interview can reveal how a decision was reached. Hearing the reasoning matters more than simply learning the outcome. However, a confident voice can sound convincing without providing evidence. I look for programmes that challenge their guests and publish links, rather than ones that merely offer a pleasant conversation."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "My students often share news through short social-media clips. Banning those platforms would probably make them ignore my advice. Instead, I ask them to trace a claim back to its original source. Clips can introduce a useful issue, but understanding what has been left out requires reading beyond them."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Compares accounts for major stories but does not do so for every item",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "Important story; do not compare everything",
+          "explanation": "Anna expresa esta idea: Important story; do not compare everything."
+        },
+        {
+          "id": "2",
+          "text": "Limits frequent updates without abandoning an interest in events",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "Still interested; once in the evening",
+          "explanation": "Ben expresa esta idea: Still interested; once in the evening."
+        },
+        {
+          "id": "3",
+          "text": "Values explanations of the process behind an outcome",
+          "answer": "C",
+          "category": "opinion",
+          "evidence": "Reveal how a decision was reached",
+          "explanation": "Cara expresa esta idea: Reveal how a decision was reached."
+        },
+        {
+          "id": "4",
+          "text": "Teaches a checking method instead of trying to prohibit a medium",
+          "answer": "D",
+          "category": "inference",
+          "evidence": "Instead; trace a claim",
+          "explanation": "Dan expresa esta idea: Instead; trace a claim."
+        },
+        {
+          "id": "5",
+          "text": "Believes reassuring delivery is insufficient proof of reliability",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Confident voice; without evidence",
+          "explanation": "Cara expresa esta idea: Confident voice; without evidence."
+        },
+        {
+          "id": "6",
+          "text": "Retains immediate information that could require practical action",
+          "answer": "B",
+          "category": "qualification",
+          "evidence": "Urgent local warning",
+          "explanation": "Ben expresa esta idea: Urgent local warning."
+        },
+        {
+          "id": "7",
+          "text": "Recognises that brief content can be a starting point rather than a full account",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Introduce a useful issue; left out",
+          "explanation": "Dan expresa esta idea: Introduce a useful issue; left out."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-09",
+      "topic": "Learning to cook",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "I follow recipes closely when making a dish for the first time. Once I understand the method, I adjust flavours to suit the people eating it. Experimenting before I know the basics tends to waste ingredients. The recipe gives me a dependable starting point rather than a rule I must follow forever."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "My parents cooked without measuring much, so I assumed everyone could learn by watching. Trying to bake alone showed me otherwise: small changes in amounts affected the result. I now weigh ingredients carefully for cakes, although I still make soup by taste. Precision matters for some tasks more than for others."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "A cookery class taught useful techniques, but the equipment was very different from my tiny kitchen. I struggled to repeat the dishes at home. What helped was choosing recipes using the tools I already had. I might take another class if it focused on everyday cooking in ordinary homes rather than professional facilities."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "I cook with my teenage daughter on Sundays. Finishing dinner takes longer than doing it myself, and the kitchen is rarely tidy. Nevertheless, she is becoming confident about preparing food independently. I judge the session by what she learns, not by whether we produce a perfect meal at exactly the planned time."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Treats instructions as an initial support before making personal changes",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "Starting point; adjust flavours",
+          "explanation": "Anna expresa esta idea: Starting point; adjust flavours."
+        },
+        {
+          "id": "2",
+          "text": "Learned that exact quantities matter differently across dishes",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Weigh for cakes; soup by taste",
+          "explanation": "Ben expresa esta idea: Weigh for cakes; soup by taste."
+        },
+        {
+          "id": "3",
+          "text": "Had difficulty transferring formal training to their own circumstances",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Equipment different; struggled at home",
+          "explanation": "Cara expresa esta idea: Equipment different; struggled at home."
+        },
+        {
+          "id": "4",
+          "text": "Accepts slower work in exchange for another person gaining a skill",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Takes longer; preparing independently",
+          "explanation": "Dan expresa esta idea: Takes longer; preparing independently."
+        },
+        {
+          "id": "5",
+          "text": "Would choose future tuition with a more practical setting",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Ordinary homes rather than professional facilities",
+          "explanation": "Cara expresa esta idea: Ordinary homes rather than professional facilities."
+        },
+        {
+          "id": "6",
+          "text": "Avoids early experimentation to limit waste",
+          "answer": "A",
+          "category": "inference",
+          "evidence": "Before basics; waste ingredients",
+          "explanation": "Anna expresa esta idea: Before basics; waste ingredients."
+        },
+        {
+          "id": "7",
+          "text": "Places learning ahead of a flawless immediate result",
+          "answer": "D",
+          "category": "opinion",
+          "evidence": "What she learns; not a perfect meal",
+          "explanation": "Dan expresa esta idea: What she learns; not a perfect meal."
+        }
+      ]
+    },
+    {
+      "id": "RL-P3-10",
+      "topic": "Protecting green spaces",
+      "people": [
+        {
+          "id": "A",
+          "name": "Anna",
+          "text": "The park near my home is most valuable as a quiet place to sit. I am not opposed to events, but holding them every weekend would remove that benefit. A few each summer could help fund maintenance. The council should decide how often to hold them by considering regular users as well as ticket buyers."
+        },
+        {
+          "id": "B",
+          "name": "Ben",
+          "text": "An unused area behind our school could become a garden. Some people want expensive landscaping immediately, but I favour starting with a few beds cared for by pupils. If interest continues, we can expand. A modest project that people maintain seems more promising than a beautiful space they soon neglect."
+        },
+        {
+          "id": "C",
+          "name": "Cara",
+          "text": "I support protecting local wildlife, yet closing every path through the woods could weaken that support. People care more about places they can experience. Marked routes away from sensitive areas would allow access while reducing disturbance. Restrictions during the nesting season may still be necessary, provided their purpose is explained."
+        },
+        {
+          "id": "D",
+          "name": "Dan",
+          "text": "Volunteers do excellent work cleaning the riverbank, but they should not be expected to replace proper rubbish collection. Without regular council support, the same waste soon returns. Community action can draw attention to the issue and improve things temporarily. A lasting solution also requires the public services to fulfil their responsibilities."
+        }
+      ],
+      "statements": [
+        {
+          "id": "1",
+          "text": "Allows occasional commercial use while protecting everyday tranquillity",
+          "answer": "A",
+          "category": "qualification",
+          "evidence": "A few each summer; quiet place",
+          "explanation": "Anna expresa esta idea: A few each summer; quiet place."
+        },
+        {
+          "id": "2",
+          "text": "Wants a small maintainable beginning before investing further",
+          "answer": "B",
+          "category": "opinion",
+          "evidence": "Start with a few beds; if interest continues",
+          "explanation": "Ben expresa esta idea: Start with a few beds; if interest continues."
+        },
+        {
+          "id": "3",
+          "text": "Believes controlled access can strengthen public concern for nature",
+          "answer": "C",
+          "category": "inference",
+          "evidence": "Care more about places they can experience",
+          "explanation": "Cara expresa esta idea: Care more about places they can experience."
+        },
+        {
+          "id": "4",
+          "text": "Sees voluntary effort as useful but insufficient for a permanent solution",
+          "answer": "D",
+          "category": "qualification",
+          "evidence": "Temporarily; public services",
+          "explanation": "Dan expresa esta idea: Temporarily; public services."
+        },
+        {
+          "id": "5",
+          "text": "Would permit temporary restrictions if the reason were clear",
+          "answer": "C",
+          "category": "qualification",
+          "evidence": "Nesting season; purpose explained",
+          "explanation": "Cara expresa esta idea: Nesting season; purpose explained."
+        },
+        {
+          "id": "6",
+          "text": "Thinks long-term care matters more than impressive initial appearance",
+          "answer": "B",
+          "category": "inference",
+          "evidence": "Maintain; beautiful space soon neglect",
+          "explanation": "Ben expresa esta idea: Maintain; beautiful space soon neglect."
+        },
+        {
+          "id": "7",
+          "text": "Wants decisions to account for people who do not attend paid events",
+          "answer": "A",
+          "category": "inference",
+          "evidence": "Regular users as well as ticket buyers",
+          "explanation": "Anna expresa esta idea: Regular users as well as ticket buyers."
+        }
+      ]
+    }
+  ]
+}

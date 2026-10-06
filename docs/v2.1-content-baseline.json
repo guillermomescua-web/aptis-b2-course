@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-06T14:50:36.024Z",
+  "ids": 972,
+  "exercises": 201,
+  "vocabulary": 306,
+  "hashes": {
+    "data/course.json": "5aa99ddddb39da625b22cc07bef9d7cdeb0072e4862cfbff0713e4ec67e49ccf",
+    "data/vocabulary.json": "e2ba09b04138270d141ed515c46608232b1db5cca140318e784e2bc4d086cdb8",
+    "data/writing-plan.json": "1018df39ab693a5dfdb2001173adff3a630f4f5675e9627e23e1d8fcae790db9",
+    "pdfs/00_START_HERE.pdf": "4d6ed38449e64a059dda89fcccc4cc597d51fb288368838357fdaca8423f235a",
+    "pdfs/01_DIAGNOSTIC_TEST.pdf": "df2ab79447d065bffaa59d0d7c1f7240319a71ae0c4e786385812ff21e7f54a7",
+    "pdfs/02_WEEK_1.pdf": "370bc719b032670c6517e3a6397dd201236c066aa86094e2227f0830226002de",
+    "pdfs/03_WEEK_2.pdf": "c2a2d9283f50404a1e31b3250edaa5cf77847cb541a7fcd6bbc13e71f14754ab",
+    "pdfs/04_WEEK_3.pdf": "1f25230e5292a4b31bb339564b3b622d465e6c272e017cdb3b4221590cef8034",
+    "pdfs/05_WEEK_4.pdf": "fa72f01be3966571d52dd5d555ad9b8a641555fe4c97dfd8baa96a2d04ed3836",
+    "pdfs/06_WEEK_5.pdf": "665325140e62c192a2f8a78391ddb1b30d1bb5034ab27c12916975bc0980f632",
+    "pdfs/07_WEEK_6.pdf": "bf8096334bc51e782162cda4526ec95b41894faa1233b3c4bc8ee4f11d74b2dd",
+    "pdfs/08_WEEK_7.pdf": "e165d513b0a65d0b511f325fec0c9184686f891b314c776e360ee8c63f2b164b",
+    "pdfs/09_WEEK_8.pdf": "673fe0e7eae1f5355b3b37af7dfa86ad5c4bceadee72953246eb5db8b388f043",
+    "pdfs/10_WRITING_MASTERBOOK.pdf": "06c613a0ae1eb0bd425969874d35353f90059c729019858845ae648525f587d8",
+    "pdfs/11_VOCABULARY_MASTERBOOK.pdf": "423572c825389989318969dbae49b139acbea158448b859de553e30d6e4330d3",
+    "pdfs/12_SPEAKING_MASTERBOOK.pdf": "466e1ee2e94afa9cf126cdeb1ffb6f906b0af34bfcfee0f8594e26edd6b3578e",
+    "pdfs/13_MOCK_EXAMS.pdf": "165c909759dc1ef2d24208069ef53f6a09a51d1bb7e5e214a3967c7c8e80b86d",
+    "pdfs/14_COMPLETE_ANSWER_BOOK.pdf": "cb3e97aee98694bc5c7f5ea5649d35e07d9fe92fac574f70ba544632e65b5373",
+    "pdfs/15_PROGRESS_ERROR_TRACKER.pdf": "235ef77fa1dfcb6dcb58050f48a3ed20c0eb5ada999c1197919b630c14901613"
+  },
+  "sessions": 32
+}

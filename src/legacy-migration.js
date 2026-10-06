@@ -16,6 +16,13 @@ export function validatePackage(file,course,vocabulary){
     if(!['New','Learning','Review','Mastered'].includes(data.status)||!['repetitions','lapses','dueAt'].every(k=>Number.isSafeInteger(data[k])&&data[k]>=0)||data.mistakes!=null&&(!Number.isInteger(data.mistakes)||data.mistakes<0)||data.lastCorrect!=null&&typeof data.lastCorrect!=='boolean')throw Error('Progreso de vocabulario inválido.');
     entities.push({kind:'vocabulary',id,data});
   }
+  const reading=file.reading||{};if(typeof reading!=='object'||Array.isArray(reading))throw Error('Reading Lab incompatible.');
+  for(const [id,data]of Object.entries(reading)){
+    const match=id.match(/^RL-P([23])-(\d{2})$/),part=Number(match?.[1]),number=Number(match?.[2]);
+    const valid=match&&number>=1&&number<=(part===2?16:10)&&data?.part===part&&Object.keys(data).every(k=>['part','attempts','correct','incorrect','errors','lastAt'].includes(k))&&['attempts','correct','incorrect','lastAt'].every(k=>Number.isSafeInteger(data[k])&&data[k]>=0)&&data.correct+data.incorrect===data.attempts*(part===2?5:7)&&data.errors&&typeof data.errors==='object'&&!Array.isArray(data.errors)&&Object.entries(data.errors).every(([k,v])=>['cohesion','reference','chronology','opinion','inference','qualification'].includes(k)&&Number.isSafeInteger(v)&&v>=0)&&Object.values(data.errors).reduce((n,v)=>n+v,0)===data.incorrect;
+    if(!valid)throw Error('Progreso de Reading Lab inválido.');
+    entities.push({kind:'reading',id,data});
+  }
   const feedback=Array.isArray(file.feedback)?file.feedback:Object.values(file.ai?.items||{});
   for(const item of feedback){validateFeedback(item.kind,item.feedback);if(!course.exercises.some(ex=>ex.questions.some(q=>q.id===item.exerciseId))||!Number.isFinite(Date.parse(item.timestamp))||!/^[a-f0-9]{64}$/.test(item.sourceHash))throw Error('Feedback heredado inválido.');}
   if(feedback.length>200)throw Error('La importación admite hasta 200 correcciones.');
