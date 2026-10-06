@@ -31,7 +31,7 @@ let currentAudio = null;
 const speakingRecordings = new Map();
 let activeRecorder = null;
 let audioManifest = {};
-let listeningBusy=false,activeMock=null;
+let listeningBusy=false,listeningRequest=0,activeMock=null;
 
 function loadState() {
   try { return { ...defaultState(), ...JSON.parse(localStorage.getItem(STORE) || '{}') }; }
@@ -403,6 +403,7 @@ function startTimer(seconds, label) {
   tick(); activeTimer = setInterval(tick, 250);
 }
 function stopListening() {
+  listeningRequest++;
   if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
@@ -443,17 +444,19 @@ async function playRecording(id) {
   listeningBusy=true;const button=document.querySelector(`[data-play="${id}"]`);if(button)button.disabled=true;
   try {
   stopListening();
+  const request=listeningRequest;
   const file = audioManifest[id];
   if (typeof file === 'string' && /^[\w.-]+\.(mp3|ogg|wav)$/i.test(file)) {
     const candidate = new Audio(`./audio/${file}`);
+    currentAudio = candidate;
     try {
       await candidate.play();
-      currentAudio = candidate;
+      if(request!==listeningRequest){candidate.pause();return;}
       markPlay(id);
       return;
-    } catch { candidate.pause(); }
+    } catch { candidate.pause();if(request!==listeningRequest)return;currentAudio=null; }
   }
-  if (playSpeech(course.recordings[id])) markPlay(id);
+  if (request===listeningRequest&&playSpeech(course.recordings[id])) markPlay(id);
   } finally {listeningBusy=false;if(button)button.disabled=(state.plays[id]||0)>=2;}
 }
 
