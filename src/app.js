@@ -85,8 +85,14 @@ async function bootAccounts(){
 }
 async function refreshAccount(){
   if(account?.role!=='student')return;
+  const snapshot=()=>JSON.stringify([learningStore.state(),learningStore.vocabulary(),learningStore.entries('reading'),feedbackRows,teacherReviews,serverRecordings]);
+  const before=snapshot();
   await learningStore.flush();await learningStore.refresh();await refreshAccountExtras();
-  if(!document.activeElement?.dataset.response&&!activeRecorder&&![...document.querySelectorAll('audio')].some(audio=>!audio.paused))render();
+  // Polling is not navigation. Leave an unchanged screen and its in-progress work alone.
+  const editing=document.activeElement?.matches('input,textarea,select,[contenteditable="true"]');
+  const lab=['#reading-lab','#vocabulary-lab'].includes(location.hash);
+  const playing=currentAudio&&!currentAudio.paused||window.speechSynthesis?.speaking||[...document.querySelectorAll('audio')].some(audio=>!audio.paused);
+  if(before!==snapshot()&&!editing&&!lab&&!activeRecorder&&!playing&&!activeTimer)await render({preservePosition:true});
 }
 async function refreshAccountExtras(){
   if(account?.role!=='student')return;
@@ -565,8 +571,9 @@ async function importProgress(file) {
   }
 }
 
-async function render() {
+async function render(options={}) {
   if (!course) return;
+  const position=options.preservePosition?{x:window.scrollX,y:window.scrollY,sidebar:menu.scrollTop}:null;
   if(account?.role==='teacher'){mainNav.innerHTML='<a class="nav-link" href="#teacher">Panel del profesor</a>';weekNav.innerHTML='';topProgress.textContent='Supervisión';breadcrumb.textContent='PROFESOR';teacherDashboard(app,account,course,writingPlan,vocabularyData);return;}
   stopActiveRecording();
   renderNav();
@@ -589,7 +596,8 @@ async function render() {
   document.querySelectorAll('[data-ai-panel]').forEach(panel => syncAIFeedback(panel.dataset.aiPanel));
   if(account?.role==='student'){app.insertAdjacentHTML('afterbegin',migrationHTML(legacy));app.insertAdjacentHTML('beforeend','<section class="card server-backup"><button class="small-button" data-full-export>Descargar respaldo completo</button></section>');}
   document.querySelectorAll('[data-recorder-panel]').forEach(panel=>restoreRemoteClip(panel.dataset.recorderPanel));
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  if(position){menu.scrollTop=position.sidebar;window.scrollTo({left:position.x,top:position.y,behavior:'instant'});}
+  else window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 installAIFeedback({
