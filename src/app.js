@@ -28,6 +28,7 @@ let activeTimer = null;
 let timerEnds = 0;
 let timerLabel = '';
 let currentAudio = null;
+let currentListeningId=null,listeningSpeech=false;
 const speakingRecordings = new Map();
 let activeRecorder = null;
 let audioManifest = {};
@@ -214,9 +215,10 @@ function dashboard() {
 
 function exerciseHTML(ex, index) {
   const audio = ex.title.toLowerCase().includes('listening') ? audioHTML(ex) : '';
+  const context=audio?(ex.context||'').replace('no more than twice','as often as you wish').replace('Maximum two plays each.','Unlimited playback.'):ex.context;
   const speaking = ex.title.toLowerCase().includes('speaking');
   const privacyNote = '';
-  return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${ex.context ? `<div class="source-text">${esc(ex.context)}</div>` : ''}${audio}${privacyNote}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] && !document.body.classList.contains('mock-attempt') ? keyHTML(ex) : ''}</article>`;
+  return `<article class="exercise-card" id="${esc(ex.id)}"><div class="exercise-head"><div><div class="exercise-num">EJERCICIO ${String(index + 1).padStart(2, '0')} · ${esc(ex.id)}</div><h2 class="exercise-title">${esc(ex.title)}</h2></div>${ex.minutes ? `<span class="tag">${ex.minutes} MIN</span>` : ''}</div><div class="exercise-body">${context ? `<div class="source-text">${esc(context)}</div>` : ''}${audio}${privacyNote}${ex.questions.map(q => questionHTML(q, speaking)).join('')}</div><div class="exercise-foot"><span class="score" id="score-${esc(ex.id)}"></span><button type="button" class="secondary-button" data-check="${esc(ex.id)}">${state.checked[ex.id] ? 'Ocultar corrección' : 'Corregir y ver respuestas'}</button></div>${state.checked[ex.id] && !document.body.classList.contains('mock-attempt') ? keyHTML(ex) : ''}</article>`;
 }
 
 function writingAssistHTML(q) { return aiControlsHTML('writing', q); }
@@ -284,7 +286,7 @@ function audioHTML(ex) {
     ids = all.filter(id => { const n = Number(id.match(/-R(\d{2})$/)?.[1]); return n >= range[0] && n <= range[1]; });
   }
   if (!ids.length) return '';
-  return `<div class="audio-panel"><h4>Listening · texto oculto durante el intento</h4><p style="font-size:11px;color:#6f8494;margin:0 0 10px">Escucha cada grabación un máximo de dos veces. Voces generadas con IA y archivos estáticos; si un archivo falta, se utiliza la voz del navegador.</p>${ids.map(id => `<div class="audio-row"><span>${esc(id)}</span><button class="small-button" type="button" data-play="${esc(id)}" ${state.plays[id] >= 2 ? 'disabled' : ''}>▶ Escuchar</button><small>${state.plays[id] || 0} / 2 escuchas</small></div>`).join('')}<button class="small-button" type="button" data-stop-audio>Detener audio</button></div>`;
+  return `<div class="audio-panel"><h4>Listening · texto oculto durante el intento</h4><p style="font-size:11px;color:#6f8494;margin:0 0 10px">Escuchas ilimitadas, también en examen. Puedes pausar, reanudar o volver a escuchar. MP3 estáticos sin gasto de OpenAI; si falta un archivo, se utiliza la voz del navegador.</p>${ids.map(id => `<div class="audio-row"><span>${esc(id)}</span><button class="small-button" type="button" data-play="${esc(id)}">▶ Escuchar</button><button class="small-button" type="button" data-pause-listening="${esc(id)}" aria-label="Pausar audio ${esc(id)}" disabled>Pausar</button><small>${state.plays[id] || 0} reproducciones</small></div>`).join('')}<button class="small-button" type="button" data-stop-audio>Detener audio</button><p class="listening-status" role="status" aria-live="polite"></p></div>`;
 }
 
 function renderExercisePage(kind, id, exercises, meta) {
@@ -412,41 +414,58 @@ function stopListening() {
   listeningRequest++;
   if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
   if ('speechSynthesis' in window) speechSynthesis.cancel();
+  currentListeningId=null;listeningSpeech=false;syncListeningControls();
+}
+function syncListeningControls(){
+  for(const button of document.querySelectorAll('[data-pause-listening]')){
+    const active=button.dataset.pauseListening===currentListeningId&&!!(currentAudio||listeningSpeech);
+    const paused=active&&(currentAudio?currentAudio.paused:speechSynthesis.paused);
+    button.disabled=!active;button.textContent=paused?'Reanudar':'Pausar';
+    button.setAttribute('aria-label',`${paused?'Reanudar':'Pausar'} audio ${button.dataset.pauseListening}`);
+  }
+}
+async function pauseListening(id){
+  if(id!==currentListeningId)return;
+  try{
+    if(currentAudio){if(currentAudio.paused)await currentAudio.play();else currentAudio.pause();}
+    else if(listeningSpeech){if(speechSynthesis.paused)speechSynthesis.resume();else speechSynthesis.pause();}
+  }catch{const status=document.querySelector(`[data-play="${id}"]`)?.closest('.audio-panel').querySelector('.listening-status');if(status)status.textContent='No se pudo reanudar. Pulsa Escuchar para volver a intentarlo.';}
+  syncListeningControls();
 }
 function vocabularyLabView() {
   breadcrumb.textContent = 'VOCABULARY LAB';
   renderVocabularyLab(app, state.errors);
 }
 
-function playSpeech(text) {
+function playSpeech(text,onEnd=()=>{}) {
   if (!('speechSynthesis' in window)) return false;
   const voices = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('en'));
   const british = voices.filter(v => v.lang.toLowerCase() === 'en-gb');
   const available = british.length ? british : voices;
   const dialogue = [...text.matchAll(/(?:^|\s)(Man|Woman):\s*([\s\S]*?)(?=\s+(?:Man|Woman):|$)/g)];
   const chunks = dialogue.length ? dialogue.map(m => ({ speaker: m[1], text: m[2].trim() })) : [{ speaker: '', text }];
-  for (const chunk of chunks) {
+  for (const [index,chunk] of chunks.entries()) {
     const utterance = new SpeechSynthesisUtterance(chunk.text);
     utterance.lang = 'en-GB'; utterance.rate = 0.94;
     if (available.length) utterance.voice = available[chunk.speaker === 'Woman' && available.length > 1 ? 1 : 0];
     if (chunk.speaker && available.length < 2) utterance.pitch = chunk.speaker === 'Woman' ? 1.13 : 0.9;
+    if(index===chunks.length-1)utterance.onend=onEnd;
     speechSynthesis.speak(utterance);
   }
   return true;
 }
 
 function markPlay(id) {
-  state.plays[id] = (state.plays[id] || 0) + 1;
+  state.plays[id] = Math.min(Number.MAX_SAFE_INTEGER,(state.plays[id] || 0) + 1);
   save();
   const row = document.querySelector(`[data-play="${id}"]`)?.parentElement;
   if (row) {
-    row.querySelector('small').textContent = `${state.plays[id]} / 2 escuchas`;
-    if (state.plays[id] >= 2) row.querySelector('button').disabled = true;
+    row.querySelector('small').textContent = `${state.plays[id]} reproducciones`;
   }
 }
 
 async function playRecording(id) {
-  if (listeningBusy || !course.recordings[id] || (state.plays[id] || 0) >= 2) return;
+  if (listeningBusy || !course.recordings[id]) return;
   listeningBusy=true;const button=document.querySelector(`[data-play="${id}"]`);if(button)button.disabled=true;
   try {
   stopListening();
@@ -454,16 +473,18 @@ async function playRecording(id) {
   const file = audioManifest[id];
   if (typeof file === 'string' && /^[\w.-]+\.(mp3|ogg|wav)$/i.test(file)) {
     const candidate = new Audio(`./audio/${file}`);
-    currentAudio = candidate;
+    currentAudio = candidate;currentListeningId=id;
+    candidate.onended=()=>{if(currentAudio===candidate){currentAudio=null;currentListeningId=null;syncListeningControls();}};
     try {
       await candidate.play();
       if(request!==listeningRequest){candidate.pause();return;}
       markPlay(id);
+      syncListeningControls();
       return;
     } catch { candidate.pause();if(request!==listeningRequest)return;currentAudio=null; }
   }
-  if (request===listeningRequest&&playSpeech(course.recordings[id])) markPlay(id);
-  } finally {listeningBusy=false;if(button)button.disabled=(state.plays[id]||0)>=2;}
+  if(request===listeningRequest){currentListeningId=id;listeningSpeech=true;if(playSpeech(course.recordings[id],()=>{if(request===listeningRequest){currentListeningId=null;listeningSpeech=false;syncListeningControls();}}))markPlay(id);else{currentListeningId=null;listeningSpeech=false;}syncListeningControls();}
+  } finally {listeningBusy=false;if(button)button.disabled=false;}
 }
 
 function recorderPanel(id) { return [...document.querySelectorAll('[data-recorder-panel]')].find(el => el.dataset.recorderPanel === id); }
@@ -596,6 +617,7 @@ async function render(options={}) {
   document.querySelectorAll('[data-ai-panel]').forEach(panel => syncAIFeedback(panel.dataset.aiPanel));
   if(account?.role==='student'){app.insertAdjacentHTML('afterbegin',migrationHTML(legacy));app.insertAdjacentHTML('beforeend','<section class="card server-backup"><button class="small-button" data-full-export>Descargar respaldo completo</button></section>');}
   document.querySelectorAll('[data-recorder-panel]').forEach(panel=>restoreRemoteClip(panel.dataset.recorderPanel));
+  syncListeningControls();
   if(position){menu.scrollTop=position.sidebar;window.scrollTo({left:position.x,top:position.y,behavior:'instant'});}
   else window.scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -640,6 +662,7 @@ document.addEventListener('click', e => {
   if (button.dataset.timer) startTimer(Number(button.dataset.timer), button.dataset.timerLabel || 'Tiempo');
   if (button.hasAttribute('data-stop-timer')) { if (activeTimer) clearInterval(activeTimer); activeTimer = null; document.getElementById('floating-timer')?.remove(); }
   if (button.dataset.play) playRecording(button.dataset.play);
+  if (button.dataset.pauseListening) pauseListening(button.dataset.pauseListening);
   if (button.hasAttribute('data-stop-audio')) stopListening();
   if (button.dataset.recordStart) startRecording(button.dataset.recordStart);
   if (button.dataset.recordStop) stopActiveRecording();

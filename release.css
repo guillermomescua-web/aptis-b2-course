@@ -25,3 +25,4 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .day-label .session-status{display:block;font-size:9px;font-weight:400;line-height:1.7;color:#c6dce1}.day-link.started .day-label:after{content:none}.week-name{white-space:nowrap;min-width:85px}.week-row{padding-top:13px;padding-bottom:13px}
+.audio-row{flex-wrap:wrap}.audio-row span{overflow-wrap:anywhere;min-width:0}.audio-row small{white-space:normal}.listening-status:empty{display:none}

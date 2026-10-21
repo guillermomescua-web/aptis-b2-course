@@ -13,7 +13,7 @@
     "MediaRecorder original and analysis WAV uploaded privately",
     "Speaking uses stored exact audio and persists test feedback",
     "Speaking timers retained",
-    "Listening two plays persist and original controls work",
+    "Listening remains playable after the third play and persists",
     "Vocabulary Lab repetition logic persists",
     "Reading P2/P3 deterministic feedback persists after reload",
     "Second browser recovers Reading statistics from server",

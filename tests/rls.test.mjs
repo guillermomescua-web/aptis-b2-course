@@ -20,12 +20,26 @@ before(async()=>{
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/001_mvp.sql',import.meta.url),'utf8'));
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/002_content_refs.sql',import.meta.url),'utf8'));
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/003_reading_lab.sql',import.meta.url),'utf8'));
+  await db.exec(fs.readFileSync(new URL('../supabase/migrations/004_unlimited_listening.sql',import.meta.url),'utf8'));
   for(const [id,role]of [[A,'student'],[B,'student'],[T,'teacher']]){
     await q('insert into auth.users values($1,$2)',[id,role+'@example.invalid']);await q('insert into public.user_roles(user_id,role) values($1,$2)',[id,role]);await q('insert into public.profiles values($1,$2)',[id,role]);
   }
   await q('insert into public.teacher_students(teacher_id,student_id) values($1,$2)',[T,A]);
 });
 after(async()=>{await db?.close();});
+
+test('Unlimited Listening counts persist without changing student/teacher permissions',async()=>{
+  await db.exec(fs.readFileSync(new URL('../supabase/live_unlimited_listening_check.sql',import.meta.url),'utf8'));
+  const id='MOCK01-LIST-R01';
+  await as(A,async()=>{
+    await save('listening',id,{plays:2});await save('listening',id,{plays:3},1);
+    const updated=await save('listening',id,{plays:100000},2);assert.equal(updated.ok,true);
+    for(const plays of [-1,1.5,'3',null,9007199254740992])await assert.rejects(()=>save('listening',id,{plays},3),/Invalid play count/);
+    const snapshot=(await q('select public.learning_snapshot() as data')).rows[0].data;
+    assert.equal(snapshot.listening.find(r=>r.id===id).data.plays,100000);
+  });
+  await as(T,async()=>{await assert.rejects(()=>save('listening',id,{plays:100001}),/Forbidden/);});
+});
 test('Reading progress is private, revision checked and visible only to assigned teacher',async()=>{
  const value={part:2,attempts:1,correct:3,incorrect:2,errors:{reference:2},lastAt:Date.now()};
  await as(A,async()=>{assert.equal((await save('reading','RL-P2-01',value)).ok,true);await assert.rejects(()=>save('reading','RL-P2-02',{...value,correct:5}),/Invalid/);await assert.rejects(()=>save('reading','RL-P3-01',value),/Invalid/);const conflict=await save('reading','RL-P2-01',{...value,correct:4,incorrect:1,errors:{reference:1}},0);assert.equal(conflict.ok,false);});

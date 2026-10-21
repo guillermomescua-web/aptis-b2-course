@@ -117,7 +117,7 @@ try {
     await page.clock.install(); await page.locator('[data-timer="45"]').first().click(); await page.locator('#floating-timer').waitFor(); await page.clock.fastForward(45100); await page.locator('#timer-label').filter({ hasText: 'Tiempo terminado' }).waitFor(); await page.locator('[data-stop-timer]').click();
     await page.goto(base + '#session=W1D4'); await page.locator('[data-play]').first().waitFor();
     const audioButton = page.locator('[data-play]').first(); const recordingId = await audioButton.getAttribute('data-play');
-    await audioButton.click(); await audioButton.click(); assert.equal(await audioButton.isDisabled(), true);
+    await audioButton.click(); await audioButton.click(); assert.equal(await audioButton.isDisabled(), false);
     assert.equal(await page.evaluate(id => JSON.parse(localStorage.getItem('aptis-b2-performance-v1')).plays[id], recordingId), 2);
     for (let w = 1; w <= 8; w++) for (let d = 1; d <= 4; d++) { await page.goto(base + `#session=W${w}D${d}`); await page.locator('.exercise-card').first().waitFor(); }
     for (const route of ['diagnostic', 'mocks', 'books', 'book=writing', 'book=speaking', 'book=vocabulary', 'pdfs', 'tracker', 'mock=1&block=A', 'mock=1&block=B', 'mock=1&block=C']) { await page.goto(base + '#' + route); await page.waitForTimeout(50); assert.ok((await page.locator('#app').textContent()).length > 100); }

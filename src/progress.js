@@ -19,7 +19,7 @@ export function validateProgress(file, course) {
   const s = file.state;
   if (!entriesValid(s.responses, questions, value => typeof value === 'string' && value.length <= 20000)
       || !entriesValid(s.completed, sessions, value => typeof value === 'boolean')
-      || !entriesValid(s.plays, recordings, value => Number.isInteger(value) && value >= 0 && value <= 2)
+      || !entriesValid(s.plays, recordings, value => Number.isSafeInteger(value) && value >= 0)
       || !entriesValid(s.checked, exercises, value => typeof value === 'boolean')
       || !Array.isArray(s.errors) || s.errors.length > 5000
       || !s.errors.every(e => plain(e) && typeof e.key === 'string' && e.key.length <= 100
