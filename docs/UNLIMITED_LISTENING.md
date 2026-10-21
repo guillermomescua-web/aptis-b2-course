@@ -24,3 +24,5 @@ El baseline `unlimited-listening-baseline.json` conserva hashes de contenido aca
 Los tres nuevos exámenes solicitados en v2.2 todavía no están implementados en este checkout. La regla de escuchas ilimitadas sustituye el requisito anterior para su futura implementación; no se afirma haberlos probado ni publicado.
 
 Aplicar primero la migración 004 en Supabase y ejecutar la comprobación real. Después publicar el frontend, verificar el commit de Pages y comprobar reproducción/guardado en producción. No publicar una interfaz que prometa guardar contadores superiores a dos mientras el servidor conserve la validación antigua.
+
+Migración 004 aplicada en el Supabase de producción el 21/10/2026. La comprobación real devuelve PASS: acepta 0, 2, 3, 99999 y el máximo entero representable; rechaza valores inválidos; mantiene RLS y permisos. La comprobación no escribe datos de la alumna.
