@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "id": "THEORY-W2",
+  "title": "Semana 2 — Vocabulary, Grammar & Exam Skills",
+  "language": "en-GB",
+  "recommended": true,
+  "notice": "Clase recomendada y opcional. Las 32 sesiones siguen disponibles sin completar esta clase.",
+  "chapters": [
+    {
+      "id": "THEORY-W2-C1",
+      "title": "Vocabulary & Collocations",
+      "subtitle": "Meaning, useful chunks and precise choices",
+      "slides": [
+        {
+          "id": "V01",
+          "title": "Learn a useful phrase",
+          "points": [
+            "Meaning + grammar + context",
+            "Say it, change it, retrieve it",
+            "Accuracy before impressive words"
+          ],
+          "example": "a constructive conversation → a discussion that helps people move forward",
+          "narration": "Welcome to your Week Two theory class. This first chapter develops the vocabulary you will need across the four sessions, without solving their questions. We will practise the same language in different situations, so you can make your own decisions later. A useful vocabulary entry has three parts: meaning, a natural word combination, and an example that you understand. Consider a constructive conversation. Constructive means helpful because it moves a situation towards improvement. You could describe a conversation between neighbours about sharing a garden. That is more useful than memorising a translation of constructive on its own. Say the phrase aloud, then change the noun: constructive criticism, a constructive discussion, a constructive approach. Finally, close your notes and explain the meaning from memory. Recognition is only the first step. Being able to retrieve and adapt a phrase will help you in both writing and speaking. Keep examples short enough to remember, but specific enough to mean something.",
+          "practice": null,
+          "start": 0,
+          "end": 63.422
+        },
+        {
+          "id": "V02",
+          "title": "Money: three different questions",
+          "points": [
+            "payable: when or to whom payment is due",
+            "affordable: within a person’s budget",
+            "valuable: worth much, or very useful"
+          ],
+          "example": "The invoice is payable within fourteen days. Her advice was valuable.",
+          "narration": "Payable, affordable and valuable belong to different questions. Payable concerns an obligation to pay: an invoice might be payable within fourteen days, or a cheque payable to a named charity. Affordable concerns somebody's resources. A bicycle might be affordable for one person and too expensive for another, so the word does not mean objectively cheap. Valuable describes worth or usefulness. A conversation can provide valuable insight even when no money changes hands. Now add refund and discount. A refund returns money that was paid; a discount lowers a price. Imagine a theatre cancelling a performance and returning the audience's money. That is a refund. A reduced price for an early purchase is a discount. Notice how a whole situation helps you distinguish these words. When practising, ask what the sentence is actually about: a payment obligation, a budget, usefulness, or a price adjustment. Similar topics do not make words interchangeable.",
+          "practice": {
+            "prompt": "A cancelled train journey leads to money being returned. Explain why this is a refund rather than a discount.",
+            "answer": "The money was already paid and is being returned; the original price is not simply being reduced."
+          },
+          "start": 63.422,
+          "end": 122.657
+        },
+        {
+          "id": "V03",
+          "title": "Information, permission and memory",
+          "points": [
+            "confirm a fact; approve a plan; admit a mistake",
+            "enquire about a topic",
+            "current = at the present time"
+          ],
+          "example": "The observatory confirmed the sighting. The committee approved the new telescope.",
+          "narration": "Confirm, approve and admit have distinct purposes. You confirm information when you establish or state that it is correct. Scientists might confirm a sighting after checking several observations. You approve a proposal when you give it agreement or permission. A committee can approve the purchase of a telescope without confirming that any particular planet has been observed. You admit something when you acknowledge it, especially something uncomfortable: a researcher might admit a calculation error. To enquire about something is to request information. You could enquire about membership of an astronomy society. Enquire into can describe a formal investigation, so the preposition changes the relationship. Finally, current refers to what exists now: a current exhibition, a current estimate, or someone's current role. It is different from previous and from occasional. Build a tiny conversation of your own using two of these words. Make the purpose clear before choosing the verb, and check whether you are asking for information or asking for permission.",
+          "practice": null,
+          "start": 122.657,
+          "end": 184.89
+        },
+        {
+          "id": "V04",
+          "title": "Precise descriptions",
+          "points": [
+            "comprehensive: covering the relevant ground",
+            "widespread: present across many people or places",
+            "constructive: helpful towards improvement"
+          ],
+          "example": "A comprehensive safety guide can use simple language.",
+          "narration": "A comprehensive explanation covers the relevant ground. It does not have to be difficult, extremely long or complicated. A well organised guide to hillwalking could be comprehensive because it covers clothing, navigation, weather and emergencies in clear language. Widespread means found across many people or places. There might be widespread interest in protecting a local woodland. That is a statement about how broadly interest is shared, not a claim that everybody has exactly the same opinion. Constructive describes an approach that helps people improve something. Constructive criticism identifies a difficulty and offers a useful next step. Compare that with criticism which merely says that everything is terrible. These words are valuable in arguments, but avoid turning them into empty compliments. If you describe a guide as comprehensive, say which important areas it covers. If you call a suggestion constructive, explain what it would improve. Precise language depends on evidence and context, not on choosing the longest adjective in a list.",
+          "practice": null,
+          "start": 184.89,
+          "end": 252.188
+        },
+        {
+          "id": "V05",
+          "title": "Keeping and remembering",
+          "points": [
+            "retain = continue to have",
+            "obtain = acquire",
+            "remind someone to do something"
+          ],
+          "example": "A photographer retains the original files. A phone reminder prompts her to recharge a battery.",
+          "narration": "Retain and obtain differ in the starting point. To obtain something is to acquire it; to retain it is to continue to have it. A photographer might obtain permission to take pictures and retain the original files afterwards. Retain can sound more formal than keep, but formality is not a reason to replace every ordinary verb. Use a natural word for your audience. Remind and remember also describe different roles. If a phone reminds Amira to recharge a battery, the phone provides a prompt. Amira remembers to recharge it when her own memory leads to the action. Remind normally needs an object naming the person: remind me, remind the visitors, remind her. Then you can use to plus a verb for an action, or about plus a noun for a topic. Make two connected sentences about a daily habit. In one, describe the reminder. In the other, describe what the person remembers to do. That contrast helps the grammar stay attached to the meaning.",
+          "practice": null,
+          "start": 252.188,
+          "end": 314.524
+        },
+        {
+          "id": "V06",
+          "title": "Rules, access and responsibility",
+          "points": [
+            "comply with a requirement",
+            "be responsible for something",
+            "in someone’s care; accessible / inaccessible"
+          ],
+          "example": "The rescued birds remain in the wildlife team’s care.",
+          "narration": "Comply with means act in accordance with a requirement. A company may need to comply with environmental legislation. The preposition belongs to the verb pattern, so record the whole expression rather than comply alone. Be responsible for introduces an area of responsibility: a wildlife team might be responsible for feeding rescued birds. If the birds are in that team's care, the team is looking after them. Access is a different idea from availability. Something inaccessible cannot readily be reached or used. A digital document may be inaccessible to a screen reader even while it is available to download. A fully accessible appointment system may still have no appointments available today. These distinctions matter when describing practical problems fairly. Avoid assuming a person cannot do something; identify the barrier in the design or arrangement. Write a fresh example about a website, a remote footpath or a public service. Explain whether the issue is access, availability or responsibility, and choose language that matches that exact issue.",
+          "practice": null,
+          "start": 314.524,
+          "end": 380.841
+        },
+        {
+          "id": "V07",
+          "title": "Making room for different needs",
+          "points": [
+            "accommodate a need or preference",
+            "suitable for a beginner",
+            "distinguish between categories"
+          ],
+          "example": "The choir offers recordings to accommodate members who learn by listening.",
+          "narration": "Accommodate can mean provide a place to stay, but it can also mean make arrangements that meet a need. A choir could share practice recordings to accommodate members who learn best by listening. That does not mean physically putting those members inside something. Suitable for describes a match between something and its intended user. A beginner is a person starting to learn a skill, not a person who opens a door. However, a beginner in one skill may be highly experienced in another. Distinguish between means recognise a difference between categories. An art historian might distinguish between an original painting and a later reproduction. Another pattern is distinguish one thing from another. Notice where each object belongs rather than memorising a single preposition without its frame. Think of a new hobby you would like to try. Describe one arrangement that would make it suitable for you, then name two things you would need to distinguish. Keep the example separate from the tasks you will answer in your course.",
+          "practice": null,
+          "start": 380.841,
+          "end": 441.42
+        },
+        {
+          "id": "V08",
+          "title": "Turn words into decisions",
+          "points": [
+            "set priorities; take something into account",
+            "make an exception to a rule",
+            "come into effect; affect a person"
+          ],
+          "example": "A noise policy comes into effect in September. It may affect evening rehearsals.",
+          "narration": "Several useful combinations help you discuss decisions. To set priorities is to decide what matters most. When planning a woodland restoration project, you might take the nesting season into account. That means considering it as part of your decision. To make an exception is to treat one case differently from a general rule; it is not the same as making an excuse for a mistake. Come into effect describes when a rule begins to operate. Affect is usually a verb describing an influence: a noise policy may affect evening rehearsals. Effect is a noun in the expression come into effect. Now bring the chapter together. Imagine a community choir organising an outdoor performance. Give one priority, one factor to consider and one question to confirm. You do not need an advanced word in every sentence. Aim for combinations that make sense and fit their grammar. Afterwards, choose five phrases from this chapter and retrieve them tomorrow before looking at your notes.",
+          "practice": {
+            "prompt": "For a woodland restoration project, suggest a priority and a factor to consider. Use two complete phrases.",
+            "answer": "For example: We should set priorities before buying tools and take the nesting season into account. Other sensible ideas are possible."
+          },
+          "start": 441.42,
+          "end": 497.76
+        }
+      ],
+      "audio": "audio/theory/THEORY-W2-C1.mp3",
+      "duration": 497.76
+    },
+    {
+      "id": "THEORY-W2-C2",
+      "title": "Grammar & Use of English",
+      "subtitle": "Understand the structure, then make a new sentence",
+      "slides": [
+        {
+          "id": "G01",
+          "title": "Whose preference?",
+          "points": [
+            "would rather + base verb: same subject",
+            "would rather + subject + past form: another subject",
+            "Past form can express a present or future preference"
+          ],
+          "example": "I’d rather paint outdoors. I’d rather my sister drove us there.",
+          "narration": "In this chapter, ask what each grammar pattern means before choosing its form. Would rather expresses a preference. When the person expressing the preference also performs the action, use the base form of the verb without to: I'd rather paint outdoors. For a negative preference, say I'd rather not paint indoors. When the preference concerns another person's action, use a subject and a past form: I'd rather my sister drove us there. Drove here can refer to a preferred future arrangement; it does not automatically describe a finished journey. The grammar marks a hypothetical preference. Compare would prefer: I'd prefer to paint outdoors. That expression normally uses to before the verb. Do not mix the two frames. Say two sentences about a weekend away: one about what you would do, and one about what you would prefer someone else to do. First identify who acts; then choose the structure. Keep your own examples away from the wording of your later exercises.",
+          "practice": null,
+          "start": 0,
+          "end": 60.01
+        },
+        {
+          "id": "G02",
+          "title": "Need: action or passive meaning?",
+          "points": [
+            "The car needs washing.",
+            "The car needs to be washed.",
+            "The owner needs to wash the car."
+          ],
+          "example": "The car receives the action; the owner performs it.",
+          "narration": "The verb need can describe a necessary action in more than one way. In British English, the car needs washing is a natural construction. Washing has passive meaning here: somebody needs to wash the car. An equivalent form is the car needs to be washed. The object receiving the action is the subject of the sentence. Now compare the owner needs to wash the car. The owner performs the action, so this is an active infinitive. That distinction is more useful than memorising a single ending. Consider another setting: after a muddy walk, your boots need drying. You need to dry your boots before putting them away. Both sentences describe the same practical need from different viewpoints. Avoid mixing the constructions into needs to drying. Ask whether the subject is doing something or receiving an action. Then choose one complete grammatical frame. Rewrite a sentence about a household job in both viewpoints, using your own noun and verb.",
+          "practice": {
+            "prompt": "Explain the difference: “The windows need polishing” and “I need to polish the windows”.",
+            "answer": "In the first, the windows receive the necessary action. In the second, I perform it. The first can also be written “The windows need to be polished”."
+          },
+          "start": 60.01,
+          "end": 124.983
+        },
+        {
+          "id": "G03",
+          "title": "Neither ... nor: check the nearer subject",
+          "points": [
+            "Both alternatives are excluded",
+            "With mixed number, the nearer subject normally guides agreement",
+            "Recast awkward sentences when writing freely"
+          ],
+          "example": "Neither the coach nor the players are ready. Neither the players nor the coach is ready.",
+          "narration": "Neither and nor connect two alternatives and say that both are excluded. In the examples on screen, neither the coach nor the players are ready, and neither the players nor the coach is ready. Notice that the nearer subject changes: players is plural, while coach is singular. With subjects of different number, agreement with the nearer subject is a useful standard pattern. This is often called proximity agreement. Do not decide the verb solely from the first noun you read. Find the noun phrase immediately before it. Agreement involving neither can vary in natural usage, and some mixed combinations sound awkward. When you are writing freely, clarity is more important than forcing a complicated sentence. You can write the coach is not ready, and the players are not ready either. That avoids the awkwardness entirely. Try a pair using a singer and several musicians. Reverse their order and check how the verb changes. Explain your reasoning rather than memorising a verb from an unrelated question.",
+          "practice": null,
+          "start": 124.983,
+          "end": 186.492
+        },
+        {
+          "id": "G04",
+          "title": "Contrast: choose the right frame",
+          "points": [
+            "despite + noun / noun phrase / -ing",
+            "although + subject + finite verb",
+            "in spite of works like despite"
+          ],
+          "example": "Despite the fog, the pilot landed safely. Although visibility was poor, the landing was safe.",
+          "narration": "Despite and although both introduce a contrast between what you might expect and what actually happens, but their grammar differs. Despite the fog, the pilot landed safely uses a noun phrase after despite. Although visibility was poor, the landing was safe uses a complete clause with a subject and a verb. In spite of works much like despite, including all three words. An ing form can follow despite: despite feeling nervous, the actor delivered a confident performance. The person feeling nervous is understood to be the actor. Avoid despite of, because despite does not take of in this construction. Also avoid placing a full ordinary clause immediately after despite. You can use despite the fact that, but it is longer and often unnecessary. Choose the shortest clear frame for your meaning. Practise describing an unexpected success in sport or travel, first with a noun phrase and then with although. Keep the meaning stable while changing the grammar.",
+          "practice": null,
+          "start": 186.492,
+          "end": 250.689
+        },
+        {
+          "id": "G05",
+          "title": "Polite questions keep statement order",
+          "points": [
+            "Direct: Where does the trail end?",
+            "Indirect: Could you tell me where the trail ends?",
+            "whether / if for a yes-or-no question"
+          ],
+          "example": "Could you explain whether helmets are provided?",
+          "narration": "Indirect questions are useful when you need information politely. Start with a direct question: where does the trail end? Inside could you tell me where the trail ends, the embedded part follows statement order. The subject the trail comes before ends, and the auxiliary does disappears. With a yes or no question, use whether or if: could you explain whether helmets are provided? The embedded clause is helmets are, not are helmets. This does not mean that the whole sentence loses its question mark. The complete polite request is still a question. Choose the introduction for your purpose: could you tell me asks for information, while could you confirm asks for verification. Longer introductions are not automatically more polite or clearer. Try transforming a direct question about a museum's opening arrangements into a short indirect request. Check the order inside the embedded clause separately from the order at the start of the sentence. This small check prevents a frequent error in formal emails.",
+          "practice": null,
+          "start": 250.689,
+          "end": 310.234
+        },
+        {
+          "id": "G06",
+          "title": "Rules and realistic possibilities",
+          "points": [
+            "modal + be + past participle",
+            "if + present: a real possibility",
+            "if + past, would + base verb: an imagined situation"
+          ],
+          "example": "Paintings must be protected from sunlight. If a guide is absent, a volunteer could lead the tour.",
+          "narration": "Notices often use passive grammar because the arrangement matters more than the person doing the work. Paintings must be protected from sunlight contains a modal, be, and a past participle. The paintings receive protection. Compare future passive: the gallery will be refurbished next year. Negative modals can express restrictions: flash photography cannot be permitted in a particular room. Read the meaning carefully before making a proposal. Conditionals then help you discuss possibilities. If a guide is absent, a volunteer could lead the tour presents a realistic possible situation; the if clause uses a present form. If I managed the gallery, I would introduce a quiet visiting hour imagines a different situation. The past form does not make it a story about yesterday. A correct conditional is not enough if its suggestion ignores the notice. Always check what is allowed, what is required and what remains uncertain. Practise with a museum scenario of your own instead of drafting an answer to your course announcement.",
+          "practice": null,
+          "start": 310.234,
+          "end": 378.67
+        },
+        {
+          "id": "G07",
+          "title": "Proposals and balanced arguments",
+          "points": [
+            "suggest + -ing; suggest that + clause",
+            "could: an option; might: a possibility",
+            "however: a contrast; therefore: a consequence"
+          ],
+          "example": "I suggest displaying larger labels. This might help visitors read them from a distance.",
+          "narration": "Suggestions become stronger when the grammar connects them to a reason. I suggest displaying larger labels uses suggest followed by an ing form. You can also say I suggest that the museum displays larger labels, or use a suitable construction with should. Avoid suggest me to display when you mean make a recommendation. The verb does not follow that pattern. Could presents an option, while might introduces a possible result without pretending it is guaranteed. Larger labels could make the display easier to use. They might particularly help visitors standing further away. Use however to acknowledge a relevant drawback, and therefore to connect a consequence. These are relationships, not decorative words to scatter through a paragraph. A short, accurate sentence often serves the reader better than several complicated clauses. Give one proposal about a public garden, explain its possible benefit and acknowledge one practical limitation. Keep each part specific and make sure the linking word expresses the relationship you intend.",
+          "practice": null,
+          "start": 378.67,
+          "end": 442.453
+        },
+        {
+          "id": "G08",
+          "title": "Practise the method, not a memorised answer",
+          "points": [
+            "Identify the subject and intended meaning",
+            "Choose a complete grammar frame",
+            "Read the result aloud and check it"
+          ],
+          "example": "Preference → I’d prefer to travel early. Contrast → Although it rained, the concert continued.",
+          "narration": "Let us put the grammar to work with fresh material. First, express a personal preference about a train journey using would prefer. One possibility is I'd prefer to travel early. Explain why the infinitive includes to with would prefer. Next, describe an outdoor concert that continued in bad weather using although. Although it rained, the concert continued has a subject and finite verb after although. Finally, describe necessary work on a dirty bicycle in two ways. The bicycle needs cleaning has passive meaning; its owner needs to clean it identifies the person performing the action. These are teaching examples, not answers to your weekly questions. Pause and make different sentences of your own before continuing. When you later meet an unfamiliar grammar item, follow the same process: decide the meaning, identify the subject and choose the required construction. If two options initially look plausible, read the whole sentence in each form and explain the difference. That reasoning is more transferable than remembering a letter.",
+          "practice": {
+            "prompt": "Write a new sentence for a preference, a contrast and a necessary job. Use three different situations.",
+            "answer": "Check the grammar frames explained in this chapter. Many answers are possible; the meaning and the complete structure must agree."
+          },
+          "start": 442.453,
+          "end": 512.646
+        }
+      ],
+      "audio": "audio/theory/THEORY-W2-C2.mp3",
+      "duration": 512.646
+    },
+    {
+      "id": "THEORY-W2-C3",
+      "title": "Exam Skills & Practice",
+      "subtitle": "Plan, listen, describe and justify independently",
+      "slides": [
+        {
+          "id": "S01",
+          "title": "Read the task before writing",
+          "points": [
+            "Who is the reader?",
+            "What must the response do?",
+            "Which limits and restrictions apply?"
+          ],
+          "example": "Practice context: a community choir is planning an open rehearsal.",
+          "narration": "The final chapter turns language knowledge into decisions under time pressure. We will practise using a community choir, a small museum and a public garden. These are new contexts, so your actual Week Two responses remain your own work. Before writing, identify three things: your reader, the actions requested and any limits in the notice. A task may ask you to react, explain and request something. Those are separate jobs. Underline each job mentally and check that your answer carries it out. A word limit is also part of the task. In your weekly practice, Part Two uses twenty to thirty words, Part Three usually needs thirty to forty words for each response, and Part Four asks for a short informal email and a longer formal one. Use the exact range printed beside each task. Do not open with a memorised paragraph that uses half your space without addressing the question. Planning for a few seconds can save much more time during editing.",
+          "practice": null,
+          "start": 0,
+          "end": 60.424
+        },
+        {
+          "id": "S02",
+          "title": "Short answers: answer, reason, detail",
+          "points": [
+            "Part 2: cover every requested element",
+            "Part 3: develop one clear point",
+            "Remove empty introductions"
+          ],
+          "example": "Prompt: What would you bring to a neighbourhood picnic, and why?",
+          "narration": "Short answers need selection rather than a tiny version of a long essay. Consider a new prompt: what would you bring to a neighbourhood picnic, and why? A twenty to thirty word answer must identify an item and explain the reason. For example: I would bring a board game because it is easy to share and gives neighbours who have not met before a natural way to start talking. That sentence has twenty six words using ordinary space separated counting. It covers both jobs without a general introduction about the importance of neighbourhoods. For a thirty to forty word opinion answer, add a relevant qualification or consequence rather than padding. Your position, a reason and a specific detail form a useful plan, but not every answer must sound identical. After drafting, check the requested content before checking the number. A response can meet the word range and still miss half the question. Build your own ideas when you reach the real tasks.",
+          "practice": {
+            "prompt": "Plan a short answer to the picnic prompt without copying the example. Name your item and one reason.",
+            "answer": "For example, fruit for easy sharing or a blanket for comfortable seating. Check that your response answers both the item and the reason."
+          },
+          "start": 60.424,
+          "end": 114.955
+        },
+        {
+          "id": "S03",
+          "title": "Two emails, two relationships",
+          "points": [
+            "Friend: natural reaction + a clear question",
+            "Organiser: purpose + explanation + feasible request",
+            "Informal 40–50; formal 120–150 words in your tasks"
+          ],
+          "example": "To a friend: “Would you like to come along?” To an organiser: “Would it be possible to reserve a quiet corner?”",
+          "narration": "Two emails about one situation require two relationships, not merely two different greetings. Imagine a community choir opening a rehearsal to visitors. To a friend, you could react naturally and ask whether they would like to come along. A conversational tone and contractions can be appropriate. To the organiser, explain your purpose, the practical issue and a feasible request. Would it be possible to reserve a quiet corner is a polite question, but it needs a reason in the surrounding email. Follow the instructions rather than forcing every formal answer into a complaint template. For the longer email, a useful planning sequence is purpose, relevant explanation, workable proposal and polite closing. This is a structure, not a model answer to your course. Do not invent permissions that the notice rules out. Check names, dates, arrangements and the required request. Finally, leave time to check verb forms and whether the tone suits the reader. Formal writing should be clear and respectful, not full of unnecessarily obscure vocabulary.",
+          "practice": null,
+          "start": 114.955,
+          "end": 181.272
+        },
+        {
+          "id": "S04",
+          "title": "Reading: name the paragraph’s job",
+          "points": [
+            "Skim for the overall route",
+            "Summarise each paragraph in a few words",
+            "Match main ideas, not shared vocabulary"
+          ],
+          "example": "A garden trial changes from extra watering to improving the soil: method change, not simply “water”.",
+          "narration": "For matching headings, understand the job of a paragraph rather than searching for a familiar word. Here is a new example about a public garden. During the first season, volunteers increased watering, but the plants still struggled. Tests then showed compacted soil. After loosening it and adding compost, growth improved without extra water. The paragraph is mainly about revising an approach after finding a different cause. A heading about buying more watering cans would repeat the topic but miss the point. A heading such as a change of method is a better fit. Your process has four stages: skim the whole text, summarise each paragraph briefly, compare those summaries with the headings and review any overlapping choices. One heading may be unused, so a leftover option is not automatically wrong for every paragraph. Check your positive evidence first. You do not need to know everything about gardening, museums or any other topic to identify a paragraph's role. Use what the passage actually says.",
+          "practice": {
+            "prompt": "Why is “Buying better watering cans” a poor heading for this new garden paragraph?",
+            "answer": "The paragraph changes the explanation from watering to soil condition. Buying cans is not its main idea and is not described."
+          },
+          "start": 181.272,
+          "end": 241.023
+        },
+        {
+          "id": "S05",
+          "title": "Speaking: evidence, experience, evaluation",
+          "points": [
+            "Describe what can be observed",
+            "Use past forms for a personal event",
+            "Explain a general opinion with a reason"
+          ],
+          "example": "New scene: two people are repairing a bicycle beside a workbench.",
+          "narration": "Speaking questions can move between different kinds of thinking, so listen to the instruction carefully. Imagine a photograph of two people repairing a bicycle beside a workbench. For a description, begin with visible evidence: people, location, objects and actions. If you speculate, signal it with might or perhaps instead of inventing a fact. For a personal experience, tell a short relevant event and use past forms consistently. For an evaluation, state a general point and support it with a reason or example. In your practice, Part One allows thirty seconds per response, while the three responses in each of Parts Two and Three allow forty five seconds each. Start answering promptly rather than spending a long time announcing what you will discuss. Aim for connected speech that responds to the actual question. If you lack one word, paraphrase it. A tool for tightening bolts is a useful description when you cannot immediately retrieve the exact name. Communication matters more than sounding rehearsed.",
+          "practice": null,
+          "start": 241.023,
+          "end": 307.547
+        },
+        {
+          "id": "S06",
+          "title": "Compare first, then develop",
+          "points": [
+            "Both ...; whereas ...; in contrast ...",
+            "Compare one relevant dimension at a time",
+            "Part 4: experience → explanation → broader view"
+          ],
+          "example": "New pair: a tutor teaches a small group indoors; a ranger leads learners through woodland.",
+          "narration": "In a comparison, organise the relationship between the scenes instead of delivering two disconnected descriptions. Imagine an indoor class with a tutor and an outdoor woodland lesson with a ranger. Both involve learning with guidance, whereas one offers a controlled environment and the other provides direct contact with the subject. You could compare interaction, access to resources or the influence of weather. Choose a relevant dimension and support it with visible evidence. Do not assume one method is always better for everyone. Part Four then asks for a single extended response to three related prompts. You have one minute to prepare and two minutes to speak in your weekly practice. Use a few keywords for an experience, its explanation and a broader opinion. Plan a route through all three prompts rather than writing a script. If you spend all the time on the personal story, you may never reach the general issue. Practise a transition such as that experience changed my view because, then move to your next point.",
+          "practice": null,
+          "start": 307.547,
+          "end": 366.523
+        },
+        {
+          "id": "S07",
+          "title": "Listening: follow changes of intention",
+          "points": [
+            "Separate first plan, revision and final decision",
+            "Identify the speaker and the next action",
+            "Use replay to analyse evidence, not memorise letters"
+          ],
+          "example": "“I planned to take the ferry. It has been cancelled, so I’ll use the train. My sister will book it.”",
+          "narration": "Listening often requires you to separate an early intention from the final decision. Try this fresh example. I planned to take the ferry. It has been cancelled, so I'll use the train. My sister will book it. There are three different facts: an original plan, a revised choice and the person responsible for the next action. A question about the final transport would require train, not ferry, even though ferry appears first. A question about who will make the booking would require the sister, not the speaker. Read the question's focus before choosing. Words such as actually, instead, however and in that case can signal a revision, but the meaning of the whole exchange matters. Your academy allows unlimited listening deliberately, including during exam practice. Use that freedom to revisit the evidence and paraphrase the reason for an answer. Replaying these static files does not make a new AI request. Keep the transcript hidden until you have attempted the activity independently.",
+          "practice": {
+            "prompt": "In this new example, identify the original plan, final choice and next actor.",
+            "answer": "Original plan: ferry. Final choice: train. Next actor: the speaker’s sister, who will make the booking."
+          },
+          "start": 366.523,
+          "end": 427.205
+        },
+        {
+          "id": "S08",
+          "title": "A useful final check",
+          "points": [
+            "Retrieve five phrases without looking",
+            "Make four new grammar examples",
+            "Plan before answering; review after attempting"
+          ],
+          "example": "Learn the method here. Make the decisions yourself in W2D1–W2D4.",
+          "narration": "You now have a practical route from theory to independent work. Before starting the weekly sessions, retrieve five phrases from the vocabulary chapter without looking. Explain what each means and give a fresh example. Then make four new grammar sentences covering preference, necessary work, agreement and contrast. If you cannot explain a choice, return to the relevant slide rather than memorising a fragment. When you work on Writing, check the reader, requested content, constraints and word range. In Reading, ask what each paragraph contributes to the text. In Speaking, distinguish description, personal experience and evaluation, and respond to every prompt. In Listening, separate earlier plans from later decisions and identify who will act next. Afterwards, use your corrections to notice a pattern and create a new example for review. This class is recommended, not compulsory. You can enter any of the four sessions without completing it or waiting for a teacher. Download the revision guide if you want a compact reference, then apply these strategies to your own answers.",
+          "practice": null,
+          "start": 427.205,
+          "end": 489.593
+        }
+      ],
+      "audio": "audio/theory/THEORY-W2-C3.mp3",
+      "duration": 489.593
+    }
+  ],
+  "glossary": [
+    {
+      "term": "payable",
+      "meaning": "required to be paid, or paid to a particular recipient",
+      "pattern": "payable within fourteen days"
+    },
+    {
+      "term": "affordable",
+      "meaning": "within someone’s financial means",
+      "pattern": "affordable for young families"
+    },
+    {
+      "term": "valuable",
+      "meaning": "worth much, or providing significant usefulness",
+      "pattern": "valuable insight"
+    },
+    {
+      "term": "confirm",
+      "meaning": "establish or state that information is correct",
+      "pattern": "confirm an observation"
+    },
+    {
+      "term": "approve",
+      "meaning": "give permission or formal agreement",
+      "pattern": "approve a research proposal"
+    },
+    {
+      "term": "admit",
+      "meaning": "acknowledge something, often reluctantly",
+      "pattern": "admit a calculation error"
+    },
+    {
+      "term": "enquire",
+      "meaning": "ask for information",
+      "pattern": "enquire about membership"
+    },
+    {
+      "term": "exception",
+      "meaning": "a case treated differently from a general rule",
+      "pattern": "make an exception to a policy"
+    },
+    {
+      "term": "beginner",
+      "meaning": "a person starting to learn a skill",
+      "pattern": "a beginner in pottery"
+    },
+    {
+      "term": "comprehensive",
+      "meaning": "covering all relevant or necessary areas",
+      "pattern": "a comprehensive safety guide"
+    },
+    {
+      "term": "refund",
+      "meaning": "money returned after it was paid",
+      "pattern": "receive a refund after a cancellation"
+    },
+    {
+      "term": "discount",
+      "meaning": "a reduction in a price",
+      "pattern": "offer a student discount"
+    },
+    {
+      "term": "current",
+      "meaning": "existing or happening now",
+      "pattern": "the current exhibition"
+    },
+    {
+      "term": "retain",
+      "meaning": "continue to have something",
+      "pattern": "retain original photographs"
+    },
+    {
+      "term": "obtain",
+      "meaning": "acquire something",
+      "pattern": "obtain permission"
+    },
+    {
+      "term": "remind",
+      "meaning": "prompt someone to remember",
+      "pattern": "remind someone to recharge a battery"
+    },
+    {
+      "term": "comply",
+      "meaning": "act in accordance with a requirement",
+      "pattern": "comply with environmental legislation"
+    },
+    {
+      "term": "widespread",
+      "meaning": "present among many people or in many places",
+      "pattern": "widespread interest in conservation"
+    },
+    {
+      "term": "inaccessible",
+      "meaning": "not readily reachable or usable",
+      "pattern": "a document inaccessible to a screen reader"
+    },
+    {
+      "term": "constructive",
+      "meaning": "helping a situation move towards improvement",
+      "pattern": "constructive criticism"
+    },
+    {
+      "term": "accommodate",
+      "meaning": "make arrangements that meet needs; also provide lodging",
+      "pattern": "accommodate different learning preferences"
+    },
+    {
+      "term": "distinguish",
+      "meaning": "recognise or show a difference",
+      "pattern": "distinguish between an original and a reproduction"
+    },
+    {
+      "term": "recipient",
+      "meaning": "a person receiving something",
+      "pattern": "the recipient of an award"
+    },
+    {
+      "term": "dispatch",
+      "meaning": "send something to a destination",
+      "pattern": "dispatch a rescue team"
+    },
+    {
+      "term": "depot",
+      "meaning": "a place where vehicles or goods are stored or handled",
+      "pattern": "a railway maintenance depot"
+    },
+    {
+      "term": "handling",
+      "meaning": "the way something is dealt with or physically managed",
+      "pattern": "safe handling of fragile objects"
+    },
+    {
+      "term": "coordinator",
+      "meaning": "a person organising different activities or people",
+      "pattern": "the festival coordinator"
+    },
+    {
+      "term": "inclusive",
+      "meaning": "enabling different people to take part",
+      "pattern": "an inclusive choir rehearsal"
+    },
+    {
+      "term": "on behalf of",
+      "meaning": "representing another person or organisation",
+      "pattern": "speak on behalf of a charity"
+    },
+    {
+      "term": "collection window",
+      "meaning": "a specified period during which collection is possible",
+      "pattern": "a collection window for repaired instruments"
+    }
+  ],
+  "pdf": "pdfs/theory/WEEK_2_REVISION_GUIDE.pdf",
+  "originalSources": [
+    "https://scrimba.com/explain/guide0m9jb3jhl",
+    "https://scrimba.com/explain/guide09r24io8u",
+    "https://scrimba.com/explain/guide0bc0hn4ue"
+  ],
+  "duration": 1499.999
+}

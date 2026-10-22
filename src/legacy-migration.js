@@ -1,4 +1,5 @@
 import {validateProgress,exportProgress} from './progress.js';
+import {validateTheoryRow} from './theory-lessons.js';
 import {validateFeedback} from './ai-schema.js';
 import {digest,rpc,escapeHTML as esc} from './accounts.js';
 const KEYS=['aptis-b2-performance-v1','aptis-b2-vocabulary-v1','aptis-b2-ai-feedback-v1'];
@@ -23,6 +24,8 @@ export function validatePackage(file,course,vocabulary){
     if(!valid)throw Error('Progreso de Reading Lab inválido.');
     entities.push({kind:'reading',id,data});
   }
+  const theory=file.theory||{};if(typeof theory!=='object'||Array.isArray(theory))throw Error('Clases teóricas incompatibles.');
+  for(const [id,data]of Object.entries(theory)){if(!validateTheoryRow(id,data))throw Error('Progreso de clase inválido.');entities.push({kind:'theory',id,data});}
   const feedback=Array.isArray(file.feedback)?file.feedback:Object.values(file.ai?.items||{});
   for(const item of feedback){validateFeedback(item.kind,item.feedback);if(!course.exercises.some(ex=>ex.questions.some(q=>q.id===item.exerciseId))||!Number.isFinite(Date.parse(item.timestamp))||!/^[a-f0-9]{64}$/.test(item.sourceHash))throw Error('Feedback heredado inválido.');}
   if(feedback.length>200)throw Error('La importación admite hasta 200 correcciones.');

@@ -21,12 +21,29 @@ before(async()=>{
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/002_content_refs.sql',import.meta.url),'utf8'));
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/003_reading_lab.sql',import.meta.url),'utf8'));
   await db.exec(fs.readFileSync(new URL('../supabase/migrations/004_unlimited_listening.sql',import.meta.url),'utf8'));
+  await db.exec(fs.readFileSync(new URL('../supabase/migrations/005_theory_week2.sql',import.meta.url),'utf8'));
   for(const [id,role]of [[A,'student'],[B,'student'],[T,'teacher']]){
     await q('insert into auth.users values($1,$2)',[id,role+'@example.invalid']);await q('insert into public.user_roles(user_id,role) values($1,$2)',[id,role]);await q('insert into public.profiles values($1,$2)',[id,role]);
   }
   await q('insert into public.teacher_students(teacher_id,student_id) values($1,$2)',[T,A]);
 });
 after(async()=>{await db?.close();});
+
+test('Optional theory progress resumes privately, survives backup import and never changes course sessions',async()=>{
+  await db.exec(fs.readFileSync(new URL('../supabase/live_theory_check.sql',import.meta.url),'utf8'));
+  const value={started:true,completed:false,position:37,furthest:45,updatedAt:Date.now()};
+  await as(A,async()=>{
+    assert.equal((await save('theory','THEORY-W2-C1',value)).ok,true);
+    const snapshot=(await q('select public.learning_snapshot() as s')).rows[0].s;
+    assert.equal(snapshot.theory[0].data.position,37);assert.equal(snapshot.session.length,0);
+    await assert.rejects(()=>save('theory','THEORY-W3-C1',value),/Unknown academic ID/);
+    await assert.rejects(()=>save('theory','THEORY-W2-C2',{...value,position:5000,furthest:5000}),/Invalid theory/);
+    await assert.rejects(()=>save('theory','THEORY-W2-C2',{...value,position:46}),/Invalid theory/);
+  });
+  await as(B,async()=>{assert.equal((await q('select * from public.theory_progress where user_id=$1',[A])).rows.length,0);});
+  await as(T,async()=>{assert.equal((await q('select public.learning_snapshot($1) as s',[A])).rows[0].s.theory[0].data.position,37);await assert.rejects(()=>save('theory','THEORY-W2-C1',value),/Forbidden/);});
+  await db.exec('set role anon');try{await assert.rejects(()=>q('select * from public.theory_progress'),/permission denied/);}finally{await db.exec('reset role');}
+});
 
 test('Unlimited Listening counts persist without changing student/teacher permissions',async()=>{
   await db.exec(fs.readFileSync(new URL('../supabase/live_unlimited_listening_check.sql',import.meta.url),'utf8'));

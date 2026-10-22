@@ -1,4 +1,5 @@
 import {renderReadingLab,configureReading,updateReadingSnapshot} from './reading-lab.js';
+import {renderTheory,configureTheory,updateTheorySnapshot,disposeTheory} from './theory-lessons.js';
 import { exportProgress, validateProgress } from './progress.js';
 import { renderVocabularyLab, configureVocabulary, updateVocabularySnapshot } from './vocabulary-lab.js';
 import { aiControlsHTML, installAIFeedback, syncAIFeedback, configureAIFeedback, feedbackItems } from './ai-feedback.js';
@@ -55,6 +56,7 @@ function syncUI(store){
     }
   }
   state=store.state();updateVocabularySnapshot(store.vocabulary());updateReadingSnapshot(Object.fromEntries(store.entries('reading')));
+  updateTheorySnapshot(Object.fromEntries(store.entries('theory')));
   const status=document.querySelector('#account-sync');
   if(status){status.textContent=store.status;status.classList.toggle('pending',store.status!=='Guardado en servidor');}
   document.querySelector('#sync-details').innerHTML=conflictHTML(store);
@@ -68,6 +70,7 @@ async function bootAccounts(){
   const transport={snapshot:()=>rpc('learning_snapshot'),save:p=>rpc('save_entity',{p_kind:p.kind,p_id:p.id,p_data:p.data,p_expected:p.expected})};
   learningStore=new LearningStore(account.id,transport,localStorage,syncUI);
   syncUI(learningStore);await learningStore.refresh();
+  configureTheory(Object.fromEntries(learningStore.entries('theory')),(id,data)=>learningStore.set('theory',id,data),()=>learningStore.flush());
   configureReading(Object.fromEntries(learningStore.entries('reading')),(id,data)=>learningStore.set('reading',id,data));
   configureVocabulary(learningStore.vocabulary(),lab=>{for(const [id,data]of Object.entries(lab.units))learningStore.set('vocabulary',id,data);});
   try{legacy=legacyPackage();if(legacy&&await alreadyImported(legacy,account,course,vocabularyData))legacy=null;}catch{document.querySelector('#sync-details').textContent='El respaldo antiguo contiene datos dañados. Sus claves originales siguen intactas.';}
@@ -91,7 +94,7 @@ async function refreshAccount(){
   await learningStore.flush();await learningStore.refresh();await refreshAccountExtras();
   // Polling is not navigation. Leave an unchanged screen and its in-progress work alone.
   const editing=document.activeElement?.matches('input,textarea,select,[contenteditable="true"]');
-  const lab=['#reading-lab','#vocabulary-lab'].includes(location.hash);
+  const lab=['#reading-lab','#vocabulary-lab','#theory'].includes(location.hash);
   const playing=currentAudio&&!currentAudio.paused||window.speechSynthesis?.speaking||[...document.querySelectorAll('audio')].some(audio=>!audio.paused);
   if(before!==snapshot()&&!editing&&!lab&&!activeRecorder&&!playing&&!activeTimer)await render({preservePosition:true});
 }
@@ -119,6 +122,7 @@ async function restoreRemoteClip(id){
 document.addEventListener('click',async event=>{
   const button=event.target.closest('button');if(!button)return;
   if(button.hasAttribute('data-logout')){
+    disposeTheory();
     if(learningStore && !(await learningStore.flush()) && !confirm('Hay cambios pendientes conservados en este dispositivo. ¿Cerrar sesión y sincronizarlos cuando vuelvas a entrar con esta cuenta?'))return;
     stopActiveRecording();stopListening();for(const clip of speakingRecordings.values())if(clip.url?.startsWith('blob:'))URL.revokeObjectURL(clip.url);
     speakingRecordings.clear();state=defaultState();configureReading({},()=>{});teacherReviews=[];configureAIFeedback({});configureVocabulary({schemaVersion:1,units:{}},()=>{});app.replaceChildren();mainNav.replaceChildren();weekNav.replaceChildren();document.querySelector('#sync-details').replaceChildren();
@@ -131,7 +135,7 @@ document.addEventListener('click',async event=>{
   }
   if(button.hasAttribute('data-full-export')&&account?.role==='student'){
     button.disabled=true;try{[feedbackRows,teacherReviews,serverRecordings]=await Promise.all([query('ai_feedback','user_id',account.id,null),query('teacher_reviews','student_id',account.id,null),query('speaking_recordings','user_id',account.id,null)]);}catch{button.disabled=false;alert('No se pudo obtener el respaldo completo del servidor. Reintenta cuando vuelva la conexión.');return;}button.disabled=false;
-    downloadJSON({app:'aptis-b2-v2-backup',schemaVersion:2,exportedAt:new Date().toISOString(),state:learningStore.state(),vocabulary:learningStore.vocabulary(),reading:Object.fromEntries(learningStore.entries('reading')),ai:{schemaVersion:1,items:feedbackItems()},serverFeedback:feedbackRows,recordings:serverRecordings,reviews:teacherReviews,pending:learningStore.cache.pending,conflictBackups:learningStore.cache.backups},`aptis-b2-respaldo-completo-${new Date().toISOString().slice(0,10)}.json`);
+    downloadJSON({app:'aptis-b2-v2-backup',schemaVersion:2,exportedAt:new Date().toISOString(),state:learningStore.state(),vocabulary:learningStore.vocabulary(),reading:Object.fromEntries(learningStore.entries('reading')),theory:Object.fromEntries(learningStore.entries('theory')),ai:{schemaVersion:1,items:feedbackItems()},serverFeedback:feedbackRows,recordings:serverRecordings,reviews:teacherReviews,pending:learningStore.cache.pending,conflictBackups:learningStore.cache.backups},`aptis-b2-respaldo-completo-${new Date().toISOString().slice(0,10)}.json`);
   }
 });
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -175,6 +179,7 @@ function renderNav() {
     navLink('#books', '▤', 'Masterbooks'),
     navLink('#vocabulary-lab', '✎', 'Vocabulary Lab'),
     navLink('#reading-lab', '▥', 'Reading Lab'),
+    navLink('#theory', '▷', 'Clases teóricas'),
     navLink('#tracker', '◇', 'Error Tracker'),
     navLink('#pdfs', '↓', 'Descargar PDFs'),
   ].join('');
@@ -594,6 +599,7 @@ async function importProgress(file) {
 
 async function render(options={}) {
   if (!course) return;
+  if(location.hash!=='#theory')disposeTheory();
   const position=options.preservePosition?{x:window.scrollX,y:window.scrollY,sidebar:menu.scrollTop}:null;
   if(account?.role==='teacher'){mainNav.innerHTML='<a class="nav-link" href="#teacher">Panel del profesor</a>';weekNav.innerHTML='';topProgress.textContent='Supervisión';breadcrumb.textContent='PROFESOR';teacherDashboard(app,account,course,writingPlan,vocabularyData);return;}
   stopActiveRecording();
@@ -608,6 +614,7 @@ async function render(options={}) {
   else if (hash === 'books') booksView();
   else if (hash === 'vocabulary-lab') vocabularyLabView();
   else if(hash==='reading-lab'){breadcrumb.textContent='READING LAB';await renderReadingLab(app);if(location.hash!=='#reading-lab')return;}
+  else if(hash==='theory'){stopListening();breadcrumb.textContent='CLASES TEÓRICAS';await renderTheory(app);if(location.hash!=='#theory')return;}
   else if (hash.startsWith('book=')) bookView(hash.slice(5));
   else if (hash === 'tracker') trackerView();
   else if (hash === 'pdfs') pdfsView();
